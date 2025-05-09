@@ -1,11 +1,14 @@
 <?php
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\admin\SubCategoryController;
+use App\Models\Brand;
+use App\Http\Controllers\CategoriesAdmin\Controller;
 use App\Http\Middleware\Authenticate;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoriesAdmin\BrandController;
+use App\Http\Controllers\CategoriesAdmin\CategoryController;
+use App\Http\Controllers\admin\CategoriesAdmin\SubCategoryController;
 
 Route::get('/category/slug', function (Request $request) {
         $slug = '';
@@ -18,7 +21,7 @@ Route::get('/category/slug', function (Request $request) {
         }
 })->name('admin.category.slug');
 
-
+/* CategoryController ################################################################################## */
 Route::get('/category/create', [CategoryController::class, 'create'])->name('admin.category.create');
 
 Route::get('/category/list', [CategoryController::class, 'index'])->name('admin.category.list');
@@ -30,6 +33,7 @@ Route::post('/category/store', [CategoryController::class, 'store'])->name('admi
 
 Route::delete('/category/{id}/deleteCategory', [CategoryController::class, 'destroy'])->name('admin.category.deleteCategory');
 
+/* SubCategoryController ################################################################################## */
 Route::get('/sub-category/list', [SubCategoryController::class, 'index'])->name('admin.sub-category.list');
 
 Route::get('/sub-category/create', [SubCategoryController::class, 'create'])->name('admin.sub-category.create');
@@ -41,4 +45,19 @@ Route::put('/sub-category/{sub_categoryId}/update', [SubCategoryController::clas
 Route::post('/sub-category/store', [SubCategoryController::class, 'store'])->name('admin.sub-category.store');
 
 Route::delete('/sub-category/{id}/deleteCategory', [SubCategoryController::class, 'destroy'])->name('admin.sub-category.deleteCategory');
+
+/* BrandController ################################################################################## */
+Route::get('/brand/list', [BrandController::class, 'index'])->name('admin.brand.list');
+
+Route::get('/brand/create', [BrandController::class, 'create'])->name('admin.brand.create');
+
+Route::post('/brand/store', [BrandController::class, 'store'])->name('admin.brand.store');
+
+Route::get('/brand/{brandId}/edit', [BrandController::class, 'edit'])->name('admin.brand.edit');
+
+Route::put('/brand/{brandId}/update', [BrandController::class, 'update'])->name('admin.brand.update');
+
+Route::delete('/brand/{brand_id}/deleteBrand', [BrandController::class, 'destroy'])->name('admin.brand.deleteBrand');
+
+
 

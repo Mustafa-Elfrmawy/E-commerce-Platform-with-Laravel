@@ -67,6 +67,13 @@ class HelperController extends Controller
                 'category_id' => 'required|integer|exists:categories,id',
                 'status' => 'required|in:0,1'
             ]);
+        } elseif($status == 'storeBrand') {
+            $validate = Validator::make($request->all(), [
+                'name' => 'required|string|unique:brands,name',
+                'slug' => 'required|unique:brands,slug',
+                'sub_category_id' => 'required|integer|exists:sub_categories,id',
+                'status' => 'required|in:0,1'
+            ]);
         }
         return $validate;
     }

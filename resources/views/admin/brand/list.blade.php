@@ -1,10 +1,17 @@
+<!-- /.content-wrapper -->
+
+<!-- /.navbar -->
+<!-- Main Sidebar Container -->
 @extends('admin.layout.app')
 @section('title')
-    Dashboard
+    Brand
 @endsection
 @section('content')
     @include('admin.layout.sidebar')
-    
+
+    <!-- /.navbar -->
+    <!-- Main Sidebar Container -->
+
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -12,10 +19,10 @@
             <div class="container-fluid my-2">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Sub Category</h1>
+                        <h1>brand</h1>
                     </div>
                     <div class="col-sm-6 text-right">
-                        <a href="{{route('admin.sub-category.create')}}" class="btn btn-primary">New Sub Category</a>
+                        <a href="{{ route('admin.brand.create') }}" class="btn btn-primary">New brand</a>
                     </div>
                 </div>
             </div>
@@ -27,27 +34,25 @@
             <div class="container-fluid">
                 @include('admin.layout.message')
                 <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <button onclick="window.location.href='{{ route('admin.sub-category.list') }}'"
-                                class="btn-default btn-sm">Reset</button>
-                        </div>
-                        <div class="card-tools">
-                            <form action="{{route('admin.sub-category.list')}}" method="GET">
-                                @csrf
+                    <form action="{{ route('admin.brand.list') }}" method="get">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <button onclick="window.location.href='{{ route('admin.brand.list') }}'"
+                                    class="btn-default btn-sm">Reset</button>
+                            </div>
+                            <div class="card-tools">
                                 <div class="input-group input-group" style="width: 250px;">
                                     <input type="text" name="keyword" class="form-control float-right"
-                                    placeholder="Search">
+                                        placeholder="Search">
                                     <div class="input-group-append">
                                         <button type="submit" class="btn btn-default">
                                             <i class="fas fa-search"></i>
                                         </button>
                                     </div>
                                 </div>
-                            </form>
-
+                            </div>
                         </div>
-                    </div>
+                    </form>
                     <div class="card-body table-responsive p-0">
                         <table class="table table-hover text-nowrap">
                             <thead>
@@ -55,24 +60,20 @@
                                     <th width="60">ID</th>
                                     <th>Name</th>
                                     <th>Slug</th>
-                                    <th>Category</th>
+                                    <th width="100">sub_category</th>
                                     <th width="100">Status</th>
                                     <th width="100">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($sub_categories->isNotEmpty())
-                                    @foreach ($sub_categories as $sub_category)
+                                @if ($brands->isNotEmpty())
+                                    @foreach ($brands as $brand)
                                         <tr>
-                                            <td>{{ $sub_category->id }}</td>
-                                            <td>{{ $sub_category->name }}</td>
-                                            <td>{{ $sub_category->slug }}</td>
-                                            @if( !empty($sub_category->category->name) )
-                                            <td>{{ $sub_category->category->name}}</td>
-                                            @else
-                                            <td style="color: red">empty</td>
-                                            @endif
-                                            @if ($sub_category->status == 1)
+                                            <td>{{ $brand->id }}</td>
+                                            <td>{{ $brand->name }}</td>
+                                            <td>{{ $brand->slug }}</td>
+                                            <td>{{ $brand->subCategory->name}}</td>
+                                            @if ($brand->status == 1)
                                                 <td>
                                                     <svg class="text-success-500 h-6 w-6 text-success"
                                                         xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -95,7 +96,7 @@
                                             @endif
                                             {{-- text-warning --}}
                                             <td>
-                                                <a href="{{ route('admin.sub-category.edit', $sub_category->id) }}">
+                                                <a href="{{ route('admin.brand.edit', $brand->id) }}">
                                                     <svg class="filament-link-icon w-4 h-4 mr-1"
                                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                                         fill="currentColor" aria-hidden="true">
@@ -105,7 +106,7 @@
                                                     </svg>
                                                 </a>
                                                 {{-- text-danger --}}
-                                                <a href="#" onclick="deleteCategory({{ $sub_category->id }})"
+                                                <a href="#" onclick="deletebrand({{ $brand->id }})"
                                                     class="text-danger w-4 h-4 mr-1">
                                                     <svg wire:loading.remove.delay="" wire:target=""
                                                         class="filament-link-icon w-4 h-4 mr-1"
@@ -129,26 +130,22 @@
                         </table>
                     </div>
                     <div class="card-footer clearfix">
-                        <ul class="pagination pagination m-0 float-right">
-                            @if ($sub_categories->isNotEmpty())
-                                {{ $sub_categories->links() }}
-                            @else
-                            @endif
-                        </ul>
+                        @if ($brands->isNotEmpty())
+                            {{ $brands->links() }}
+                        @else
+                        @endif
                     </div>
                 </div>
-            </div>
-            <!-- /.card -->
+                <!-- /.card -->
         </section>
         <!-- /.content -->
     </div>
+
 @section('custom-js')
-
-
-<script>
-       function deleteCategory(id) {
-            if (confirm('Are you sure want to delete this SubCategory')) {
-                var url = "{{ route('admin.sub-category.deleteCategory', ['id' => ':id']) }}";
+    <script>
+        function deletebrand(id) {
+            if (confirm('Are you sure want to delete this brand')) {
+                var url = "{{ route('admin.brand.deleteBrand', ['brand_id' => ':id']) }}";
                 var newUrl = url.replace(':id', id);
                 $.ajax({
                     url: newUrl,
@@ -160,7 +157,7 @@
 
                     success: function(response) {
                         if (response.status === true) {
-                            window.location.href = "{{ route('admin.sub-category.list') }}";   
+                            window.location.href = "{{ route('admin.brand.list') }}";   
                             console.log(response.message);
                         } else {
                             console.log(response.message)
@@ -174,6 +171,6 @@
             }
 
         }
-</script>
+    </script>
 @endsection
 @endsection

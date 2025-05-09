@@ -2,12 +2,12 @@
 
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HandllerImage;
+use App\Http\Controllers\admin\CategoriesAdminCategory\SubCategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoriesAdmin\HandllerImage;
 use App\Http\Controllers\admin\AdminLoginController;
-use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 
@@ -29,6 +29,7 @@ Route::group(['prefix' => 'admin'], function () {
         
         
         require __DIR__ . '/category.php';
+        require __DIR__ . '/product.php';
 
         Route::post('/category/uploadImage', [HandllerImage::class, 'store'])->name('admin.category.uploadImage');
 

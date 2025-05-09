@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Brand;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Category;
@@ -23,5 +24,6 @@ class DatabaseSeeder extends Seeder
         // ]);
              Category::factory()->count(30)->create();
              SubCategory::factory()->count(30)->create();
+             Brand::factory()->count(30)->create();
     }
 }

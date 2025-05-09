@@ -23,7 +23,7 @@ class Category extends Model
 
     public function subCategory()
    {
-       return $this->hasMany(Category::class, 'image_id');
+       return $this->hasMany(SubCategory::class, 'category_id');
    }
 
 }
