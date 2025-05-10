@@ -95,7 +95,7 @@
 
 			$(document).ready(function() {
     $(".summernote").summernote({
-        height: 250 // هنا تم التصحيح
+        height: 250 
     });
 });
 

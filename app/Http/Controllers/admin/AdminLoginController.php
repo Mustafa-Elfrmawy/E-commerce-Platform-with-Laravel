@@ -23,9 +23,8 @@ class AdminLoginController extends Controller
 
     public function authenticate(Request $request)
     {
-
-        $credentials = $request->only('email', 'password');
         
+        $credentials = $request->only('email', 'password');
         $validate = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|min:1'
@@ -46,7 +45,7 @@ class AdminLoginController extends Controller
         
     }
 
-    protected function checkAdmin(object $validate , array $credentials , Request $request): RedirectResponse
+    private function checkAdmin(object $validate , array $credentials , Request $request): RedirectResponse
     {
         if ($validate->passes()) {
 
