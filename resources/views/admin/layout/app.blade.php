@@ -100,6 +100,6 @@
 });
 
 		</script>
-		@yield('custom-js');
+		@yield('custom-js')
 	</body>
 </html>

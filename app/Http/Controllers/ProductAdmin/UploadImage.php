@@ -55,7 +55,6 @@ class UploadImage extends Controller
     {
 
         $path = $image->store('product/images', 'public');
-
         $imageCreate = new ProductImage();
         $imageCreate->image_product = $path;
         $imageCreate->save();

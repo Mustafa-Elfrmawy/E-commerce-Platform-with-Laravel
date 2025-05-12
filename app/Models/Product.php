@@ -19,6 +19,7 @@ class Product extends Model
         'qty',
         'status',
         'category_id',
+        'image_id',
         'sub_category_id',
         'brand_id',
     ];

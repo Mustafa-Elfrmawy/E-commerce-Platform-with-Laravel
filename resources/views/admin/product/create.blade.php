@@ -1,32 +1,35 @@
 <!-- /.navbar -->
 <!-- Main Sidebar Container -->
-{{-- @dd($sub_categories) --}}
 @extends('admin.layout.app')
 @section('title')
     Dashboard
 @endsection
-<style>#product-gallery {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: space-between; /* لضمان توزيع الصور بشكل جيد */
-}
 
-#product-gallery .col-md-4 {
-    flex: 1 1 calc(33.333% - 10px); 
-    max-width: calc(33.333% - 10px);
-    box-sizing: border-box; 
-}
 
-#product-gallery .col-md-4 img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-}
+<style>
+    #product-gallery {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: space-between;
+        /* لضمان توزيع الصور بشكل جيد */
+    }
 
-#product-gallery .col-md-4.single-image {
-    flex: 1 1 100%; 
-}
+    #product-gallery .col-md-4 {
+        flex: 1 1 calc(33.333% - 10px);
+        max-width: calc(33.333% - 10px);
+        box-sizing: border-box;
+    }
+
+    #product-gallery .col-md-4 img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    #product-gallery .col-md-4.single-image {
+        flex: 1 1 100%;
+    }
 </style>
 @section('content')
     @include('admin.layout.sidebar')
@@ -110,7 +113,6 @@
                                         </div>
 
                                         <div class="row" id="product-gallery">
-                               
                                             {{-- gallery --}}
                                         </div>
 
@@ -126,7 +128,6 @@
                                                 @endif
                                             </div>
                                         </div>
-
                                         <div class="col-md-12">
                                             <div class="mb-3">
                                                 <label for="compare_price">Compare at Price</label>
@@ -179,9 +180,9 @@
                                                 </div>
                                             </div>
                                             <div class="mb-3">
-                                                <input value="{{ old('qut') }}" type="number" min="0"
-                                                    name="qut" id="qty" class="form-control"
-                                                    placeholder="qut">
+                                                <input value="{{ old('qty') }}" type="number" min="0"
+                                                    name="qty" id="qty" class="form-control"
+                                                    placeholder="qty">
                                             </div>
                                         </div>
                                     </div>
@@ -283,113 +284,145 @@
     <!-- /.content-wrapper -->
 @section('custom-js')
     <script>
-        $("#title").change(function() {
-            const nameValue = $(this).val();
-            if (!nameValue) return;
-            $('button[type="submit"]').prop('disabled', true);
+ // Keep the existing code for slug generation
+$("#title").change(function() {
+    const nameValue = $(this).val();
+    if (!nameValue) return;
+    $('button[type="submit"]').prop('disabled', true);
 
-            $.ajax({
-                url: "{{ route('admin.category.slug') }}",
-                type: "GET",
-                data: {
-                    title: nameValue
-                },
-                dataType: 'json',
-                success: function(response) {
-                    $('button[type="submit"]').prop('disabled', false);
-                    if (response.status === true) {
-                        $('#slug').val(response.slug);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error:", error);
-                }
-            });
-        });
-        let uploadedIds = new Set();
-        Dropzone.autoDiscover = false;
-
-        const dropzone = $('.dropzone').dropzone({
-            url: "{{ route('admin.product.uploadImage') }}",
-            method: "POST",
-            paramName: "images",
-            maxFilesize: 2,
-            maxFiles: 10,
-            acceptedFiles: ".jpeg,.jpg,.png,.gif",
-            addRemoveLinks: true,
-            parallelUploads: 10,
-            uploadMultiple: true,
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(file, response) {
-    if (response.status === true) {
-        let isSingleImage = response.images.length === 1 ? 'single-image' : '';
-
-        response.images.forEach(function(image) {
-            if (!uploadedIds.has(image.id)) {
-                $('#product-gallery').append(`
-                    <div class="col-md-12 mb-4 ${isSingleImage}">
-                        <div class="card shadow-sm border-0 rounded">
-                            <img src="${image.image_name}" class="card-img-top" alt="Image" style="height: 200px;">
-                            <input type="hidden" value="${image.id}" name="image_id[]">
-                            <div class="card-body text-center">
-                                <button class="btn btn-outline-danger btn-sm remove-image" data-id="${image.id}">
-                                    <i class="bi bi-trash"></i> Remove
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `);
-                uploadedIds.add(image.id);
+    $.ajax({
+        url: "{{ route('admin.category.slug') }}",
+        type: "GET",
+        data: {
+            title: nameValue
+        },
+        dataType: 'json',
+        success: function(response) {
+            $('button[type="submit"]').prop('disabled', false);
+            if (response.status === true) {
+                $('#slug').val(response.slug);
             }
-        });
-    } else {
-        this.removeFile(file);
-        alert('File upload failed');
-    }
-},
+        },
+        error: function(xhr, status, error) {
+            console.error("Error:", error);
+        }
+    });
+});
 
-            error: function(file, response) {
-                this.removeFile(file);
+// Create a variable to store Dropzone instance
+let myDropzone;
+let uploadedIds = new Set();
+
+Dropzone.autoDiscover = false;
+
+// Initialize Dropzone
+$(document).ready(function() {
+    myDropzone = new Dropzone('.dropzone', {
+        url: "{{ route('admin.product.uploadImage') }}",
+        method: "POST",
+        paramName: "images",
+        maxFilesize: 2,
+        maxFiles: 10,
+        acceptedFiles: ".jpeg,.jpg,.png,.gif",
+        addRemoveLinks: true,
+        parallelUploads: 10,
+        uploadMultiple: true,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(file, response) {
+            if (response.status === true) {
+                let isSingleImage = response.images.length === 1 ? 'single-image' : '';
+
+                response.images.forEach(function(image) {
+                    if (!uploadedIds.has(image.id)) {
+                        // Store the file reference in the Dropzone file object for later removal
+                        file.imageId = image.id;
+                        
+                        $('#product-gallery').append(`
+                            <div class="col-md-12 mb-4 ${isSingleImage}">
+                                <div class="card shadow-sm border-0 rounded">
+                                    @if(old('image_name')!= null)
+                                    <img src="{{old('image_name')}}" class="card-img-top" alt="Image" style="height: 200px;">
+                                    @endif
+                                    <img src="${image.image_name}" class="card-img-top" alt="Image" style="height: 200px;">
+                                    <input type="hidden" value="${image.id}" name="image_id[]">
+                                    <input type="hidden" value="${image.image_name}" name="image_name">
+                                    <div class="card-body text-center">
+                                        <button class="btn btn-outline-danger btn-sm remove-image" data-id="${image.id}">
+                                            <i class="bi bi-trash"></i> Remove
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `);
+                        uploadedIds.add(image.id);
+                    }
+                });
+            } else {
+                myDropzone.removeFile(file);
                 alert('File upload failed');
             }
-        });
+        },
+        error: function(file, response) {
+            myDropzone.removeFile(file);
+            alert('File upload failed');
+        }
+    });
+});
 
-        $(document).on('click', '.remove-image', function(e) {
-            e.preventDefault();
+// Enhanced click handler for remove-image button
+$(document).on('click', '.remove-image', function(e) {
+    e.preventDefault();
 
-            const imageId = $(this).data('id');
-            const button = $(this);
+    const imageId = $(this).data('id');
+    const button = $(this);
 
-            if (!confirm("Are you sure you want to delete this image?")) {
-                return;
-            }
+    if (!confirm("Are you sure you want to delete this image?")) {
+        return;
+    }
 
-            $.ajax({
-                url: "/admin/product/delete-image/" + imageId,
-                type: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response) {
-                    if (response.status === true) {
-                        alert(response.message);
-                        button.closest('.col-md-12').fadeOut(300, function() {
-                            $(this).remove();
-                            $('#product-gallery').masonry('layout');
-                        });
-
-                    } else {
-                        alert(response.message);
+    $.ajax({
+        url: "/admin/product/delete-image/" + imageId,
+        type: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response) {
+            if (response.status === true) {
+                // Remove the card from the gallery
+                button.closest('.col-md-12').fadeOut(300, function() {
+                    $(this).remove();
+                    // If you're using masonry for layout
+                    if ($('#product-gallery').data('masonry')) {
+                        $('#product-gallery').masonry('layout');
                     }
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error:", error);
-                    alert('An error occurred while deleting the image.');
+                });
+                
+                // Remove the image preview from the Dropzone
+                if (myDropzone) {
+                    // Find and remove the file from Dropzone
+                    myDropzone.files.forEach(function(file) {
+                        if (file.imageId == imageId) {
+                            myDropzone.removeFile(file);
+                        }
+                    });
                 }
-            });
-        });
+                
+                // Remove from our tracking set
+                uploadedIds.delete(imageId);
+                
+                alert(response.message);
+            } else {
+                alert(response.message);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error:", error);
+            alert('An error occurred while deleting the image.');
+        }
+    });
+});
     </script>
 @endsection
 @endsection

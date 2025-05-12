@@ -29,7 +29,7 @@ return new class extends Migration
             $table->foreignIdFor(Admin::class, 'updated_by')->nullable();
             $table->foreignIdFor(Admin::class, 'deleted_by')->nullable();
             
-            $table->foreignIdFor(ProductImage::class, 'image_id')->nullable();
+            $table->string('image_id'  , 255)->nullable();
             $table->foreignIdFor(Category::class, 'category_id')->nullable();
             $table->foreignIdFor(SubCategory::class, 'sub_category_id')->nullable();
             $table->foreignIdFor(Brand::class, 'brand_id')->nullable();
@@ -39,7 +39,7 @@ return new class extends Migration
 
             $table->string('barcode', 50)->nullable();
             $table->string('sku', 50);
-            $table->integer('qty')->nullable();
+            $table->integer('qty')->default(1);
             $table->tinyInteger( 'status')->defualt(0);
 
 

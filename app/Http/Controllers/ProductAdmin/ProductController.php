@@ -9,15 +9,22 @@ use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use PHPUnit\Framework\ComparisonMethodDoesNotAcceptParameterTypeException;
 
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.product.list');
+           $products = Product::latest();
+           if ($request->get('keyword') != null) {
+               $products = $products->where('name', 'LIKE', '%' . $products->get('keyword') . '%');
+            }
+            $products = $products->paginate(20);
+            $images = Product::whereIn('id', [$products])->get();
+        return view('admin.product.list' , compact('products'));
     }
 
     /**
@@ -38,8 +45,6 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-
-        dd($request->all());
         $request->merge([
             'track_qut' => $request->input('track_qut') == 'on' ? 'on' : 'off'
         ]);
@@ -48,13 +53,17 @@ class ProductController extends Controller
 
         if ($validator->fails()) {
 
-            return redirect()->route('admin.product.list')->withInput()->withErrors($validator);
+            return redirect()->route('admin.product.create')->withInput()->withErrors($validator);
         }
-    
-        $product_new = $this->newProduct($request);
-   
 
-        return ($product_new)? redirect()->route('admin.product.list')->with( 'success' , 'created product success' ): redirect()->route('admin.product.list')->withInput()->withErrors( 'error while created product' );
+        $product_new = $this->newProduct($request);
+
+
+        return ($product_new) ? redirect()->route('admin.product.create')
+        ->with('success', 'created product success') :
+         redirect()->route('admin.product.create')
+         ->withInput()
+         ->withErrors('error while created product');
     }
 
 
@@ -74,7 +83,6 @@ class ProductController extends Controller
     {
         //
     }
-
     /**
      * Update the specified resource in storage.
      */
@@ -93,10 +101,15 @@ class ProductController extends Controller
 
 
 
-    protected function newProduct(Request $request) {
-         $new_product = Product::create([
+    protected function newProduct(Request $request)
+    {
+        $request->merge([
+            'image_id' =>   implode(',', $request->input('image_id')),
+        ]);
+        $new_product = Product::create([
             'title' =>        $request->input('title'),
             'slug' =>            $request->input('slug'),
+            'image_id' =>        $request->input('image_id'),
             'description' =>     $request->input('description'),
             'price' =>           $request->input('price'),
             'compare_price' =>   $request->input('compare_price'),
@@ -114,17 +127,20 @@ class ProductController extends Controller
         return $new_product;
     }
 
-    protected function validated(Request $request) {
+    protected function validated(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
+            'image_id' => 'nullable|array',
+            'image_id.*' => 'nullable|integer|exists:product_images,id',
             'slug' => 'required|string|max:255|unique:products,slug',
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
             'compare_price' => 'nullable|numeric|min:0',
             'sku' => 'required|string|max:100|unique:products,sku',
-            'barcode' => 'required|numeric|digits_between:8,20',
+            'barcode' => 'required|unique:products,barcode|numeric|digits_between:8,20',
             'track_qut' => 'required|in:on,off',
-            'qut' => 'required|numeric|min:0',
+            'qty' => 'required|numeric|min:0',
             'status' => 'required|in:0,1',
             'is_featured' => 'required|in:yes,no',
             'category' => 'required|exists:categories,id',
