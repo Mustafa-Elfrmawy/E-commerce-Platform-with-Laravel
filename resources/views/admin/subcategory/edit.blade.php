@@ -34,34 +34,37 @@
             <div class="container-fluid">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{route('admin.sub-category.update' , $sub_categories->id )}}" method="POST">
+                        <form action="{{ route('admin.sub-category.update', $sub_categories->id) }}" method="POST">
                             @csrf
                             @method('PUT')
+                            <input type="hidden" value="{{ $sub_categories->id }}" name="id">
+
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label for="name">Category</label>
                                         <select name="category_id" id="category" class="form-control">
                                             @foreach ($categories as $id => $name)
-                                                    <option value="{{ $id }}" {{$id == $sub_categories->category_id ? 'selected':'' }}>
-                                                        {{ $name }}</option>
-                                                @endforeach
+                                                <option value="{{ $id }}"
+                                                    {{ $id == $sub_categories->category_id ? 'selected' : '' }}>
+                                                    {{ $name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="name">Name</label>
-                                        <input type="text" value="{{$sub_categories->name}}" name="name" id="name" class="form-control"
-                                            placeholder="Name">
+                                        <input type="text" value="{{ $sub_categories->name }}" name="name"
+                                            id="name" class="form-control" placeholder="Name">
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="email">Slug</label>
-                                        <input type="text" value="{{$sub_categories->slug}}" readonly name="slug" id="slug" class="form-control"
-                                            placeholder="Slug">
+                                        <input type="text" value="{{ $sub_categories->slug }}" readonly name="slug"
+                                            id="slug" class="form-control" placeholder="Slug">
                                     </div>
                                 </div>
 
@@ -69,8 +72,10 @@
                                     <div class="mb-3">
                                         <label for="status">Status</label>
                                         <select type="text" name="status" id="status" class="form-control">
-                                            <option {{ 1 == $sub_categories->status ? 'selected':''}} value="1">Active</option>
-                                            <option {{ 0 == $sub_categories->status ? 'selected':''}} value="0">Block</option>
+                                            <option {{ 1 == $sub_categories->status ? 'selected' : '' }} value="1">Active
+                                            </option>
+                                            <option {{ 0 == $sub_categories->status ? 'selected' : '' }} value="0">Block
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -90,9 +95,6 @@
 
 @section('custom-js')
     <script>
-       
-
-
         $("#name").change(function() {
             const nameValue = $(this).val();
             if (!nameValue) return;

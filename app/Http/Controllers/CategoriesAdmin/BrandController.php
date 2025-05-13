@@ -42,7 +42,7 @@ class BrandController extends Controller
 
     public function store(Request $request) {
 
-        $validate = $this->helper->validateCategory($request, 'storeBrand');
+        $validate = $this->helper->ruleValidate($request, 'storeBrand');
         if($validate->passes()) {
 
               Brand::create([
@@ -100,8 +100,8 @@ class BrandController extends Controller
 
         if($request->name != $brand->name  || $request->slug != $brand->slug ) {
             $validate = Validator::make( $request->all() ,[
-                'name' => 'required|string|unique:brands,name',
-                'slug' => 'required|unique:brands,slug',
+                'name' => 'required|string|unique:brands,name,'.$brand->id,
+                'slug' => 'required|unique:brands,slug,' .$brand->id, 
             ]);
 
             if($validate->passes()) {

@@ -45,37 +45,82 @@ class HelperController extends Controller
 
 
 
-    public function validateCategory(Request $request, string $status)
+    public function ruleValidate(Request $request, string $status)
     {
-        if ($status == 'store') {
-            $validate = Validator::make($request->all(), [
-                'name' => 'required|string|unique:categories,name',
-                'slug' => 'required|unique:categories,slug',
-                'image' => 'nullable|unique:categories,image_id|exists:image_categories,id',
-                'status' => 'required|in:0,1'
-            ]);
-        } elseif($status == 'update') {
-            $validate = Validator::make($request->all(), [
-                'name' => 'required|string|unique:categories,name',
-                'slug' => 'required|string|unique:categories,slug',
-                'status' => 'required|in:0,1'
-            ]);
-        } elseif( $status == 'storeSubCategory' || $status == 'updateSubCategory' ) {
-            $validate = Validator::make($request->all(), [
-                'name' => 'required|string|unique:sub_categories,name',
-                'slug' => 'required|unique:sub_categories,slug',
-                'category_id' => 'required|integer|exists:categories,id',
-                'status' => 'required|in:0,1'
-            ]);
-        } elseif($status == 'storeBrand') {
-            $validate = Validator::make($request->all(), [
-                'name' => 'required|string|unique:brands,name',
-                'slug' => 'required|unique:brands,slug',
+        $rulesMap = [
+            'store' => [
+                'name'         => 'required|string|unique:categories,name',
+                'slug'         => 'required|unique:categories,slug',
+                'image'        => 'nullable|unique:categories,image_id|exists:image_categories,id',
+                'status'       => 'required|in:0,1',
+            ],
+            'update' => [
+                'name'   => 'required|string|unique:categories,name,' . $request->input('id'),
+                'slug'   => 'required|string|unique:categories,slug,' . $request->input('id'),
+                'status' => 'required|in:0,1',
+            ],
+            'storeSubCategory'   => [
+                'name'         => 'required|string|unique:sub_categories,name',
+                'slug'         => 'required|unique:sub_categories,slug',
+                'category_id'  => 'required|integer|exists:categories,id',
+                'status'       => 'required|in:0,1',
+            ],
+            'updateSubCategory'  => [
+                'name'         => 'required|string|unique:sub_categories,name,' . $request->input('id'),
+                'slug'         => 'required|unique:sub_categories,slug,' .        $request->input('id'),
+                'category_id'  => 'required|integer|exists:categories,id',
+                'status'       => 'required|in:0,1',
+            ],
+            'storeBrand' => [
+                'name'            => 'required|string|unique:brands,name',
+                'slug'            => 'required|unique:brands,slug',
                 'sub_category_id' => 'required|integer|exists:sub_categories,id',
-                'status' => 'required|in:0,1'
-            ]);
+                'status'          => 'required|in:0,1',
+            ],
+            'storeProduct' => [
+                'title' => 'required|string|max:255',
+                'slug' => 'required|string|max:255|unique:products,slug',
+                'sku' => 'required|string|max:100|unique:products,sku',
+                'barcode' => 'required|unique:products,barcode|numeric|digits_between:8,20',
+                'image.*' => 'nullable|integer|exists:product_images,id',
+                'image' => 'nullable|array',
+                'description' => 'required|string',
+                'price' => 'required|numeric|min:0',
+                'compare_price' => 'nullable|numeric|min:0',
+                'track_qty' => 'required|in:no,yes',
+                'qty' => 'required|numeric|min:0',
+                'status' => 'required|in:0,1',
+                'is_featured' => 'required|in:yes,no',
+                'category' => 'required|exists:categories,id',
+                'sub_category' => 'required|exists:sub_categories,id',
+                'brand' => 'required|exists:brands,id',
+            ],
+            'updateProduct' => [
+                'title' => 'required|string|max:255',
+                'slug' => 'required|string|max:255|unique:products,slug,' . $request->input('id'),
+                'sku' => 'required|string|max:100|unique:products,sku,' .   $request->input('id'),
+                'barcode' => 'required|numeric|digits_between:8,20|unique:products,barcode,' . $request->input('id'),
+                'image_id.*' => 'nullable|integer|exists:product_images,id',
+                'image_id' => 'nullable|array',
+                'description' => 'required|string',
+                'price' => 'required|numeric|min:0',
+                'compare_price' => 'nullable|numeric|min:0',
+                'track_qty' => 'required|in:no,yes',
+                'qty' => 'required|numeric|min:0',
+                'status' => 'required|in:0,1',
+                'is_featured' => 'required|in:yes,no',
+                'category' => 'required|exists:categories,id',
+                'sub_category' => 'required|exists:sub_categories,id',
+                'brand' => 'required|exists:brands,id',
+            ],
+
+        ];
+
+        if (!isset($rulesMap[$status])) {
+            throw new \InvalidArgumentException("Invalid validation status: {$status}");
         }
-        return $validate;
+
+        return Validator::make($request->all(), $rulesMap[$status]);
     }
 
 
@@ -83,11 +128,12 @@ class HelperController extends Controller
 
 
 
-    public function finishUpdate(Request $request , object | null  $category , string $status , string $route)
+
+    public function finishUpdate(Request $request, object | null  $category, string $status, string $route)
     {
         if (($request->name != $category->name) && ($request->slug != $category->slug)) {
 
-            $validate = $this->validateCategory($request, $status);
+            $validate = $this->ruleValidate($request, $status);
 
             if ($validate->fails()) {
                 return redirect()->route($route)->with('error', 'the name or slug has already been taken');
@@ -96,8 +142,8 @@ class HelperController extends Controller
             $category->name = $request->name;
             $category->slug = $request->slug;
         }
-        
-        if($route == 'admin.sub-category.list') {
+
+        if ($route == 'admin.sub-category.list') {
             $category->category_id = $request->category_id;
         }
 

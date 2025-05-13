@@ -44,7 +44,7 @@ class SubCategoryController extends Controller
 
     public function store(Request $request)
     {
-        $validate = $this->helper->validateCategory($request, 'storeSubCategory');
+        $validate = $this->helper->ruleValidate($request, 'storeSubCategory');
 
 
         if ($validate->passes()) {

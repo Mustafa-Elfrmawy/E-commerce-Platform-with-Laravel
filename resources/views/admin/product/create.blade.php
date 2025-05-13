@@ -1,5 +1,6 @@
 <!-- /.navbar -->
 <!-- Main Sidebar Container -->
+
 @extends('admin.layout.app')
 @section('title')
     Dashboard
@@ -38,12 +39,20 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid my-2">
+                {{-- @include('admin.layout.message') --}}
+                @if (Session::has('errorImage'))
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i> Alert!</h4>
+                        {{ Session::get('errorImage') }}
+                    </div>
+                @endif
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1>Create Product</h1>
                     </div>
                     <div class="col-sm-6 text-right">
-                        <a href="products.html" class="btn btn-primary">Back</a>
+                        <a href="{{ route('admin.product.list') }}" class="btn btn-primary">Back</a>
                     </div>
                 </div>
             </div>
@@ -53,7 +62,7 @@
         <section class="content">
             <!-- Default box -->
             <div class="container-fluid">
-                <form action="{{ route('admin.product.store') }}" method="post">
+                <form action="{{ route('admin.product.store') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <div class="col-md-8">
@@ -100,6 +109,8 @@
                                             </div>
                                         </div>
 
+                                        <!-- HTML -->
+
                                         <div class="col-md-12">
                                             <div class="mb-3">
                                                 <label for="Image">Image</label>
@@ -107,10 +118,38 @@
                                                     <div class="dz-message needsclick">
                                                         <br>
                                                         Drop files here or click to upload.<br><br>
+                                                        <input type="file" style="width: 100%" id="imageValue"
+                                                            name="image[]" multiple>
                                                     </div>
                                                 </div>
                                             </div>
+                                            @if ($errors->has('image.0'))
+                                                <div class="alert alert-danger">
+                                                    {{ $errors->first('image.0') }}
+                                                </div>
+                                            @endif
                                         </div>
+
+                                        {{-- <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <label for="Image">Image</label>
+                                                <div class="dropzone dz-clickable">
+                                                    <div class="dz-message needsclick">
+                                                        <br>
+                                                        Drop files here or click to upload.<br><br>
+                                                        <input type="file" style="width: 100%" id="imageValue"
+                                                            name="image[]" multiple>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @if ($errors->has('image.0'))
+                                                <div class="alert alert-danger">
+                                                    {{ $errors->first('image.0') }}
+                                                </div>
+                                            @endif
+                                        </div> --}}
+
+
 
                                         <div class="row" id="product-gallery">
                                             {{-- gallery --}}
@@ -174,7 +213,7 @@
                                             <div class="mb-3">
                                                 <div class="custom-control custom-checkbox">
                                                     <input class="custom-control-input" type="checkbox" id="track_qty"
-                                                        name="track_qut" checked>
+                                                        name="track_qty" checked>
                                                     <label for="track_qty" class="custom-control-label">Track
                                                         Quantity</label>
                                                 </div>
@@ -184,6 +223,11 @@
                                                     name="qty" id="qty" class="form-control"
                                                     placeholder="qty">
                                             </div>
+                                            @if ($errors->has('qty'))
+                                                <div class="alert alert-danger mt-2">
+                                                    {{ $errors->first('qty') }}
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -200,6 +244,11 @@
                                             <option {{ old('status') == 0 ? 'selected' : '' }} value="0">Block
                                             </option>
                                         </select>
+                                        @if ($errors->has('status'))
+                                            <div class="alert alert-danger mt-2">
+                                                {{ $errors->first('status') }}
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -219,6 +268,11 @@
                                                 @endforeach
                                             @endif
                                         </select>
+                                        @if ($errors->has('category'))
+                                            <div class="alert alert-danger mt-2">
+                                                {{ $errors->first('category') }}
+                                            </div>
+                                        @endif
                                     </div>
                                     <div class="mb-3">
                                         <label for="sub_category">Sub category</label>
@@ -233,6 +287,11 @@
                                                 @endforeach
                                             @endif
                                         </select>
+                                        @if ($errors->has('sub_category'))
+                                            <div class="alert alert-danger mt-2">
+                                                {{ $errors->first('sub_category') }}
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -251,6 +310,11 @@
                                                 @endforeach
                                             @endif
                                         </select>
+                                        @if ($errors->has('brand'))
+                                            <div class="alert alert-danger mt-2">
+                                                {{ $errors->first('brand') }}
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -266,6 +330,11 @@
                                             <option {{ old('is_featured') == 'yes' ? 'selected' : '' }} value="yes">Yes
                                             </option>
                                         </select>
+                                        @if ($errors->has('is_featured'))
+                                            <div class="alert alert-danger mt-2">
+                                                {{ $errors->first('is_featured') }}
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -284,145 +353,378 @@
     <!-- /.content-wrapper -->
 @section('custom-js')
     <script>
- // Keep the existing code for slug generation
-$("#title").change(function() {
-    const nameValue = $(this).val();
-    if (!nameValue) return;
-    $('button[type="submit"]').prop('disabled', true);
+        // Keep the existing code for slug generation
+        $("#title").change(function() {
+            const nameValue = $(this).val();
+            if (!nameValue) return;
+            $('button[type="submit"]').prop('disabled', true);
 
-    $.ajax({
-        url: "{{ route('admin.category.slug') }}",
-        type: "GET",
-        data: {
-            title: nameValue
-        },
-        dataType: 'json',
-        success: function(response) {
-            $('button[type="submit"]').prop('disabled', false);
-            if (response.status === true) {
-                $('#slug').val(response.slug);
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error("Error:", error);
-        }
-    });
-});
-
-// Create a variable to store Dropzone instance
-let myDropzone;
-let uploadedIds = new Set();
-
-Dropzone.autoDiscover = false;
-
-// Initialize Dropzone
-$(document).ready(function() {
-    myDropzone = new Dropzone('.dropzone', {
-        url: "{{ route('admin.product.uploadImage') }}",
-        method: "POST",
-        paramName: "images",
-        maxFilesize: 2,
-        maxFiles: 10,
-        acceptedFiles: ".jpeg,.jpg,.png,.gif",
-        addRemoveLinks: true,
-        parallelUploads: 10,
-        uploadMultiple: true,
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        success: function(file, response) {
-            if (response.status === true) {
-                let isSingleImage = response.images.length === 1 ? 'single-image' : '';
-
-                response.images.forEach(function(image) {
-                    if (!uploadedIds.has(image.id)) {
-                        // Store the file reference in the Dropzone file object for later removal
-                        file.imageId = image.id;
-                        
-                        $('#product-gallery').append(`
-                            <div class="col-md-12 mb-4 ${isSingleImage}">
-                                <div class="card shadow-sm border-0 rounded">
-                                    @if(old('image_name')!= null)
-                                    <img src="{{old('image_name')}}" class="card-img-top" alt="Image" style="height: 200px;">
-                                    @endif
-                                    <img src="${image.image_name}" class="card-img-top" alt="Image" style="height: 200px;">
-                                    <input type="hidden" value="${image.id}" name="image_id[]">
-                                    <input type="hidden" value="${image.image_name}" name="image_name">
-                                    <div class="card-body text-center">
-                                        <button class="btn btn-outline-danger btn-sm remove-image" data-id="${image.id}">
-                                            <i class="bi bi-trash"></i> Remove
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        `);
-                        uploadedIds.add(image.id);
+            $.ajax({
+                url: "{{ route('admin.category.slug') }}",
+                type: "GET",
+                data: {
+                    title: nameValue
+                },
+                dataType: 'json',
+                success: function(response) {
+                    $('button[type="submit"]').prop('disabled', false);
+                    if (response.status === true) {
+                        $('#slug').val(response.slug);
                     }
-                });
-            } else {
-                myDropzone.removeFile(file);
-                alert('File upload failed');
-            }
-        },
-        error: function(file, response) {
-            myDropzone.removeFile(file);
-            alert('File upload failed');
-        }
-    });
-});
-
-// Enhanced click handler for remove-image button
-$(document).on('click', '.remove-image', function(e) {
-    e.preventDefault();
-
-    const imageId = $(this).data('id');
-    const button = $(this);
-
-    if (!confirm("Are you sure you want to delete this image?")) {
-        return;
-    }
-
-    $.ajax({
-        url: "/admin/product/delete-image/" + imageId,
-        type: 'DELETE',
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        success: function(response) {
-            if (response.status === true) {
-                // Remove the card from the gallery
-                button.closest('.col-md-12').fadeOut(300, function() {
-                    $(this).remove();
-                    // If you're using masonry for layout
-                    if ($('#product-gallery').data('masonry')) {
-                        $('#product-gallery').masonry('layout');
-                    }
-                });
-                
-                // Remove the image preview from the Dropzone
-                if (myDropzone) {
-                    // Find and remove the file from Dropzone
-                    myDropzone.files.forEach(function(file) {
-                        if (file.imageId == imageId) {
-                            myDropzone.removeFile(file);
-                        }
-                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", error);
                 }
-                
-                // Remove from our tracking set
-                uploadedIds.delete(imageId);
-                
-                alert(response.message);
-            } else {
-                alert(response.message);
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error("Error:", error);
-            alert('An error occurred while deleting the image.');
-        }
-    });
-});
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const imageInput = document.getElementById('imageValue');
+
+            imageInput.addEventListener('change', function() {
+                if (this.files.length > 10) {
+                    alert('sorry you can not upload < 10 image.');
+                    imageInput.value = null;
+                }
+            });
+        });
+
+
+
+
+        // // تهيئة المتغيرات
+        // let myDropzone;
+        // let uploadedIds = new Set();
+        // let existingImages = []; // مصفوفة لتخزين الصور الموجودة مسبقًا
+        // let isFormSubmitted = false; // متغير لتتبع حالة إرسال النموذج
+        // let userId = null; // سيتم تعيينه لاحقًا
+
+        // Dropzone.autoDiscover = false;
+
+        // // استدعاء البيانات المخزنة عند تحميل الصفحة
+        // $(document).ready(function() {
+        //     // الحصول على معرف المستخدم من عنصر HTML مخفي
+        //     userId = $('#user_id').val() || 'guest';
+
+        //     // التحقق مما إذا كان النموذج قد تم إرساله سابقًا
+        //     if (sessionStorage.getItem(`form_submitted_${userId}`) === 'true') {
+        //         // إعادة تعيين الحالة
+        //         sessionStorage.removeItem(`form_submitted_${userId}`);
+        //         // حذف البيانات المخزنة محلياً
+        //         clearLocalStorageData();
+        //     } else {
+        //         // استرجاع الصور المحفوظة في الجلسة أو من السيرفر
+        //         loadSavedImages();
+        //     }
+
+        //     // تهيئة Dropzone
+        //     initializeDropzone();
+
+        //     // تهيئة معالج حدث تغيير العنوان لإنشاء الـ slug
+        //     initializeTitleChangeHandler();
+
+        //     // إضافة مستمع لحدث إغلاق النافذة أو تغيير الصفحة
+        //     window.addEventListener('beforeunload', function(e) {
+        //         // لا نريد تنفيذ هذا إذا كان النموذج قد تم إرساله
+        //         if (!isFormSubmitted && existingImages.length > 0) {
+        //             // حفظ الحالة مؤقتًا
+        //             sessionStorage.setItem(`temp_images_${userId}`, JSON.stringify(existingImages));
+        //         }
+        //     });
+        // });
+
+        // // دالة لمسح بيانات التخزين المحلي المرتبطة بالمستخدم الحالي
+        // function clearLocalStorageData() {
+        //     localStorage.removeItem(`product_images_${userId}`);
+        //     localStorage.removeItem(`product_session_id_${userId}`);
+        //     sessionStorage.removeItem(`temp_images_${userId}`);
+
+        //     uploadedIds = new Set();
+        //     existingImages = [];
+        // }
+
+        // function loadSavedImages() {
+        //     const savedImages = localStorage.getItem(`product_images_${userId}`);
+
+        //     if (savedImages) {
+        //         try {
+        //             const parsedImages = JSON.parse(savedImages);
+        //             existingImages = parsedImages;
+
+        //             renderSavedImages(parsedImages);
+
+        //             parsedImages.forEach(img => {
+        //                 uploadedIds.add(img.id);
+        //             });
+        //         } catch (e) {
+        //             console.error("خطأ في تحليل بيانات الصور المحفوظة:", e);
+        //         }
+        //     }
+
+        //     // ٢. استرداد صور من السيرفر (باستخدام AJAX)
+        //     $.ajax({
+        //         url: "/admin/product/get-temp-images",
+        //         type: "GET",
+        //         headers: {
+        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //         },
+        //         data: {
+        //             user_id: userId,
+        //             session_id: getSessionId()
+        //         },
+        //         success: function(response) {
+        //             if (response.status === true && response.images && response.images.length > 0) {
+        //                 response.images.forEach(image => {
+        //                     if (!uploadedIds.has(image.id)) {
+        //                         existingImages.push(image);
+        //                         uploadedIds.add(image.id);
+        //                         renderImageToGallery(image);
+        //                     }
+        //                 });
+
+        //                 updateLocalStorage();
+        //             }
+        //         },
+        //         error: function(xhr, status, error) {
+        //             console.error("خطأ في استرجاع الصور المؤقتة:", error);
+        //         }
+        //     });
+        // }
+
+        // function renderSavedImages(images) {
+        //     images.forEach(image => {
+        //         renderImageToGallery(image);
+        //     });
+        // }
+
+        // function renderImageToGallery(image) {
+        //     let isSingleImage = existingImages.length === 1 ? 'single-image' : '';
+
+        //     $('#product-gallery').append(`
+    //         <div class="col-md-12 mb-4 ${isSingleImage}">
+    //             <div class="card shadow-sm border-0 rounded">
+    //                 <img src="${image.image_name}" class="card-img-top" alt="Image" style="height: 200px;">
+    //                 <input type="hidden" value="${image.id}" name="image_id[]">
+    //                 <input type="hidden" value="${image.image_name}" name="image_name">
+    //                 <div class="card-body text-center">
+    //                     <button class="btn btn-outline-danger btn-sm remove-image" data-id="${image.id}">
+    //                         <i class="bi bi-trash"></i> Remove
+    //                     </button>
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     `);
+        // }
+
+        // function updateLocalStorage() {
+        //     localStorage.setItem(`product_images_${userId}`, JSON.stringify(existingImages));
+        // }
+
+        // // تهيئة Dropzone
+        // function initializeDropzone() {
+        //     myDropzone = new Dropzone('.dropzone', {
+        //         url: "{{ route('admin.product.uploadImage') }}",
+        //         method: "POST",
+        //         paramName: "images",
+        //         maxFilesize: 2,
+        //         maxFiles: 10,
+        //         acceptedFiles: ".jpeg,.jpg,.png,.gif",
+        //         addRemoveLinks: true,
+        //         parallelUploads: 10,
+        //         uploadMultiple: true,
+        //         headers: {
+        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //         },
+        //         sending: function(file, xhr, formData) {
+        //             formData.append('session_id', getSessionId());
+        //             formData.append('user_id', userId);
+        //         },
+        //         success: function(file, response) {
+        //             if (response.status === true) {
+        //                 response.images.forEach(function(image) {
+        //                     if (!uploadedIds.has(image.id)) {
+        //                         file.imageId = image.id;
+
+        //                         existingImages.push(image);
+
+        //                         renderImageToGallery(image);
+
+        //                         uploadedIds.add(image.id);
+        //                     }
+        //                 });
+
+        //                 updateLocalStorage();
+        //             } else {
+        //                 myDropzone.removeFile(file);
+        //                 alert('فشل رفع الملف');
+        //             }
+        //         },
+        //         error: function(file, response) {
+        //             myDropzone.removeFile(file);
+        //             alert('فشل رفع الملف');
+        //         },
+        //         init: function() {
+        //             const dz = this;
+
+        //             setTimeout(() => {
+        //                 existingImages.forEach(image => {
+        //                     if (image.image_name) {
+        //                         const mockFile = { 
+        //                             name: getFileNameFromUrl(image.image_name),
+        //                             size: 12345,
+        //                             accepted: true,
+        //                             imageId: image.id
+        //                         };
+
+        //                         dz.displayExistingFile(mockFile, image.image_name);
+        //                         dz.files.push(mockFile);
+        //                     }
+        //                 });
+        //             }, 100);
+        //         }
+        //     });
+        // }
+
+        // function getFileNameFromUrl(url) {
+        //     return url.split('/').pop();
+        // }
+
+        // function getSessionId() {
+        //     let sessionId = localStorage.getItem(`product_session_id_${userId}`);
+        //     if (!sessionId) {
+        //         sessionId = `session_${userId}_${new Date().getTime()}_${Math.random().toString(36).substring(2, 15)}`;
+        //         localStorage.setItem(`product_session_id_${userId}`, sessionId);
+        //     }
+        //     return sessionId;
+        // }
+
+        // function initializeTitleChangeHandler() {
+        //     $("#title").change(function() {
+        //         const nameValue = $(this).val();
+        //         if (!nameValue) return;
+        //         $('button[type="submit"]').prop('disabled', true);
+
+        //         $.ajax({
+        //             url: "{{ route('admin.category.slug') }}",
+        //             type: "GET",
+        //             data: {
+        //                 title: nameValue
+        //             },
+        //             dataType: 'json',
+        //             success: function(response) {
+        //                 $('button[type="submit"]').prop('disabled', false);
+        //                 if (response.status === true) {
+        //                     $('#slug').val(response.slug);
+        //                 }
+        //             },
+        //             error: function(xhr, status, error) {
+        //                 console.error("خطأ:", error);
+        //             }
+        //         });
+        //     });
+        // }
+
+        // $(document).on('click', '.remove-image', function(e) {
+        //     e.preventDefault();
+
+        //     const imageId = $(this).data('id');
+        //     const button = $(this);
+
+        //     if (!confirm("هل أنت متأكد من حذف هذه الصورة؟")) {
+        //         return;
+        //     }
+
+        //     $.ajax({
+        //         url: "/admin/product/delete-image/" + imageId,
+        //         type: 'DELETE',
+        //         headers: {
+        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //         },
+        //         data: {
+        //             user_id: userId,
+        //             session_id: getSessionId()
+        //         },
+        //         success: function(response) {
+        //             if (response.status === true) {
+        //                 button.closest('.col-md-12').fadeOut(300, function() {
+        //                     $(this).remove();
+        //                     if ($('#product-gallery').data('masonry')) {
+        //                         $('#product-gallery').masonry('layout');
+        //                     }
+        //                 });
+
+        //                 if (myDropzone) {
+        //                     myDropzone.files.forEach(function(file) {
+        //                         if (file.imageId == imageId) {
+        //                             myDropzone.removeFile(file);
+        //                         }
+        //                     });
+        //                 }
+
+        //                 existingImages = existingImages.filter(img => img.id != imageId);
+
+        //                 uploadedIds.delete(parseInt(imageId));
+
+        //                 updateLocalStorage();
+
+        //                 alert(response.message);
+        //             } else {
+        //                 alert(response.message);
+        //             }
+        //         },
+        //         error: function(xhr, status, error) {
+        //             console.error("خطأ:", error);
+        //             alert('حدث خطأ أثناء حذف الصورة.');
+        //         }
+        //     });
+        // });
+
+        // $('form').on('submit', function(e) {
+        //     isFormSubmitted = true;
+        //     sessionStorage.setItem(`form_submitted_${userId}`, 'true');
+
+        //     $(this).append(`<input type="hidden" name="session_id" value="${getSessionId()}">`);
+        //     $(this).append(`<input type="hidden" name="user_id" value="${userId}">`);
+        // });
+
+        // $(document).on('ajaxSuccess', function(event, xhr, settings) {
+        //     if (settings.url === $('#product-form').attr('action') && xhr.responseJSON && xhr.responseJSON.status === true) {
+        //         deleteAllTempImages();
+        //     }
+        // });
+
+        // function deleteAllTempImages() {
+        //     const currentSessionId = getSessionId();
+
+        //     $.ajax({
+        //         url: "/admin/product/clear-temp-images",
+        //         type: "POST",
+        //         data: {
+        //             session_id: currentSessionId,
+        //             user_id: userId,
+        //             // force_delete: true
+        //         },
+        //         headers: {
+        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //         },
+        //         success: function(response) {
+        //             console.log("تم حذف الصور المؤقتة بنجاح");
+        //             clearLocalStorageData();
+        //         },
+        //         error: function(xhr, status, error) {
+        //             console.error("خطأ في حذف الصور المؤقتة:", error);
+        //         }
+        //     });
+        // }
+
+        // window.addEventListener('unload', function() {
+        //     if (isFormSubmitted) {
+        //         navigator.sendBeacon("/admin/product/clear-temp-images", new Blob([JSON.stringify({
+        //             session_id: getSessionId(),
+        //             user_id: userId,
+        //             force_delete: true
+        //         })], { type: 'application/json' }));
+        //     }
+        // });
     </script>
 @endsection
 @endsection

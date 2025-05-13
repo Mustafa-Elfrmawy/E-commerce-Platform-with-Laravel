@@ -34,6 +34,7 @@
                         <form id="categoryFrom" enctype="multipart/form-data" action="{{route('admin.category.update' , $category->id)}}" name="categoryFrom"  method="post">
                             @csrf    
                             @method('PUT')
+                            <input type="hidden" value="{{$category->id}}" name="id">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">

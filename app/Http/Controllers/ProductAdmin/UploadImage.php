@@ -15,39 +15,24 @@ class UploadImage extends Controller
     {
 
         $validate = Validator::make($request->all(), [
-            'images' => 'required|array',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|array|max:10',
+            'image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+        if ($validate->fails()) {
+            return ['Image_errors' => $validate->errors()];
+        }
 
-        if ($validate->passes()) {
-            if ($request->hasFile('images')) {
-                $uploadedImages = [];
+        if ($request->hasFile('image')) {
+            $uploadedImages = [];
 
-                foreach ($request->file('images') as $image) {
+            foreach ($request->file('image') as $image) {
 
-                    $uploadedImages[] = $this->uploadImage($image);
-                }
-
-                return response()->json([
-                    'status' => true,
-                    'images' => $uploadedImages
-                ]);
-
-            } else {
-
-
-                return response()->json([
-                    'status' => false,
-                    'errors' => ['images' => 'Images not found']
-                ]);
-
+                $uploadedImages[] = $this->uploadImage($image);
             }
-        } else {
 
-            return response()->json([
-                'status' => false,
-                'errors' => $validate->errors()
-            ]);
+            return $uploadedImages;
+        } else {
+            return ['Image_errors' => 'while upload image'];
         }
     }
 
@@ -67,22 +52,21 @@ class UploadImage extends Controller
 
 
     public function deleteImage($id)
-{
-    $image = ProductImage::find($id); 
-    if ($image) {
-        
-        if (Storage::disk('public')->exists($image->image_product)) {
-            Storage::disk('public')->delete($image->image_product);
+    {
+        $image = ProductImage::find($id);
+        if ($image) {
+
+            if (Storage::disk('public')->exists($image->image_product)) {
+                Storage::disk('public')->delete($image->image_product);
+            }
+
+
+
+            $image->delete();
+
+            return response()->json(['status' => true, 'message' => 'Image deleted successfully']);
+        } else {
+            return response()->json(['status' => false, 'message' => 'Image not found']);
         }
-        
-
-        
-        $image->delete();
-
-        return response()->json(['status' => true, 'message' => 'Image deleted successfully']);
-    } else {
-        return response()->json(['status' => false, 'message' => 'Image not found']);
     }
-}
-
 }

@@ -16,7 +16,7 @@
                         <h1>Products</h1>
                     </div>
                     <div class="col-sm-6 text-right">
-                        <a href="create-product.html" class="btn btn-primary">New Product</a>
+                        <a href="{{route('admin.product.create')}}" class="btn btn-primary">New Product</a>
                     </div>
                 </div>
             </div>
@@ -68,35 +68,48 @@
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             @php
-                                                if ( $product->image_id ) {
+                                                if ($product->image_id) {
                                                     $images = App\Models\ProductImage::whereIn(
                                                         'id',
                                                         explode(',', $product->image_id),
                                                     )->get();
                                                 }
                                             @endphp
-											<td>
-												@if ( $product->image_id && isset($images) && $images->count() > 0)
-                                                <img src="{{ asset('storage/'.$images->first()->image_product ) }}" class="img-thumbnail"
-												width="50">
-												@else
-                                                <img src="img/default-image.jpg" class="img-thumbnail" width="50">
-												@endif
-											</td>
+                                            <td>
+                                                @if ($product->image_id && isset($images) && $images->count() > 0)
+                                                    <img src="{{ asset('storage/' . $images->first()->image_product) }}"
+                                                        class="img-thumbnail" width="50">
+                                                @else
+                                                    <img src="img/default-image.jpg" class="img-thumbnail" width="50">
+                                                @endif
+                                            </td>
                                             <td><a href="#">{{ $product->title }} </a></td>
                                             <td>{{ $product->price }}</td>
                                             <td>{{ $product->qty }}</td>
                                             <td>{{ $product->sku }}</td>
+                                            @if ($product->status == 1)
+                                                <td>
+                                                    <svg class="text-success-500 h-6 w-6 text-success"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                        aria-hidden="true">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                    </svg>
+                                                </td>
+                                            @else
+                                                <td>
+                                                    <svg class="text-danger h-6 w-6" xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                                        stroke="currentColor" aria-hidden="true">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z">
+                                                        </path>
+                                                    </svg>
+                                                </td>
+                                            @endif
                                             <td>
-                                                <svg class="text-success-500 h-6 w-6 text-success"
-                                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                    stroke-width="2" stroke="currentColor" aria-hidden="true">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                                </svg>
-                                            </td>
-                                            <td>
-                                                <a href="#">
+                                                <a href="{{ route('admin.product.edit', $product->id) }}">
                                                     <svg class="filament-link-icon w-4 h-4 mr-1"
                                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                                         fill="currentColor" aria-hidden="true">

@@ -35,7 +35,7 @@ return new class extends Migration
             $table->foreignIdFor(Brand::class, 'brand_id')->nullable();
             
             $table->enum('is_featured', ['yes' , 'no'])->default('no');
-            $table->enum('track_qut', ['yes' , 'no'])->default('yes');
+            $table->enum('track_qty', ['yes' , 'no'])->default('yes');
 
             $table->string('barcode', 50)->nullable();
             $table->string('sku', 50);

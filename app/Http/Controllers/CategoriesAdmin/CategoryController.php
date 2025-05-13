@@ -45,7 +45,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $validate = $this->helper->validateCategory($request, 'store');
+        $validate = $this->helper->ruleValidate($request, 'store');
 
         if ($validate->passes()) {            
             return $this->helper->storeAssistant($request , 'category');
