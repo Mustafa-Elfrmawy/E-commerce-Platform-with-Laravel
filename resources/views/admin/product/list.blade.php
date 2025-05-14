@@ -2,7 +2,7 @@
 <!-- Main Sidebar Container -->
 @extends('admin.layout.app')
 @section('title')
-    Dashboard
+    Product
 @endsection
 @section('content')
     @include('admin.layout.sidebar')
@@ -31,12 +31,12 @@
                     <form action="{{ route('admin.product.list') }}" method="get">
                         <div class="card-header">
                             <div class="card-title">
-                                <button onclick="window.location.href='{{ route('admin.product.list') }}'"
-                                    class="btn-default btn-sm">Reset</button>
+                                    {{-- <input type="hidden" name="keyword" value="" class="form-control float-right"> --}}
+                                <a href="{{ route('admin.product.list', ['reset' => 1]) }}" class="btn btn-default btn-sm">Reset</a>
                             </div>
                             <div class="card-tools">
                                 <div class="input-group input-group" style="width: 250px;">
-                                    <input type="text" name="keyword" class="form-control float-right"
+                                    <input type="text" name="keyword" value="{{ request('keyword') }}" class="form-control float-right"
                                         placeholder="Search">
 
                                     <div class="input-group-append">
@@ -69,14 +69,16 @@
                                             <td>{{ $loop->iteration }}</td>
                                             @php
                                                 if ($product->image_id) {
-                                                    $images = App\Models\ProductImage::whereIn(
+                                                    $images = App\Models\ProductImage::latest()->whereIn(
                                                         'id',
                                                         explode(',', $product->image_id),
                                                     )->get();
                                                 }
                                             @endphp
                                             <td>
-                                                @if ($product->image_id && isset($images) && $images->count() > 0)
+                                                @if ($product->image_id && isset($images) 
+                                                && $images->count() > 0 
+                                                && file_exists(public_path( 'storage/' . $images->first()->image_product)))
                                                     <img src="{{ asset('storage/' . $images->first()->image_product) }}"
                                                         class="img-thumbnail" width="50">
                                                 @else
@@ -118,7 +120,7 @@
                                                         </path>
                                                     </svg>
                                                 </a>
-                                                <a href="#" class="text-danger w-4 h-4 mr-1">
+                                                <a href="#"  onclick="deleteProduct({{$product->id}})" class="text-danger w-4 h-4 mr-1">
                                                     <svg wire:loading.remove.delay="" wire:target=""
                                                         class="filament-link-icon w-4 h-4 mr-1"
                                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
@@ -152,34 +154,34 @@
     <!-- /.content-wrapper -->
 @section('custom-js')
     <script>
-        // function deleteCategory(id) {
-        //     if (confirm('Are you sure want to delete this Category')) {
-        //         var url = "{{ route('admin.category.deleteCategory', ['id' => ':id']) }}";
-        //         var newUrl = url.replace(':id', id);
-        //         $.ajax({
-        //             url: newUrl,
-        //             method: "delete",
-        //             dataType: "json",
-        //             headers: {
-        //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //             },
+         function deleteProduct(id) {
+            if (confirm('Are you sure want to delete this Category')) {
+                var url = "{{ route('admin.product.deleteProduct', ['product_id' => ':id']) }}";
+                var newUrl = url.replace(':id', id);
+                $.ajax({
+                    url: newUrl,
+                    method: "delete",
+                    dataType: "json",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
 
-        //             success: function(response) {
-        //                 if (response.status === true) {
-        //                     window.location.href = "{{ route('admin.category.list') }}";   
-        //                     console.log(response.message);
-        //                 } else {
-        //                     console.log(response.message)
-        //                 }
-        //             },
-        //             error: function(file, response) {
-        //                 console.log(response.message)
-        //             }
+                    success: function(response) {
+                        if (response.status === true) {
+                            // window.location.href = "{{ route('admin.product.list') }}";   
+                            alert(response.message[0]);
+                        } else {
+                            alert(response.message)
+                        }
+                    },
+                    error: function(file, response) {
+                        console.log(response.message)
+                    }
 
-        //         })
-        //     }
+                })
+            }
 
-        // }
+        }
     </script>
 @endsection
 @endsection

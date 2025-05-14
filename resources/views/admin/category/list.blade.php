@@ -155,7 +155,7 @@
 
                     success: function(response) {
                         if (response.status === true) {
-                            window.location.href = "{{ route('admin.category.list') }}";   
+                            window.location.href = "{{ route('admin.category.list') }}";
                             console.log(response.message);
                         } else {
                             console.log(response.message)

@@ -9,8 +9,10 @@ use App\Models\SubCategory;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Helper\HelperController;
+use App\Http\Controllers\ProductAdmin\UploadImage;
 use PHPUnit\Framework\ComparisonMethodDoesNotAcceptParameterTypeException;
 
 class ProductController extends Controller
@@ -28,11 +30,14 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request,  int $reset = null)
     {
         $products = Product::latest();
-        if ($request->get('keyword') != null) {
-            $products = $products->where('title', 'LIKE', '%' . $request->get('keyword') . '%');
+        if ($reset != 1) {
+
+            if ($request->get('keyword') != null) {
+                $products = $products->where('title', 'LIKE', '%' . $request->get('keyword') . '%');
+            }
         }
         $products = $products->paginate(20);
         $images = Product::whereIn('id', [$products])->get();
@@ -59,31 +64,30 @@ class ProductController extends Controller
     {
         $images_id = null;
         $data_images = null;
+        $request->merge([
+            'track_qty' => $request->input('track_qty') == 'on' ? 'yes' : 'no'
+        ]);
 
-    
         $validator = $this->helper->ruleValidate($request, 'storeProduct');
 
         if ($validator->fails()) {
-            dd($request->image);
             return redirect()->route('admin.product.create')->withInput()
                 ->withErrors($validator)
-                ->with('errorImage', 'please upload your image again and check you error');
+                ->with('errorImage', 'please upload your image again and check your error');
         }
 
 
-        // dd($images_id);
-            if ($request->image) {
-            $images_id  = $this->helperImage->store($request);
-            if (isset($images_id['Image_errors'])) {
-                return redirect()->route('admin.product.create')->withInput()->withErrors($images_id['Image_errors']);
+        if ($request->image) {
+            $information_images  = $this->helperImage->store($request, 'storeProduct');
+            if (isset($information_images['Image_errors'])) {
+                return redirect()->route('admin.product.create')->withInput()->withErrors($information_images['Image_errors']);
             }
         }
-        if (is_array($images_id)) {
-            foreach ($images_id as $id => $value):
+        if (isset($information_images) && is_array($information_images)) {
+            foreach ($information_images as  $value):
                 $data_images['id'][] = $value['id'];
                 $data_images['image_name'][] = $value['image_name'];
             endforeach;
-            session()->put('uploaded_images', $data_images['image_name']);
             $request->merge([
                 'image_id' => implode(',', $data_images['id']),
             ]);
@@ -93,9 +97,7 @@ class ProductController extends Controller
             ]);
         }
 
-        $request->merge([
-            'track_qty' => $request->input('track_qty') == 'on' ? 'yes' : 'no'
-        ]);
+
 
         $product_new = $this->newProduct($request);
 
@@ -108,17 +110,6 @@ class ProductController extends Controller
 
 
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Product $product)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $product_id, Request $request)
     {
         //
@@ -126,7 +117,7 @@ class ProductController extends Controller
         if (empty($product)) {
             return redirect()->route('admin.product.list')->withErrors('Product not found');
         }
-        $images = ProductImage::whereIn('id', explode(',', $product->image_id))
+        $images = ProductImage::latest()->whereIn('id', explode(',', $product->image_id))
             ->pluck('image_product', 'id');
         $sub_categories = SubCategory::pluck('name', 'id');
         $brands = Brand::pluck('name', 'id');
@@ -138,20 +129,19 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $product_id)
     {
+        $information_images = null;
         $product = Product::find($product_id);
-        if (empty($product)) {
+        if (!$product) {
             return redirect()->route('admin.product.list')->withErrors('Product not found');
         }
         $request->merge([
             'track_qty' => $request->input('track_qty') == 'on' ? 'yes' : 'no'
         ]);
-
         $no_change =
             $product->title             ==        $request->input('title')   &&
             $product->slug              ==            $request->input('slug') &&
             $product->barcode           ==         $request->input('barcode') &&
             $product->sku               ==             $request->input('sku') &&
-            // $product->image_id          ==        $request->input('image_id') &&
             $product->description       ==     $request->input('description') &&
             $product->price             ==           $request->input('price') &&
             $product->compare_price     ==   $request->input('compare_price') &&
@@ -162,33 +152,36 @@ class ProductController extends Controller
             $product->category_id       ==     $request->input('category')   &&
             $product->sub_category_id   == $request->input('sub_category')   &&
             $product->brand_id          ==        $request->input('brand');
-
-
-
-        if ($no_change) {
+        if ($no_change && !$request->hasFile('image')) {
             return redirect()->route('admin.product.list')->with('warning', 'No changes detected');
         }
-        $validator = $this->helper->ruleValidate($request, 'updateProduct');
 
+
+        $validator = $this->helper->ruleValidate($request, 'updateProduct');
         if ($validator->fails()) {
-            return redirect()->route('admin.product.list')->withInput()->withErrors($validator);
+            return redirect()->route('admin.product.list')->withInput()->withErrors($validator->errors());
         }
+
+        if ($request->hasFile('image')) {
+            $request->merge([
+                'maxImage' => empty($product->image_id) ? 10 : 10 - count(explode(',', $product->image_id)),
+            ]);
+            $information_images  = $this->helperImage->store($request, 'updateProduct');
+            if (isset($information_images['Image_errors'])) {
+                return redirect()->route('admin.product.edit', $product_id)->withInput()->withErrors($information_images['Image_errors']);
+            }
+        }
+
+        $this->updateAssistantChild($product, $information_images,  $request);
         $update = $this->updateAssistant($request);
 
-        // dd($update);
         return ($update) ? redirect()->route('admin.product.list')
             ->with('success', 'updated product success') :
             redirect()->route('admin.product.list')
             ->withErrors('error while updated product');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Product $product)
-    {
-        //
-    }
+
 
 
 
@@ -221,7 +214,7 @@ class ProductController extends Controller
         $product->update([
             'title'           => $request->input('title'),
             'slug'            => $request->input('slug'),
-            // 'image_id'      => $request->input('image_id'),
+            'image_id'      => $request->input('image_id'),
             'description'     => $request->input('description'),
             'price'           => $request->input('price'),
             'compare_price'   => $request->input('compare_price'),
@@ -238,4 +231,59 @@ class ProductController extends Controller
 
         return $product;
     }
+
+    protected function updateAssistantChild(object|  null $product, $information_images, Request $request)
+    {
+        if (isset($information_images) && is_array($information_images)) {
+            foreach ($information_images as  $value):
+                $data_images['id'][] = $value['id'];
+                $data_images['image_name'][] = $value['image_name'];
+            endforeach;
+            $request->merge([
+                'image_id' => implode(',', $data_images['id']) . ',' . $product->image_id,
+            ]);
+        } else {
+            $request->merge([
+                'image_id' => null,
+            ]);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+public function destroy(string $product_id, Request $request)
+{
+    $data_images = [];
+    $product = Product::find($product_id);
+
+    if (!$product) {
+        $request->session()->flash('warning', 'Product not found');
+        return response()->json([
+            'status' => false,
+            'message' => 'Product not found',
+        ]);
+    }
+
+    $imageProduct = ProductImage::whereIn('id', explode(',', $product->image_id))->get();
+    
+    foreach ($imageProduct as $image) {
+        $data_images['id'][] = $image->id;
+        $data_images['image_product'][] = $image->image_product;
+        if (Storage::disk('public')->exists($image->image_product)) {
+            Storage::disk('public')->delete($image->image_product);
+        }
+        
+        $image->delete();
+    }
+
+    $product->delete();
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Product and associated images deleted successfully',
+        'deleted_images' => $data_images['id'] ?? [],
+    ]);
+}
+
 }

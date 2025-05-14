@@ -38,6 +38,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid my-2">
+                @include('admin.layout.message')
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1>Update Product</h1>
@@ -53,10 +54,11 @@
         <section class="content">
             <!-- Default box -->
             <div class="container-fluid">
-                <form action="{{ route('admin.product.update', $product->id) }}" method="post">
+                <form action="{{ route('admin.product.update', $product->id) }}" method="post"
+                    enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    <input type="hidden" value="{{ $product->id }}" name="id">
+                    <input type="hidden" value="{{ $product->id }}" id="idProduct" name="id">
                     <div class="row">
                         <div class="col-md-8">
                             <div class="card mb-3">
@@ -102,6 +104,7 @@
                                             </div>
                                         </div>
 
+
                                         <div class="col-md-12">
                                             <div class="mb-3">
                                                 <label for="Image">Image</label>
@@ -109,25 +112,30 @@
                                                     <div class="dz-message needsclick">
                                                         <br>
                                                         Drop files here or click to upload.<br><br>
+                                                        <input type="file" style="width: 100%" id="imageValue"
+                                                            name="image[]" accept="image/*" multiple
+                                                            class="visually-hidden">
                                                     </div>
                                                 </div>
                                             </div>
+                                            {{-- alert --}}
+                                            @include('admin.layout.alertImage')
                                         </div>
                                         @if ($images)
                                             @foreach ($images as $id => $name)
                                                 <div class="col-md-12 mb-4 ${isSingleImage}">
                                                     <div class="card shadow-sm border-0 rounded">
-                                                        @if (old('image_name') != null)
-                                                            <img src="{{ old('image_name') }}" class="card-img-top"
+                                                        @if ( file_exists(public_path('storage/' . $name)))
+                                                            <img src="{{ asset('storage/' . $name) }}" class="card-img-top"
                                                                 alt="Image" style="height: 200px;">
+                                                        @else
+                                                            <img src="{{ asset('product/images/default.png') }}"
+                                                                class="card-img-top" alt="Image not found"
+                                                                style="height: 200px;">
                                                         @endif
-                                                        <img src="{{ asset('storage/'.$name) }}" class="card-img-top" alt="Image"
-                                                            style="height: 200px;">
-                                                        <input type="hidden" value="" name="image_id[]">
-                                                        <input type="hidden" value="" name="image_name">
                                                         <div class="card-body text-center">
                                                             <button class="btn btn-outline-danger btn-sm remove-image"
-                                                                data-id="${image.id}">
+                                                                data-id="{{ $id }}">
                                                                 <i class="bi bi-trash"></i> Remove
                                                             </button>
                                                         </div>
@@ -340,81 +348,23 @@
             });
         });
 
-        // Update a variable to store Dropzone instance
-        let myDropzone;
-        let uploadedIds = new Set();
 
-        Dropzone.autoDiscover = false;
-
-        // Initialize Dropzone
-        $(document).ready(function() {
-            myDropzone = new Dropzone('.dropzone', {
-                url: "{{ route('admin.product.uploadImage') }}",
-                method: "POST",
-                paramName: "images",
-                maxFilesize: 2,
-                maxFiles: 10,
-                acceptedFiles: ".jpeg,.jpg,.png,.gif",
-                addRemoveLinks: true,
-                parallelUploads: 10,
-                uploadMultiple: true,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(file, response) {
-                    if (response.status === true) {
-                        let isSingleImage = response.images.length === 1 ? 'single-image' : '';
-
-                        response.images.forEach(function(image) {
-                            if (!uploadedIds.has(image.id)) {
-                                // Store the file reference in the Dropzone file object for later removal
-                                file.imageId = image.id;
-
-                                $('#product-gallery').append(`
-                            <div class="col-md-12 mb-4 ${isSingleImage}">
-                                <div class="card shadow-sm border-0 rounded">
-                                    @if (old('image_name') != null)
-                                    <img src="{{ old('image_name') }}" class="card-img-top" alt="Image" style="height: 200px;">
-                                    @endif
-                                    <img src="${image.image_name}" class="card-img-top" alt="Image" style="height: 200px;">
-                                    <input type="hidden" value="${image.id}" name="image_id[]">
-                                    <input type="hidden" value="${image.image_name}" name="image_name">
-                                    <div class="card-body text-center">
-                                        <button class="btn btn-outline-danger btn-sm remove-image" data-id="${image.id}">
-                                            <i class="bi bi-trash"></i> Remove
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        `);
-                                uploadedIds.add(image.id);
-                            }
-                        });
-                    } else {
-                        myDropzone.removeFile(file);
-                        alert('File upload failed');
-                    }
-                },
-                error: function(file, response) {
-                    myDropzone.removeFile(file);
-                    alert('File upload failed');
-                }
-            });
-        });
 
         // Enhanced click handler for remove-image button
         $(document).on('click', '.remove-image', function(e) {
             e.preventDefault();
 
             const imageId = $(this).data('id');
+            const idProduct = $('#idProduct').val();
             const button = $(this);
+            // console.log(imageId);
 
             if (!confirm("Are you sure you want to delete this image?")) {
                 return;
             }
 
             $.ajax({
-                url: "/admin/product/delete-image/" + imageId,
+                url: "/admin/product/delete-image/" + imageId + '/' + idProduct,
                 type: 'DELETE',
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
