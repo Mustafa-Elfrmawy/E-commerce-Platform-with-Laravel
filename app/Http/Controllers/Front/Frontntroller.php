@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,9 @@ class Frontntroller extends Controller
     {
         $categories = Category::where('showhome' , 'yes')->where('status' , 1)->latest()->get();
         $sub_categories = SubCategory::where('showhome' , 'yes')->where('status' , 1)->latest()->get();
-        return view('front.home' , compact('categories' , 'sub_categories'));
+        $products = Product::where('showhome' , 'yes')->where('is_featured' , 'yes')->where('status' , 1)->latest()->get();
+        $products_latest = Product::where('showhome' , 'yes')->where('is_featured' , 'no')->where('status' , 1)->latest()->get();
+        return view('front.home' , compact('categories' , 'sub_categories' , 'products' , 'products_latest'));
     }
 
     /**
