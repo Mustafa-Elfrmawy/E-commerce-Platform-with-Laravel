@@ -33,11 +33,9 @@ class ProductController extends Controller
     public function index(Request $request,  int $reset = null)
     {
         $products = Product::latest();
-        if ($reset != 1) {
 
-            if ($request->get('keyword') != null) {
-                $products = $products->where('title', 'LIKE', '%' . $request->get('keyword') . '%');
-            }
+        if ($request->get('keyword') != null) {
+            $products = $products->where('title', 'LIKE', '%' . $request->get('keyword') . '%');
         }
         $products = $products->paginate(20);
         $images = Product::whereIn('id', [$products])->get();
@@ -252,38 +250,33 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-public function destroy(string $product_id, Request $request)
-{
-    $data_images = [];
-    $product = Product::find($product_id);
+    public function destroy(string $product_id, Request $request)
+    {
+        $product = Product::find($product_id);
 
-    if (!$product) {
-        $request->session()->flash('warning', 'Product not found');
+        if (!$product) {
+            $request->session()->flash('warning', 'Product not found');
+            return response()->json([
+                'status' => false,
+                'message' => 'Product not found',
+            ]);
+        }
+
+        $imageProduct = ProductImage::whereIn('id', explode(',', $product->image_id))->get();
+
+        foreach ($imageProduct as $image) {
+            if (Storage::disk('public')->exists($image->image_product)) {
+                Storage::disk('public')->delete($image->image_product);
+            }
+
+            $image->delete();
+        }
+
+        $product->delete();
+
         return response()->json([
-            'status' => false,
-            'message' => 'Product not found',
+            'status' => true,
+            'message' => 'Product and associated images deleted successfully',
         ]);
     }
-
-    $imageProduct = ProductImage::whereIn('id', explode(',', $product->image_id))->get();
-    
-    foreach ($imageProduct as $image) {
-        $data_images['id'][] = $image->id;
-        $data_images['image_product'][] = $image->image_product;
-        if (Storage::disk('public')->exists($image->image_product)) {
-            Storage::disk('public')->delete($image->image_product);
-        }
-        
-        $image->delete();
-    }
-
-    $product->delete();
-
-    return response()->json([
-        'status' => true,
-        'message' => 'Product and associated images deleted successfully',
-        'deleted_images' => $data_images['id'] ?? [],
-    ]);
-}
-
 }

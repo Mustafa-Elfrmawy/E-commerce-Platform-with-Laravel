@@ -362,7 +362,6 @@
             if (!confirm("Are you sure you want to delete this image?")) {
                 return;
             }
-
             $.ajax({
                 url: "/admin/product/delete-image/" + imageId + '/' + idProduct,
                 type: 'DELETE',

@@ -16,7 +16,7 @@
                         <h1>Products</h1>
                     </div>
                     <div class="col-sm-6 text-right">
-                        <a href="{{route('admin.product.create')}}" class="btn btn-primary">New Product</a>
+                        <a href="{{ route('admin.product.create') }}" class="btn btn-primary">New Product</a>
                     </div>
                 </div>
             </div>
@@ -31,13 +31,13 @@
                     <form action="{{ route('admin.product.list') }}" method="get">
                         <div class="card-header">
                             <div class="card-title">
-                                    {{-- <input type="hidden" name="keyword" value="" class="form-control float-right"> --}}
-                                <a href="{{ route('admin.product.list', ['reset' => 1]) }}" class="btn btn-default btn-sm">Reset</a>
+                                <a href="{{ route('admin.product.list') }}"
+                                    class="btn btn-default btn-sm">Reset</a>
                             </div>
                             <div class="card-tools">
                                 <div class="input-group input-group" style="width: 250px;">
-                                    <input type="text" name="keyword" value="{{ request('keyword') }}" class="form-control float-right"
-                                        placeholder="Search">
+                                    <input type="text" name="keyword" value="{{ request('keyword') }}"
+                                        class="form-control float-right" placeholder="Search">
 
                                     <div class="input-group-append">
                                         <button type="submit" class="btn btn-default">
@@ -69,16 +69,17 @@
                                             <td>{{ $loop->iteration }}</td>
                                             @php
                                                 if ($product->image_id) {
-                                                    $images = App\Models\ProductImage::latest()->whereIn(
-                                                        'id',
-                                                        explode(',', $product->image_id),
-                                                    )->get();
+                                                    $images = App\Models\ProductImage::latest()
+                                                        ->whereIn('id', explode(',', $product->image_id))
+                                                        ->get();
                                                 }
                                             @endphp
                                             <td>
-                                                @if ($product->image_id && isset($images) 
-                                                && $images->count() > 0 
-                                                && file_exists(public_path( 'storage/' . $images->first()->image_product)))
+                                                @if (
+                                                    $product->image_id &&
+                                                        isset($images) &&
+                                                        $images->count() > 0 &&
+                                                        file_exists(public_path('storage/' . $images->first()->image_product)))
                                                     <img src="{{ asset('storage/' . $images->first()->image_product) }}"
                                                         class="img-thumbnail" width="50">
                                                 @else
@@ -120,7 +121,8 @@
                                                         </path>
                                                     </svg>
                                                 </a>
-                                                <a href="#"  onclick="deleteProduct({{$product->id}})" class="text-danger w-4 h-4 mr-1">
+                                                <a href="#" onclick="deleteProduct({{ $product->id }})"
+                                                    class="text-danger w-4 h-4 mr-1">
                                                     <svg wire:loading.remove.delay="" wire:target=""
                                                         class="filament-link-icon w-4 h-4 mr-1"
                                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
@@ -154,7 +156,7 @@
     <!-- /.content-wrapper -->
 @section('custom-js')
     <script>
-         function deleteProduct(id) {
+        function deleteProduct(id) {
             if (confirm('Are you sure want to delete this Category')) {
                 var url = "{{ route('admin.product.deleteProduct', ['product_id' => ':id']) }}";
                 var newUrl = url.replace(':id', id);
@@ -168,8 +170,7 @@
 
                     success: function(response) {
                         if (response.status === true) {
-                            // window.location.href = "{{ route('admin.product.list') }}";   
-                            alert(response.message[0]);
+                            window.location.href = "{{ route('admin.product.list') }}";   
                         } else {
                             alert(response.message)
                         }

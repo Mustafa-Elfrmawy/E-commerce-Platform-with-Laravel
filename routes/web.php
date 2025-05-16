@@ -8,9 +8,11 @@ use App\Http\Controllers\ProductAdmin\ProductController;
 
 
 
-Route::get('/', function () {
-    return redirect()->route('admin.login');
-})->name('login');
+// Route::get('/', function () {
+//     return redirect()->route('admin.login');
+// })->name('login');
+        require __DIR__ . '/front.php';
+
 
 Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => 'guest:admin'], function () {
