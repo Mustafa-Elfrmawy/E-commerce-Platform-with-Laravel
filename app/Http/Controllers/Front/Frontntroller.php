@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\SubCategory;
 use Illuminate\Http\Request;
 
 class Frontntroller extends Controller
@@ -12,7 +14,9 @@ class Frontntroller extends Controller
      */
     public function index()
     {
-        return view('front.home');
+        $categories = Category::where('showhome' , 'yes')->where('status' , 1)->latest()->get();
+        $sub_categories = SubCategory::where('showhome' , 'yes')->where('status' , 1)->latest()->get();
+        return view('front.home' , compact('categories' , 'sub_categories'));
     }
 
     /**

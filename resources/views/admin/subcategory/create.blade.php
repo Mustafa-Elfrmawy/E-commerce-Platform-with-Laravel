@@ -3,7 +3,7 @@
 @extends('admin.layout.app')
 
 @section('title')
-Sub Category
+    Sub Category
 @endsection
 
 @section('content')
@@ -34,57 +34,71 @@ Sub Category
             <div class="container-fluid">
                 <div class="card">
                     <div class="card-body">
-                        <form id="subcategoryForm" name="categoryForm" >
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label for="name">Category</label>
-                                    <select name="category_id" id="category" class="form-control">
-                                        @if($categories->isNotEmpty())
-                                        @foreach ($categories as $category)
-                                        <option value="{{$category->id}}">{{$category->name}}</option>
-                                        @endforeach
-                                        @else
-                                        @endif
-                                    </select>
+                        <form id="subcategoryForm" name="categoryForm">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label for="name">Category</label>
+                                        <select name="category_id" id="category" class="form-control">
+                                            @if ($categories->isNotEmpty())
+                                                <option value="">Select</option>
+                                                @foreach ($categories as $category)
+                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                @endforeach
+                                            @else
+                                            @endif
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="name">Name</label>
-                                    <input type="text" name="name" id="name" class="form-control"
-                                        placeholder="Name">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="name">Name</label>
+                                        <input type="text" name="name" id="name" class="form-control"
+                                            placeholder="Name">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="email">Slug</label>
+                                        <input type="text" readonly name="slug" id="slug" class="form-control"
+                                            placeholder="Slug">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="status">Status</label>
+                                        <select type="text" name="status" id="status" class="form-control">
+                                            <option value="1">Active</option>
+                                            <option value="0">Block</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="status">Show-Home</label>
+                                        <select type="text" name="show_home" id="status" class="form-control">
+                                            <option {{ old('show_home') == 'yes' ? 'selected' : '' }} value="yes">show</option>
+                                            <option {{ old('show_home') == 'no' ? 'selected' : '' }} value="no">no-show</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="email">Slug</label>
-                                    <input type="text" readonly name="slug" id="slug" class="form-control"
-                                        placeholder="Slug">
-                                </div>
-                            </div>
 
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="status">Status</label>
-                                    <select type="text" name="status" id="status" class="form-control">
-                                        <option value="1">Active</option>
-                                        <option value="0">Block</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="pb-5 pt-3">
-                            <button type="submit" class="btn btn-primary">Create</button>
-                        </div>
-                    </form>
                     </div>
+                    <div class="pb-5 pt-3">
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </div>
+                    </form>
                 </div>
             </div>
-            <!-- /.card -->
-        </section>
-        <!-- /.content -->
+    </div>
+    <!-- /.card -->
+    </section>
+    <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
 
@@ -156,4 +170,3 @@ Sub Category
 @endsection
 
 @endsection
-

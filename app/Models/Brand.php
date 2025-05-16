@@ -12,6 +12,7 @@ class Brand extends Model
     protected $fillable = [
         'sub_category_id',
         'name',
+        'showhome',
         'slug',
         'status',
     ];

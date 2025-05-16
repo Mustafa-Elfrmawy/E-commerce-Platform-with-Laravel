@@ -206,14 +206,14 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-md-4">
                             <div class="card mb-3">
                                 <div class="card-body">
                                     <h2 class="h4 mb-3">Product status</h2>
                                     <div class="mb-3">
                                         <select name="status" id="status" class="form-control">
-                                            <option {{ old('status') == 1 ? 'selected' : '' }} value="1">Active
-                                            </option>
+                                            <option {{ old('status') == 1 ? 'selected' : '' }} value="1">Active</option>
                                             <option {{ old('status') == 0 ? 'selected' : '' }} value="0">Block
                                             </option>
                                         </select>
@@ -227,96 +227,113 @@
                             </div>
 
                             <div class="card">
-                                <div class="card-body">
-                                    <h2 class="h4 mb-3">Product category</h2>
-                                    <div class="mb-3">
-                                        <label for="category">Category</label>
-                                        <select name="category" id="category" class="form-control">
-                                            <option value="">Select Category</option>
-                                            @if (isset($categories) && $categories != null)
-                                                @foreach ($categories as $id => $name)
-                                                    <option value="{{ $id }}"
-                                                        {{ old('category') == $id ? 'selected' : '' }}>{{ $name }}
-                                                    </option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                        @if ($errors->has('category'))
-                                            <div class="alert alert-danger mt-2">
-                                                {{ $errors->first('category') }}
-                                            </div>
-                                        @endif
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="sub_category">Sub category</label>
-                                        <select name="sub_category" id="sub_category" class="form-control">
-                                            <option value="">Select Sub Category</option>
-                                            @if (isset($sub_categories) && $sub_categories != null)
-                                                @foreach ($sub_categories as $id => $name)
-                                                    <option value="{{ $id }}"
-                                                        {{ old('sub_category') == $id ? 'selected' : '' }}>
-                                                        {{ $name }}
-                                                    </option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                        @if ($errors->has('sub_category'))
-                                            <div class="alert alert-danger mt-2">
-                                                {{ $errors->first('sub_category') }}
-                                            </div>
-                                        @endif
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <h2 class="h4 mb-3">Product Show</h2>
+                                        <div class="mb-3">
+                                            <select name="show_home" id="status" class="form-control">
+                                                <option {{ old('show_home') == 'yes' ? 'selected' : '' }} value="yes">show</option>
+                                                <option {{ old('show_home') == 'no' ? 'selected' : '' }} value="no">no-show</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <h2 class="h4 mb-3">Product brand</h2>
-                                    <div class="mb-3">
-                                        <select name="brand" id="brand" class="form-control">
-                                            <option value="">Select Brand</option>
-                                            @if (isset($brands) && $brands != null)
-                                                @foreach ($brands as $id => $name)
-                                                    <option value="{{ $id }}"
-                                                        {{ old('brand') == $id ? 'selected' : '' }}>{{ $name }}
-                                                    </option>
-                                                @endforeach
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h2 class="h4 mb-3">Product category</h2>
+                                        <div class="mb-3">
+                                            <label for="category">Category</label>
+                                            <select name="category" id="category" class="form-control">
+                                                <option value="">Select Category</option>
+                                                @if (isset($categories) && $categories != null)
+                                                    @foreach ($categories as $id => $name)
+                                                        <option value="{{ $id }}"
+                                                            {{ old('category') == $id ? 'selected' : '' }}>
+                                                            {{ $name }}
+                                                        </option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                            @if ($errors->has('category'))
+                                                <div class="alert alert-danger mt-2">
+                                                    {{ $errors->first('category') }}
+                                                </div>
                                             @endif
-                                        </select>
-                                        @if ($errors->has('brand'))
-                                            <div class="alert alert-danger mt-2">
-                                                {{ $errors->first('brand') }}
-                                            </div>
-                                        @endif
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="sub_category">Sub category</label>
+                                            <select name="sub_category" id="sub_category" class="form-control">
+                                                <option value="">Select Sub Category</option>
+                                                @if (isset($sub_categories) && $sub_categories != null)
+                                                    @foreach ($sub_categories as $id => $name)
+                                                        <option value="{{ $id }}"
+                                                            {{ old('sub_category') == $id ? 'selected' : '' }}>
+                                                            {{ $name }}
+                                                        </option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                            @if ($errors->has('sub_category'))
+                                                <div class="alert alert-danger mt-2">
+                                                    {{ $errors->first('sub_category') }}
+                                                </div>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <h2 class="h4 mb-3">Product brand</h2>
+                                        <div class="mb-3">
+                                            <select name="brand" id="brand" class="form-control">
+                                                <option value="">Select Brand</option>
+                                                @if (isset($brands) && $brands != null)
+                                                    @foreach ($brands as $id => $name)
+                                                        <option value="{{ $id }}"
+                                                            {{ old('brand') == $id ? 'selected' : '' }}>
+                                                            {{ $name }}
+                                                        </option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                            @if ($errors->has('brand'))
+                                                <div class="alert alert-danger mt-2">
+                                                    {{ $errors->first('brand') }}
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
 
 
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <h2 class="h4 mb-3">Featured product</h2>
-                                    <div class="mb-3">
-                                        <select name="is_featured" id="status" class="form-control">
-                                            <option {{ old('is_featured') == 'no' ? 'selected' : '' }} value="no">No
-                                            </option>
-                                            <option {{ old('is_featured') == 'yes' ? 'selected' : '' }} value="yes">Yes
-                                            </option>
-                                        </select>
-                                        @if ($errors->has('is_featured'))
-                                            <div class="alert alert-danger mt-2">
-                                                {{ $errors->first('is_featured') }}
-                                            </div>
-                                        @endif
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <h2 class="h4 mb-3">Featured product</h2>
+                                        <div class="mb-3">
+                                            <select name="is_featured" id="status" class="form-control">
+                                                <option {{ old('is_featured') == 'no' ? 'selected' : '' }} value="no">
+                                                    No
+                                                </option>
+                                                <option {{ old('is_featured') == 'yes' ? 'selected' : '' }}
+                                                    value="yes">Yes
+                                                </option>
+                                            </select>
+                                            @if ($errors->has('is_featured'))
+                                                <div class="alert alert-danger mt-2">
+                                                    {{ $errors->first('is_featured') }}
+                                                </div>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="pb-5 pt-3">
-                        <button type="submit" class="btn btn-primary">Create</button>
-                    </div>
+                        <div class="pb-5 pt-3">
+                            <button type="submit" class="btn btn-primary">Create</button>
+                        </div>
                 </form>
             </div>
             <!-- /.card -->
@@ -360,10 +377,6 @@
                 }
             });
         });
-
-
-
-
     </script>
 @endsection
 @endsection

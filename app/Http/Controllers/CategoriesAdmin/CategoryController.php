@@ -90,7 +90,11 @@ class CategoryController extends Controller
             return redirect()->route('admin.category.list')->with('error', 'Category not found');
         }
 
-        $noChanges = $request->name === $category->name && $request->slug === $category->slug && $request->status == $category->status && !$request->hasFile('image');
+        $noChanges = $request->name === $category->name 
+        && $request->slug === $category->slug 
+        && $request->status == $category->status 
+        && $request->show_home == $category->showhome 
+        && !$request->hasFile('image');
         if ($noChanges) {
             return redirect()->route('admin.category.list')->with('warning', 'No changes detected');
         }

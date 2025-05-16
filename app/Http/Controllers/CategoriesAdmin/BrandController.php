@@ -50,6 +50,7 @@ class BrandController extends Controller
                 'name' => $request->input('name'),
                 'slug' => $request->input('slug'),
                 'status' => $request->input('status'),
+                'showhome' => $request->input('show_home'),
             ]);
 
             $request->session()->flash('success', 'Brand created successfully');
@@ -90,7 +91,8 @@ class BrandController extends Controller
         $request->name === $brand->name 
         && $request->slug === $brand->slug 
         && $request->status == $brand->status 
-        &&  $request->sub_category_id == $brand->sub_category_id;
+        &&  $request->sub_category_id == $brand->sub_category_id
+        &&  $request->show_home == $brand->showhome;
 
         if ($noChanges) {
             return redirect()->route('admin.brand.list')->with('warning', 'No changes detected');
@@ -115,14 +117,16 @@ class BrandController extends Controller
 
 
         
-        if($request->status != $brand->status ||  $request->sub_category_id != $brand->sub_category_id ) {
+        if($request->status != $brand->status ||  $request->sub_category_id != $brand->sub_category_id || $request->show_home != $brand->showhome ) {
             $validate = Validator::make( $request->all() ,[
                 'sub_category_id' => 'required|integer|exists:sub_categories,id',
-                'status' => 'required|in:0,1'
+                'status' => 'required|in:0,1',
+                'show_home' => 'required|in:yes,no'
             ]);
 
             if($validate->passes()) {
                 $brand->status = $request->status; 
+                $brand->showhome = $request->show_home; 
                 $brand->sub_category_id = $request->sub_category_id; 
             } else {
             return redirect()->route('admin.brand.list')->with('errors', $validate->errors());

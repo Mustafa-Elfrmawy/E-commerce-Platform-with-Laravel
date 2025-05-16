@@ -11,6 +11,7 @@ class SubCategory extends Model
     use HasFactory;
     protected $fillable = [
         'name',
+        'showhome',
         'slug',
         'status',
         'category_id',

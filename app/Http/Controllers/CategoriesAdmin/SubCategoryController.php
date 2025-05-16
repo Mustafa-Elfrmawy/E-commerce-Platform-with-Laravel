@@ -85,7 +85,8 @@ class SubCategoryController extends Controller
         $noChanges = $request->name === $sub_category->name
         && $request->slug === $sub_category->slug
         && $request->status == $sub_category->status 
-        && $request->category_id == $sub_category->category_id; 
+        && $request->category_id == $sub_category->category_id  
+        && $request->show_home == $sub_category->showhome; 
 
         if ($noChanges) {
             return redirect()->route('admin.sub-category.list')->with('warning', 'No changes detected');

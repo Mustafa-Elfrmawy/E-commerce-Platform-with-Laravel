@@ -16,8 +16,8 @@ use App\Http\Controllers\ProductAdmin\ProductController;
 
 Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => 'guest:admin'], function () {
-        Route::get('/login', [AdminLoginController::class, 'index'])->name('admin.login');
-        Route::post('/authenticate', [AdminLoginController::class, 'authenticate'])->name('admin.authenticate');
+        Route::get('/login', [AdminLoginController::class, 'index'])->name('login');
+        Route::post('/authenticate', [AdminLoginController::class, 'authenticate'])->name('authenticate');
     });
 
 

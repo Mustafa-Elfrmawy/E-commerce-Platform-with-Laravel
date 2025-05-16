@@ -77,6 +77,17 @@
                                     </div>
                                 </div>
 
+                                      <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="status">show-home</label>
+                                        <select type="text" name="show_home" id="status" class="form-control">
+                                            <option value="yes" {{ $category->showhome == 'yes' ? 'selected' : '' }}>show</option>
+                                            <option value="no"  {{ $category->showhome == 'no' ? 'selected' : '' }}>no-show</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
 
                     </div>
                     </div>

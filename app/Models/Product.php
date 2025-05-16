@@ -14,6 +14,7 @@ class Product extends Model
         'price',
         'compare_price',
         'sku',
+        'showhome',
         'barcode',
         'track_qty',
         'qty',

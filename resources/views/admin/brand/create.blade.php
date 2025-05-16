@@ -19,7 +19,7 @@
                         <h1>Create Brand</h1>
                     </div>
                     <div class="col-sm-6 text-right">
-                        <a href="{{route('admin.brand.list')}}" class="btn btn-primary">Back</a>
+                        <a href="{{ route('admin.brand.list') }}" class="btn btn-primary">Back</a>
                     </div>
                 </div>
             </div>
@@ -39,9 +39,9 @@
                                         <select name="sub_category_id" id="sub_category_id" class="form-control">
 
                                             @if (isset($sub_categories) && !empty($sub_categories))
-                                            @foreach ($sub_categories as $id => $name)
-                                            <option value="{{ $id }}">{{ $name }}</option>
-                                            @endforeach
+                                                @foreach ($sub_categories as $id => $name)
+                                                    <option value="{{ $id }}">{{ $name }}</option>
+                                                @endforeach
                                             @endif
 
                                         </select>
@@ -62,28 +62,29 @@
                                     </div>
                                 </div>
 
-                                {{-- <div class="col-md-6">
-                                <div class="mb-3">
-                                    <input type="hidden" id="imageValue" name="image">
-                                    <label for="Image">Image</label>
-                                    <div class="dropzone dz-clickable">
-                                        <div class="dz-message needsclick">
-                                            <br>
-                                            Drop files here or click to upload.<br><br>
-                                        </div>
+
+
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="status">Status</label>
+                                        <select type="text" name="status" id="status" class="form-control">
+                                            <option value="1">Active</option>
+                                            <option value="0">Block</option>
+                                        </select>
                                     </div>
                                 </div>
-                            </div> --}}
 
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="status">Status</label>
-                                    <select type="text" name="status" id="status" class="form-control">
-                                        <option value="1">Active</option>
-                                        <option value="0">Block</option>
-                                    </select>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="status">Show-Home</label>
+                                        <select type="text" name="show_home" id="status" class="form-control">
+                                            <option {{ old('show_home') == 'yes' ? 'selected' : '' }} value="yes">show</option>
+                                            <option {{ old('show_home') == 'no' ? 'selected' : '' }} value="no">no-show</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
+
+
 
 
                             </div>
@@ -138,10 +139,11 @@
                         if (errors['sub_category_id']) {
                             $('#sub_category_id').addClass('is-invalid');
                             $('#sub_category_id').next('.invalid-feedback').remove();
-                            $('#sub_category_id').after('<div class="invalid-feedback">' + errors['sub_category_id'][0] +
+                            $('#sub_category_id').after('<div class="invalid-feedback">' + errors[
+                                    'sub_category_id'][0] +
                                 '</div>');
                         }
-                        
+
                     }
 
 

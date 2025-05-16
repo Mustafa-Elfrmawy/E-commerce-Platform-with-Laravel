@@ -17,6 +17,7 @@ class HelperController extends Controller
             $category->name = $request->name;
             $category->slug = $request->slug;
             $category->status = $request->status;
+            $category->showhome = $request->show_home;
             $category->image_id = $request->image;
             $category->save();
             $request->session()->flash('success', 'Category created successfully');
@@ -29,6 +30,7 @@ class HelperController extends Controller
             $sub_category->name = $request->name;
             $sub_category->slug = $request->slug;
             $sub_category->status = $request->status;
+            $sub_category->showhome = $request->show_home;
             $sub_category->category_id = $request->category_id;
             $sub_category->save();
             $request->session()->flash('success', 'SubCategory created successfully');
@@ -53,29 +55,34 @@ class HelperController extends Controller
                 'slug'         => 'required|unique:categories,slug',
                 'image'        => 'nullable|unique:categories,image_id|exists:image_categories,id',
                 'status'       => 'required|in:0,1',
+                'show_home'       => 'required|in:yes,no',
             ],
             'update' => [
                 'name'   => 'required|string|unique:categories,name,' . $request->input('id'),
                 'slug'   => 'required|string|unique:categories,slug,' . $request->input('id'),
                 'status' => 'required|in:0,1',
+                'show_home'       => 'required|in:yes,no',
             ],
             'storeSubCategory'   => [
                 'name'         => 'required|string|unique:sub_categories,name',
                 'slug'         => 'required|unique:sub_categories,slug',
                 'category_id'  => 'required|integer|exists:categories,id',
                 'status'       => 'required|in:0,1',
+                'show_home'       => 'required|in:yes,no',
             ],
             'updateSubCategory'  => [
                 'name'         => 'required|string|unique:sub_categories,name,' . $request->input('id'),
                 'slug'         => 'required|unique:sub_categories,slug,' .        $request->input('id'),
                 'category_id'  => 'required|integer|exists:categories,id',
                 'status'       => 'required|in:0,1',
+                'show_home'       => 'required|in:yes,no',
             ],
             'storeBrand' => [
                 'name'            => 'required|string|unique:brands,name',
                 'slug'            => 'required|unique:brands,slug',
                 'sub_category_id' => 'required|integer|exists:sub_categories,id',
                 'status'          => 'required|in:0,1',
+                'show_home'       => 'required|in:yes,no',
             ],
             'storeProduct' => [
                 'title' => 'required|string|max:255',
@@ -89,6 +96,7 @@ class HelperController extends Controller
                 'track_qty' => 'required|in:no,yes',
                 'qty' => 'required|numeric|min:0',
                 'status' => 'required|in:0,1',
+                'show_home'       => 'required|in:yes,no',
                 'is_featured' => 'required|in:yes,no',
                 'category' => 'required|exists:categories,id',
                 'sub_category' => 'required|exists:sub_categories,id',
@@ -106,6 +114,7 @@ class HelperController extends Controller
                 'track_qty' => 'required|in:no,yes',
                 'qty' => 'required|numeric|min:0',
                 'status' => 'required|in:0,1',
+                'show_home'       => 'required|in:yes,no',
                 'is_featured' => 'required|in:yes,no',
                 'category' => 'required|exists:categories,id',
                 'sub_category' => 'required|exists:sub_categories,id',
@@ -146,6 +155,7 @@ class HelperController extends Controller
         }
 
         $category->status = $request->status;
+        $category->showhome = $request->show_home;
         $category->save();
         return redirect()->route($route)->with('success', 'Category updated');
     }

@@ -149,6 +149,7 @@ class ProductController extends Controller
             $product->is_featured       ==     $request->input('is_featured') &&
             $product->category_id       ==     $request->input('category')   &&
             $product->sub_category_id   == $request->input('sub_category')   &&
+            $product->showhome   == $request->input('show_home')   &&
             $product->brand_id          ==        $request->input('brand');
         if ($no_change && !$request->hasFile('image')) {
             return redirect()->route('admin.product.list')->with('warning', 'No changes detected');
@@ -197,6 +198,7 @@ class ProductController extends Controller
             'track_qty' =>       $request->input('track_qty'),
             'qty' =>             $request->input('qty'),
             'status' =>          $request->input('status'),
+            'showhome' =>          $request->input('show_home'),
             'is_featured' =>     $request->input('is_featured'),
             'category_id' =>     $request->input('category'),
             'sub_category_id' => $request->input('sub_category'),
@@ -221,6 +223,7 @@ class ProductController extends Controller
             'track_qty'       => $request->input('track_qty'),
             'qty'             => $request->input('qty'),
             'status'          => $request->input('status'),
+            'showhome'          => $request->input('show_home'),
             'is_featured'     => $request->input('is_featured'),
             'category_id'     => $request->input('category'),
             'sub_category_id' => $request->input('sub_category'),

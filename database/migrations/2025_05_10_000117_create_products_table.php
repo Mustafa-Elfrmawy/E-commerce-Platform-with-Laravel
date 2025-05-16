@@ -24,24 +24,24 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->decimal('price', 10, 2);
             $table->decimal('compare_price', 10, 2)->nullable();
-            
+
             $table->foreignIdFor(Admin::class, 'created_by')->nullable();
             $table->foreignIdFor(Admin::class, 'updated_by')->nullable();
             $table->foreignIdFor(Admin::class, 'deleted_by')->nullable();
-            
-            $table->string('image_id'  , 255)->nullable();
+
+            $table->string('image_id', 255)->nullable();
             $table->foreignIdFor(Category::class, 'category_id')->nullable();
             $table->foreignIdFor(SubCategory::class, 'sub_category_id')->nullable();
             $table->foreignIdFor(Brand::class, 'brand_id')->nullable();
-            
-            $table->enum('is_featured', ['yes' , 'no'])->default('no');
-            $table->enum('track_qty', ['yes' , 'no'])->default('yes');
+
+            $table->enum('is_featured', ['yes', 'no'])->default('no');
+            $table->enum('track_qty', ['yes', 'no'])->default('yes');
 
             $table->string('barcode', 50)->nullable();
             $table->string('sku', 50);
             $table->integer('qty')->default(1);
-            $table->tinyInteger( 'status')->defualt(0);
-
+            $table->tinyInteger('status')->defualt(0);
+            $table->enum('showhome', ['yes', 'no'])->default('yes');
 
             $table->timestamps();
         });

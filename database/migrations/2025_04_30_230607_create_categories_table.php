@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string( 'name' , 255)->unique();
             $table->string( 'slug' , 255)->unique();
             $table->tinyInteger( 'status')->defualt(1);
+            $table->enum( 'showhome', ['yes' , 'no'])->default('yes');
             $table->foreignIdFor(ImageCategory::class, 'image_id')->nullable();
             $table->timestamps();
         });

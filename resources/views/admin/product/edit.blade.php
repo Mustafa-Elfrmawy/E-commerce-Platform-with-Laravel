@@ -125,7 +125,7 @@
                                             @foreach ($images as $id => $name)
                                                 <div class="col-md-12 mb-4 ${isSingleImage}">
                                                     <div class="card shadow-sm border-0 rounded">
-                                                        @if ( file_exists(public_path('storage/' . $name)))
+                                                        @if (file_exists(public_path('storage/' . $name)))
                                                             <img src="{{ asset('storage/' . $name) }}" class="card-img-top"
                                                                 alt="Image" style="height: 200px;">
                                                         @else
@@ -240,80 +240,98 @@
                             </div>
 
                             <div class="card">
-                                <div class="card-body">
-                                    <h2 class="h4 mb-3">Product category</h2>
-                                    <div class="mb-3">
-                                        <label for="category">Category</label>
-                                        <select name="category" id="category" class="form-control">
-                                            <option value="">Select Category</option>
-                                            @if (isset($categories) && $categories != null)
-                                                @foreach ($categories as $id => $name)
-                                                    <option value="{{ $id }}"
-                                                        {{ $product->category_id == $id ? 'selected' : '' }}>
-                                                        {{ $name }}
-                                                    </option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="sub_category">Sub category</label>
-                                        <select name="sub_category" id="sub_category" class="form-control">
-                                            <option value="">Select Sub Category</option>
-                                            @if (isset($sub_categories) && $sub_categories != null)
-                                                @foreach ($sub_categories as $id => $name)
-                                                    <option value="{{ $id }}"
-                                                        {{ $product->sub_category_id == $id ? 'selected' : '' }}>
-                                                        {{ $name }}
-                                                    </option>
-                                                @endforeach
-                                            @endif
-                                        </select>
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <h2 class="h4 mb-3">Product Show</h2>
+                                        <div class="mb-3">
+                                            <select name="show_home" id="status" class="form-control">
+                                                <option {{ $product->showhome == 'yes' ? 'selected' : '' }} value="yes">
+                                                    show
+                                                </option>
+                                                <option {{ $product->showhome == 'no' ? 'selected' : '' }} value="no">no-show
+                                                </option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <h2 class="h4 mb-3">Product brand</h2>
-                                    <div class="mb-3">
-                                        <select name="brand" id="brand" class="form-control">
-                                            <option value="">Select Brand</option>
-                                            @if (isset($brands) && $brands != null)
-                                                @foreach ($brands as $id => $name)
-                                                    <option value="{{ $id }}"
-                                                        {{ $product->brand_id == $id ? 'selected' : '' }}>
-                                                        {{ $name }}
-                                                    </option>
-                                                @endforeach
-                                            @endif
-                                        </select>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h2 class="h4 mb-3">Product category</h2>
+                                        <div class="mb-3">
+                                            <label for="category">Category</label>
+                                            <select name="category" id="category" class="form-control">
+                                                <option value="">Select Category</option>
+                                                @if (isset($categories) && $categories != null)
+                                                    @foreach ($categories as $id => $name)
+                                                        <option value="{{ $id }}"
+                                                            {{ $product->category_id == $id ? 'selected' : '' }}>
+                                                            {{ $name }}
+                                                        </option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="sub_category">Sub category</label>
+                                            <select name="sub_category" id="sub_category" class="form-control">
+                                                <option value="">Select Sub Category</option>
+                                                @if (isset($sub_categories) && $sub_categories != null)
+                                                    @foreach ($sub_categories as $id => $name)
+                                                        <option value="{{ $id }}"
+                                                            {{ $product->sub_category_id == $id ? 'selected' : '' }}>
+                                                            {{ $name }}
+                                                        </option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <h2 class="h4 mb-3">Product brand</h2>
+                                        <div class="mb-3">
+                                            <select name="brand" id="brand" class="form-control">
+                                                <option value="">Select Brand</option>
+                                                @if (isset($brands) && $brands != null)
+                                                    @foreach ($brands as $id => $name)
+                                                        <option value="{{ $id }}"
+                                                            {{ $product->brand_id == $id ? 'selected' : '' }}>
+                                                            {{ $name }}
+                                                        </option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
 
 
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <h2 class="h4 mb-3">Featured product</h2>
-                                    <div class="mb-3">
-                                        <select name="is_featured" id="status" class="form-control">
-                                            <option {{ $product->is_featured == 'no' ? 'selected' : '' }} value="no">
-                                                No
-                                            </option>
-                                            <option {{ $product->is_featured == 'yes' ? 'selected' : '' }} value="yes">
-                                                Yes
-                                            </option>
-                                        </select>
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <h2 class="h4 mb-3">Featured product</h2>
+                                        <div class="mb-3">
+                                            <select name="is_featured" id="status" class="form-control">
+                                                <option {{ $product->is_featured == 'no' ? 'selected' : '' }}
+                                                    value="no">
+                                                    No
+                                                </option>
+                                                <option {{ $product->is_featured == 'yes' ? 'selected' : '' }}
+                                                    value="yes">
+                                                    Yes
+                                                </option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="pb-5 pt-3">
-                        <button type="submit" class="btn btn-primary">Update</button>
-                    </div>
+                        <div class="pb-5 pt-3">
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
                 </form>
             </div>
             <!-- /.card -->

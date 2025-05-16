@@ -73,6 +73,18 @@
                                     </div>
                                 </div>
                             </div>
+
+
+                            <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="status">show-home</label>
+                                        <select type="text" name="show_home" id="status" class="form-control">
+                                            <option {{ old('show_home') == 'yes' ? 'selected' : '' }} value="yes">show</option>
+                                            <option {{ old('show_home') == 'no' ? 'selected' : '' }} value="no">no-show</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                     </div>
                 </div>
                 <div class="pb-5 pt-3">
