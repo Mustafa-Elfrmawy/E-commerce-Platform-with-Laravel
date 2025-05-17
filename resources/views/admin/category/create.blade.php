@@ -31,7 +31,7 @@
             <div class="container-fluid">
                 <div class="card">
                     <div class="card-body">
-                        
+
                         <form id="categoryFrom" name="categoryFrom" method="post">
                             {{-- @csrf     --}}
                             <div class="row">
@@ -62,11 +62,27 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="name">Category</label>
+                                        <select name="sub_category_id" id="sub_category_id" class="form-control">
+                                            <option value="">Select</option>
+                                            @if ($sub_categories->isNotEmpty())
+                                                @foreach ($sub_categories as $sub_category)
+                                                    <option value="{{ $sub_category->id }}">{{ $sub_category->name }}
+                                                    </option>
+                                                @endforeach
+                                            @else
+                                                <option value="">please no create before add sub_category</option>
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="status">Status</label>
-                                        <select type="text" name="status" id="status" class="form-control">
+                                        <select type="text" name="status" id="status" class="form-control" required>
+                                            <option value="">Select</option>
                                             <option value="1">Active</option>
                                             <option value="0">Block</option>
                                         </select>
@@ -76,25 +92,28 @@
 
 
                             <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="status">show-home</label>
-                                        <select type="text" name="show_home" id="status" class="form-control">
-                                            <option {{ old('show_home') == 'yes' ? 'selected' : '' }} value="yes">show</option>
-                                            <option {{ old('show_home') == 'no' ? 'selected' : '' }} value="no">no-show</option>
-                                        </select>
-                                    </div>
+                                <div class="mb-3">
+                                    <label for="status">show-home</label>
+                                    <select type="text" name="show_home" id="show_home" class="form-control" require>
+                                        <option value="">Select</option>
+                                        <option {{ old('show_home') == 'yes' ? 'selected' : '' }} value="yes">show
+                                        </option>
+                                        <option {{ old('show_home') == 'no' ? 'selected' : '' }} value="no">no-show
+                                        </option>
+                                    </select>
                                 </div>
                             </div>
                     </div>
                 </div>
-                <div class="pb-5 pt-3">
-                    <button type="submit" class="btn btn-primary">Create</button>
-                </div>
-                </form>
             </div>
-            <!-- /.card -->
-        </section>
-        <!-- /.content -->
+            <div class="pb-5 pt-3">
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+            </form>
+    </div>
+    <!-- /.card -->
+    </section>
+    <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
 @section('custom-js')
@@ -115,18 +134,25 @@
                     } else {
 
                         var errors = response.errors;
-                        if (errors['name']) {
-                            $('#name').addClass('is-invalid');
-                            $('#name').next('.invalid-feedback').remove();
-                            $('#name').after('<div class="invalid-feedback">' + errors['name'][0] +
-                                '</div>');
-                        }
-                        if (errors['slug']) {
-                            $('#slug').addClass('is-invalid');
-                            $('#slug').next('.invalid-feedback').remove();
-                            $('#slug').after('<div class="invalid-feedback">' + errors['slug'][0] +
-                                '</div>');
-                        }
+                        const fields = ['name', 'slug', 'status', 'sub_category_id', 'show_home'];
+
+                        fields.forEach(field => {
+                            if (errors[field]) {
+                                switch (field) {
+                                    case 'name':
+                                    case 'slug':
+                                    case 'status':
+                                    case 'sub_category_id':
+                                    case 'show_home':
+                                        $(`#${field}`).addClass('is-invalid');
+                                        $(`#${field}`).next('.invalid-feedback').remove();
+                                        $(`#${field}`).after(
+                                            `<div class="invalid-feedback">${errors[field][0]}</div>`
+                                        );
+                                        break;
+                                }
+                            }
+                        });
                     }
 
 
@@ -164,39 +190,37 @@
 
         Dropzone.autoDiscover = false;
 
-const dropzone = $('.dropzone').dropzone({
-    url: "{{ route('admin.category.uploadImage') }}",
-    method: "POST",
-    paramName: "image",
-    maxFilesize: 2, 
-    acceptedFiles: ".jpeg,.jpg,.png,.gif",
-    addRemoveLinks: true,
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    },
-    init: function () {
-        this.on('addedfile', function (file) {
-            if (this.files.length > 1) {
-                this.removeFile(this.files[0]);
+        const dropzone = $('.dropzone').dropzone({
+            url: "{{ route('admin.category.uploadImage') }}",
+            method: "POST",
+            paramName: "image",
+            maxFilesize: 2,
+            acceptedFiles: ".jpeg,.jpg,.png,.gif",
+            addRemoveLinks: true,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            init: function() {
+                this.on('addedfile', function(file) {
+                    if (this.files.length > 1) {
+                        this.removeFile(this.files[0]);
+                    }
+                });
+            },
+            success: function(file, response) {
+                if (response.status === true) {
+                    $('#image').val(response.file_name);
+                    $('#imageValue').val(response.id);
+                } else {
+                    this.removeFile(file);
+                    alert('File upload failed');
+                }
+            },
+            error: function(file, response) {
+                this.removeFile(file);
+                alert('File upload failed');
             }
         });
-    },
-    success: function (file, response) {
-        if (response.status === true) {
-            $('#image').val(response.file_name);
-            $('#imageValue').val(response.id);   
-        } else {
-            this.removeFile(file);
-            alert('File upload failed');
-        }
-    },
-    error: function (file, response) {
-        this.removeFile(file);
-        alert('File upload failed');
-    }
-});
-
-
     </script>
 @endsection
 @endsection

@@ -38,20 +38,8 @@
                             @csrf
                             @method('PUT')
                             <input type="hidden" value="{{ $sub_categories->id }}" name="id">
-
+                            
                             <div class="row">
-                                <div class="col-md-12">
-                                    <div class="mb-3">
-                                        <label for="name">Category</label>
-                                        <select name="category_id" id="category" class="form-control">
-                                            @foreach ($categories as $id => $name)
-                                                <option value="{{ $id }}"
-                                                    {{ $id == $sub_categories->category_id ? 'selected' : '' }}>
-                                                    {{ $name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="name">Name</label>
@@ -90,24 +78,26 @@
                                     <div class="mb-3">
                                         <label for="status">show-home</label>
                                         <select type="text" name="show_home" id="status" class="form-control">
-                                            <option value="yes" {{ $sub_categories->showhome == 'yes' ? 'selected' : '' }}>show</option>
-                                            <option value="no" {{ $sub_categories->showhome == 'no' ? 'selected' : '' }}>no-show</option>
+                                            <option value="yes"
+                                                {{ $sub_categories->showhome == 'yes' ? 'selected' : '' }}>show</option>
+                                            <option value="no"
+                                                {{ $sub_categories->showhome == 'no' ? 'selected' : '' }}>no-show</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
 
 
-                    <div class="pb-5 pt-3">
-                        <button type="submit" class="btn btn-primary">Edit</button>
+                            <div class="pb-5 pt-3">
+                                <button type="submit" class="btn btn-primary">Edit</button>
+                            </div>
+                        </form>
                     </div>
-                    </form>
                 </div>
             </div>
-    </div>
-    <!-- /.card -->
-    </section>
-    <!-- /.content -->
+            <!-- /.card -->
+        </section>
+        <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
 

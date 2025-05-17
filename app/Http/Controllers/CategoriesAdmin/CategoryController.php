@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Helper\HelperController;
+use App\Models\SubCategory;
 
 class CategoryController extends Controller
 {
@@ -37,7 +38,8 @@ class CategoryController extends Controller
      */
     public function create(): View
     {
-        return view('admin.category.create');
+        $sub_categories = SubCategory::all();
+        return view('admin.category.create' , compact('sub_categories'));
     }
 
     /**
@@ -72,10 +74,11 @@ class CategoryController extends Controller
     public function edit(string $categoryId)
     {
         $category = Category::find($categoryId);
+        $sub_category = SubCategory::orderBy('id', 'DESC')->pluck('name', 'id');
         if (empty($category)) {
             return redirect()->route('admin.category.list')->withErrors('Category not found');
         }
-        return view('admin.category.edit', compact('category'));
+        return view('admin.category.edit', compact('category' , 'sub_category'));
     }
 
     /**
@@ -93,6 +96,7 @@ class CategoryController extends Controller
         $noChanges = $request->name === $category->name 
         && $request->slug === $category->slug 
         && $request->status == $category->status 
+        && $request->sub_category_id == $category->sub_category_id 
         && $request->show_home == $category->showhome 
         && !$request->hasFile('image');
         if ($noChanges) {

@@ -35,8 +35,7 @@ class SubCategoryController extends Controller
 
     public function create()
     {
-        $categories = Category::all();
-        return view('admin.subcategory.create', compact('categories'));
+        return view('admin.subcategory.create');
     }
 
 
@@ -60,14 +59,12 @@ class SubCategoryController extends Controller
     public function edit(string $sub_categoryId)
     {
         $sub_categories = SubCategory::find($sub_categoryId);
-        $categories = Category::orderBy('id', 'DESC')->pluck('name', 'id');
-
-
+    
         if (empty($sub_categories)) {
             return redirect()->route('admin.sub-category.list')->withError('Category not found');
         }
         
-        return view('admin.subcategory.edit', compact('sub_categories' , 'categories'));
+        return view('admin.subcategory.edit', compact('sub_categories'));
     }
 
 
@@ -85,7 +82,6 @@ class SubCategoryController extends Controller
         $noChanges = $request->name === $sub_category->name
         && $request->slug === $sub_category->slug
         && $request->status == $sub_category->status 
-        && $request->category_id == $sub_category->category_id  
         && $request->show_home == $sub_category->showhome; 
 
         if ($noChanges) {

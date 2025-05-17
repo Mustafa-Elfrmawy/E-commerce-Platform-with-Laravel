@@ -19,6 +19,7 @@ class HelperController extends Controller
             $category->status = $request->status;
             $category->showhome = $request->show_home;
             $category->image_id = $request->image;
+            $category->sub_category_id = $request->sub_category_id;
             $category->save();
             $request->session()->flash('success', 'Category created successfully');
             return  response()->json([
@@ -31,7 +32,6 @@ class HelperController extends Controller
             $sub_category->slug = $request->slug;
             $sub_category->status = $request->status;
             $sub_category->showhome = $request->show_home;
-            $sub_category->category_id = $request->category_id;
             $sub_category->save();
             $request->session()->flash('success', 'SubCategory created successfully');
             return  response()->json([
@@ -53,6 +53,7 @@ class HelperController extends Controller
             'store' => [
                 'name'         => 'required|string|unique:categories,name',
                 'slug'         => 'required|unique:categories,slug',
+                'sub_category_id'  => 'required|integer|exists:sub_categories,id',
                 'image'        => 'nullable|unique:categories,image_id|exists:image_categories,id',
                 'status'       => 'required|in:0,1',
                 'show_home'       => 'required|in:yes,no',
@@ -61,19 +62,18 @@ class HelperController extends Controller
                 'name'   => 'required|string|unique:categories,name,' . $request->input('id'),
                 'slug'   => 'required|string|unique:categories,slug,' . $request->input('id'),
                 'status' => 'required|in:0,1',
+                'sub_category_id'  => 'required|integer|exists:sub_categories,id',
                 'show_home'       => 'required|in:yes,no',
             ],
             'storeSubCategory'   => [
                 'name'         => 'required|string|unique:sub_categories,name',
                 'slug'         => 'required|unique:sub_categories,slug',
-                'category_id'  => 'required|integer|exists:categories,id',
                 'status'       => 'required|in:0,1',
                 'show_home'       => 'required|in:yes,no',
             ],
             'updateSubCategory'  => [
                 'name'         => 'required|string|unique:sub_categories,name,' . $request->input('id'),
-                'slug'         => 'required|unique:sub_categories,slug,' .        $request->input('id'),
-                'category_id'  => 'required|integer|exists:categories,id',
+                'slug'         => 'required|unique:sub_categories,slug,'.        $request->input('id'),
                 'status'       => 'required|in:0,1',
                 'show_home'       => 'required|in:yes,no',
             ],
@@ -141,7 +141,6 @@ class HelperController extends Controller
         if (($request->name != $category->name) && ($request->slug != $category->slug)) {
 
             $validate = $this->ruleValidate($request, $status);
-
             if ($validate->fails()) {
                 return redirect()->route($route)->with('error', 'the name or slug has already been taken');
             }
@@ -150,8 +149,8 @@ class HelperController extends Controller
             $category->slug = $request->slug;
         }
 
-        if ($route == 'admin.sub-category.list') {
-            $category->category_id = $request->category_id;
+        if ($route == 'admin.category.list') {
+            $category->sub_category_id = $request->sub_category_id;
         }
 
         $category->status = $request->status;

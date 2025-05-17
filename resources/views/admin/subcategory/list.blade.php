@@ -55,7 +55,6 @@
                                     <th width="60">ID</th>
                                     <th>Name</th>
                                     <th>Slug</th>
-                                    <th>Category</th>
                                     <th width="100">Status</th>
                                     <th width="100">Action</th>
                                 </tr>
@@ -67,11 +66,6 @@
                                             <td>{{ $sub_category->id }}</td>
                                             <td>{{ $sub_category->name }}</td>
                                             <td>{{ $sub_category->slug }}</td>
-                                            @if( !empty($sub_category->category->name) )
-                                            <td>{{ $sub_category->category->name}}</td>
-                                            @else
-                                            <td style="color: red">empty</td>
-                                            @endif
                                             @if ($sub_category->status == 1)
                                                 <td>
                                                     <svg class="text-success-500 h-6 w-6 text-success"

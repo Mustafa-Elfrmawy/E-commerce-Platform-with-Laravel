@@ -22,7 +22,7 @@
                         <h1>Create Sub Category</h1>
                     </div>
                     <div class="col-sm-6 text-right">
-                        <a href="subcategory.html" class="btn btn-primary">Back</a>
+                        <a href="{{ route('admin.sub-category.list') }}" class="btn btn-primary">Back</a>
                     </div>
                 </div>
             </div>
@@ -36,20 +36,6 @@
                     <div class="card-body">
                         <form id="subcategoryForm" name="categoryForm">
                             <div class="row">
-                                <div class="col-md-12">
-                                    <div class="mb-3">
-                                        <label for="name">Category</label>
-                                        <select name="category_id" id="category" class="form-control">
-                                            @if ($categories->isNotEmpty())
-                                                <option value="">Select</option>
-                                                @foreach ($categories as $category)
-                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                                @endforeach
-                                            @else
-                                            @endif
-                                        </select>
-                                    </div>
-                                </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="name">Name</label>
@@ -69,7 +55,8 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="status">Status</label>
-                                        <select type="text" name="status" id="status" class="form-control">
+                                        <select type="text" name="status" id="status" class="form-control" required>
+                                            <option value="">Select</option>
                                             <option value="1">Active</option>
                                             <option value="0">Block</option>
                                         </select>
@@ -79,20 +66,23 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="status">Show-Home</label>
-                                        <select type="text" name="show_home" id="status" class="form-control">
-                                            <option {{ old('show_home') == 'yes' ? 'selected' : '' }} value="yes">show</option>
-                                            <option {{ old('show_home') == 'no' ? 'selected' : '' }} value="no">no-show</option>
+                                        <select type="text" name="show_home" id="show_home" class="form-control" required>
+                                            <option value="">Select</option>
+                                            <option {{ old('show_home') == 'yes' ? 'selected' : '' }} value="yes">show
+                                            </option>
+                                            <option {{ old('show_home') == 'no' ? 'selected' : '' }} value="no">no-show
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
 
 
+                            <div class="pb-5 pt-3">
+                                <button type="submit" class="btn btn-primary">Create</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="pb-5 pt-3">
-                        <button type="submit" class="btn btn-primary">Create</button>
-                    </div>
-                    </form>
                 </div>
             </div>
     </div>
@@ -120,18 +110,25 @@
                     } else {
 
                         var errors = response.errors;
-                        if (errors['name']) {
-                            $('#name').addClass('is-invalid');
-                            $('#name').next('.invalid-feedback').remove();
-                            $('#name').after('<div class="invalid-feedback">' + errors['name'][0] +
-                                '</div>');
-                        }
-                        if (errors['slug']) {
-                            $('#slug').addClass('is-invalid');
-                            $('#slug').next('.invalid-feedback').remove();
-                            $('#slug').after('<div class="invalid-feedback">' + errors['slug'][0] +
-                                '</div>');
-                        }
+                               const fields = ['name', 'slug', 'status', 'sub_category_id', 'show_home'];
+
+                        fields.forEach(field => {
+                            if (errors[field]) {
+                                switch (field) {
+                                    case 'name':
+                                    case 'slug':
+                                    case 'status':
+                                    case 'sub_category_id':
+                                    case 'show_home':
+                                        $(`#${field}`).addClass('is-invalid');
+                                        $(`#${field}`).next('.invalid-feedback').remove();
+                                        $(`#${field}`).after(
+                                            `<div class="invalid-feedback">${errors[field][0]}</div>`
+                                        );
+                                        break;
+                                }
+                            }
+                        });
                     }
 
 

@@ -14,12 +14,11 @@ class SubCategory extends Model
         'showhome',
         'slug',
         'status',
-        'category_id',
    ];
 
-       public function subCategory()
+       public function category()
    {
-       return $this->hasMany(SubCategory::class, 'category_id');
+       return $this->hasMany(SubCategory::class, 'sub_category_id');
    }
 
  

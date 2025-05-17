@@ -33,11 +33,27 @@
                     <div class="card-body">
                         <form id="brandFrom" name="brandFrom" method="post">
                             <div class="row">
+
+                                {{-- <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="name">Category</label>
+                                        <select name="category_id" id="category_id" class="form-control">
+                                            <option value="">Select</option>
+                                            @if (isset($categories) && !empty($categories))
+                                                @foreach ($categories as $id => $name)
+                                                    <option value="{{ $id }}">{{ $name }}</option>
+                                                @endforeach
+                                            @endif
+
+                                        </select>
+                                    </div>
+                                </div> --}}
+
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="name">SupCategory</label>
                                         <select name="sub_category_id" id="sub_category_id" class="form-control">
-
+                                            <option value="">Select</option>
                                             @if (isset($sub_categories) && !empty($sub_categories))
                                                 @foreach ($sub_categories as $id => $name)
                                                     <option value="{{ $id }}">{{ $name }}</option>
@@ -47,6 +63,7 @@
                                         </select>
                                     </div>
                                 </div>
+
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="name">Name</label>
@@ -68,6 +85,7 @@
                                     <div class="mb-3">
                                         <label for="status">Status</label>
                                         <select type="text" name="status" id="status" class="form-control">
+                                            <option value="">Select</option>
                                             <option value="1">Active</option>
                                             <option value="0">Block</option>
                                         </select>
@@ -77,9 +95,12 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="status">Show-Home</label>
-                                        <select type="text" name="show_home" id="status" class="form-control">
-                                            <option {{ old('show_home') == 'yes' ? 'selected' : '' }} value="yes">show</option>
-                                            <option {{ old('show_home') == 'no' ? 'selected' : '' }} value="no">no-show</option>
+                                        <select type="text" name="show_home" id="show_home" class="form-control">
+                                            <option value="">Select</option>
+                                            <option {{ old('show_home') == 'yes' ? 'selected' : '' }} value="yes">show
+                                            </option>
+                                            <option {{ old('show_home') == 'no' ? 'selected' : '' }} value="no">no-show
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -118,31 +139,26 @@
                         window.location.href = "{{ route('admin.brand.list') }}";
                     } else {
                         var errors = response.errors;
-                        if (errors['name']) {
-                            $('#name').addClass('is-invalid');
-                            $('#name').next('.invalid-feedback').remove();
-                            $('#name').after('<div class="invalid-feedback">' + errors['name'][0] +
-                                '</div>');
-                        }
-                        if (errors['slug']) {
-                            $('#slug').addClass('is-invalid');
-                            $('#slug').next('.invalid-feedback').remove();
-                            $('#slug').after('<div class="invalid-feedback">' + errors['slug'][0] +
-                                '</div>');
-                        }
-                        if (errors['status']) {
-                            $('#status').addClass('is-invalid');
-                            $('#status').next('.invalid-feedback').remove();
-                            $('#status').after('<div class="invalid-feedback">' + errors['status'][0] +
-                                '</div>');
-                        }
-                        if (errors['sub_category_id']) {
-                            $('#sub_category_id').addClass('is-invalid');
-                            $('#sub_category_id').next('.invalid-feedback').remove();
-                            $('#sub_category_id').after('<div class="invalid-feedback">' + errors[
-                                    'sub_category_id'][0] +
-                                '</div>');
-                        }
+                        const fields = ['name', 'slug', 'status', 'sub_category_id', 'show_home'];
+
+                        fields.forEach(field => {
+                            if (errors[field]) {
+                                switch (field) {
+                                    case 'name':
+                                    case 'slug':
+                                    case 'status':
+                                    case 'sub_category_id':
+                                    case 'show_home':
+                                        $(`#${field}`).addClass('is-invalid');
+                                        $(`#${field}`).next('.invalid-feedback').remove();
+                                        $(`#${field}`).after(
+                                            `<div class="invalid-feedback">${errors[field][0]}</div>`
+                                            );
+                                        break;
+                                }
+                            }
+                        });
+
 
                     }
 

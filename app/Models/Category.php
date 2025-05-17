@@ -22,9 +22,9 @@ class Category extends Model
         return $this->belongsTo(ImageCategory::class, 'image_id');
     }
 
-   public function category()
+   public function subCategory()
    {
-       return $this->belongsTo(Category::class , 'category_id');
+       return $this->belongsTo(SubCategory::class , 'sub_category_id');
    }
 
 }
