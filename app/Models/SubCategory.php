@@ -17,10 +17,12 @@ class SubCategory extends Model
         'category_id',
    ];
 
-   public function category()
+       public function subCategory()
    {
-       return $this->belongsTo(Category::class , 'category_id');
+       return $this->hasMany(SubCategory::class, 'category_id');
    }
+
+ 
 
    public function brand()
    {

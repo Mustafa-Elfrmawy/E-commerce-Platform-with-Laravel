@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Testing\Fluent\Concerns\Has;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Category extends Model
@@ -12,6 +11,7 @@ class Category extends Model
     protected $fillable = [
         'image_id',
         'name',
+        'sub_category_id',
         'showhome',
         'slug',
         'status',
@@ -22,9 +22,9 @@ class Category extends Model
         return $this->belongsTo(ImageCategory::class, 'image_id');
     }
 
-    public function subCategory()
+   public function category()
    {
-       return $this->hasMany(SubCategory::class, 'category_id');
+       return $this->belongsTo(Category::class , 'category_id');
    }
 
 }

@@ -17,11 +17,6 @@ return new class extends Migration
             $table->string('slug' , 255);
             $table->tinyInteger( 'status')->defualt(0);
             $table->enum( 'showhome', ['yes' , 'no'])->default('yes');
-            $table->foreignId('category_id')
-            ->nullable()  
-            ->constrained('categories')  
-            ->onDelete('set null') 
-            ->onUpdate('cascade');
             $table->timestamps();
         });
     }

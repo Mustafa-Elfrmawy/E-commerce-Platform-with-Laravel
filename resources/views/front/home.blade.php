@@ -254,8 +254,11 @@
                             <div class="col-lg-3">
                                 <div class="cat-card">
                                     <div class="left">
+                                        @if ()
                                         <img src="{{ asset('Front/images/cat-1.jpg') }}" alt=""
-                                            class="img-fluid">
+                                        class="img-fluid">
+                                        @else
+                                        @endif
                                     </div>
                                     <div class="right">
                                         <div class="cat-data">
