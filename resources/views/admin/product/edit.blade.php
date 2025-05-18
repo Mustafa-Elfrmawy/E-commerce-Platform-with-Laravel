@@ -229,7 +229,8 @@
                                 <div class="card-body">
                                     <h2 class="h4 mb-3">Product status</h2>
                                     <div class="mb-3">
-                                        <select name="status" id="status" class="form-control">
+                                        <select name="status" id="status" class="form-control" required>
+                                                <option value="">Select</option>
                                             <option {{ $product->status == 1 ? 'selected' : '' }} value="1">Active
                                             </option>
                                             <option {{ $product->status == 0 ? 'selected' : '' }} value="0">Block
@@ -244,7 +245,8 @@
                                     <div class="card-body">
                                         <h2 class="h4 mb-3">Product Show</h2>
                                         <div class="mb-3">
-                                            <select name="show_home" id="status" class="form-control">
+                                            <select name="show_home" id="status" class="form-control" required>
+                                                <option value="">Select</option>
                                                 <option {{ $product->showhome == 'yes' ? 'selected' : '' }} value="yes">
                                                     show
                                                 </option>
@@ -260,10 +262,10 @@
                                         <h2 class="h4 mb-3">Product category</h2>
                                         <div class="mb-3">
                                             <label for="category">Category</label>
-                                            <select name="category" id="category" class="form-control">
-                                                <option value="">Select Category</option>
+                                            <select name="category" id="category" class="form-control" required>
+                                                <option value="">Select</option>
                                                 @if (isset($categories) && $categories != null)
-                                                    @foreach ($categories as $id => $name)
+                                                    @foreach ($categories as $id => $name)d
                                                         <option value="{{ $id }}"
                                                             {{ $product->category_id == $id ? 'selected' : '' }}>
                                                             {{ $name }}

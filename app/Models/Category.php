@@ -26,5 +26,9 @@ class Category extends Model
    {
        return $this->belongsTo(SubCategory::class , 'sub_category_id');
    }
+      public function brand()
+   {
+       return $this->hasMany(Brand::class, 'category_id');
+   }
 
 }

@@ -60,7 +60,7 @@
                                     <th width="60">ID</th>
                                     <th>Name</th>
                                     <th>Slug</th>
-                                    <th width="100">sub_category</th>
+                                    <th width="100">category</th>
                                     <th width="100">Status</th>
                                     <th width="100">Action</th>
                                 </tr>
@@ -72,7 +72,11 @@
                                             <td>{{ $brand->id }}</td>
                                             <td>{{ $brand->name }}</td>
                                             <td>{{ $brand->slug }}</td>
-                                            <td>{{ $brand->subCategory->name}}</td>
+                                            @if (!empty($brand->Category->name))
+                                                <td>{{ $brand->Category->name }}</td>
+                                            @else
+                                                <td style="color: red">empty</td>
+                                            @endif
                                             @if ($brand->status == 1)
                                                 <td>
                                                     <svg class="text-success-500 h-6 w-6 text-success"
@@ -157,7 +161,7 @@
 
                     success: function(response) {
                         if (response.status === true) {
-                            window.location.href = "{{ route('admin.brand.list') }}";   
+                            window.location.href = "{{ route('admin.brand.list') }}";
                             console.log(response.message);
                         } else {
                             console.log(response.message)

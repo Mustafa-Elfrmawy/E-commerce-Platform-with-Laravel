@@ -8,26 +8,26 @@ use App\Models\Product;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 
-class Frontntroller extends Controller
+class FrontController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $categories = Category::where('showhome' , 'yes')->where('status' , 1)->latest()->get();
-        $sub_categories = SubCategory::where('showhome' , 'yes')->where('status' , 1)->latest()->get();
-        $products = Product::where('showhome' , 'yes')->where('is_featured' , 'yes')->where('status' , 1)->latest()->get();
-        $products_latest = Product::where('showhome' , 'yes')->where('is_featured' , 'no')->where('status' , 1)->latest()->get();
-        return view('front.home' , compact('categories' , 'sub_categories' , 'products' , 'products_latest'));
+        // $categories = Category::where('showhome' , 'yes')->where('status' , 1)->latest()->get();
+        // $sub_categories = SubCategory::where('showhome' , 'yes')->where('status' , 1)->latest()->get();
+        // $products = Product::where('showhome' , 'yes')->where('is_featured' , 'yes')->where('status' , 1)->latest()->get();
+        // $products_latest = Product::where('showhome' , 'yes')->where('is_featured' , 'no')->where('status' , 1)->latest()->get();
+        return view('front.home'  /* compact('categories' , 'sub_categories' , 'products' , 'products_latest' )  */);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function shop()
     {
-        //
+        return view('front.shop');
     }
 
     /**

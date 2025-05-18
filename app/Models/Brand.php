@@ -10,15 +10,15 @@ class Brand extends Model
     //
     use HasFactory;
     protected $fillable = [
-        'sub_category_id',
+        'category_id',
         'name',
         'showhome',
         'slug',
         'status',
     ];
 
-    public function subCategory()
+    public function Category()
     {
-        return $this->belongsTo(SubCategory::class , 'sub_category_id');
+        return $this->belongsTo(Brand::class , 'category_id');
     }
 }

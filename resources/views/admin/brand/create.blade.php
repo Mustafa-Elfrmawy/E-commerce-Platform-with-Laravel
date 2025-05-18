@@ -52,10 +52,10 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="name">SupCategory</label>
-                                        <select name="sub_category_id" id="sub_category_id" class="form-control">
+                                        <select name="category_id" id="category_id" class="form-control">
                                             <option value="">Select</option>
-                                            @if (isset($sub_categories) && !empty($sub_categories))
-                                                @foreach ($sub_categories as $id => $name)
+                                            @if (isset($categories) && !empty($categories))
+                                                @foreach ($categories as $id => $name)
                                                     <option value="{{ $id }}">{{ $name }}</option>
                                                 @endforeach
                                             @endif
@@ -139,7 +139,7 @@
                         window.location.href = "{{ route('admin.brand.list') }}";
                     } else {
                         var errors = response.errors;
-                        const fields = ['name', 'slug', 'status', 'sub_category_id', 'show_home'];
+                        const fields = ['name', 'slug', 'status', 'category_id', 'show_home'];
 
                         fields.forEach(field => {
                             if (errors[field]) {
@@ -147,7 +147,7 @@
                                     case 'name':
                                     case 'slug':
                                     case 'status':
-                                    case 'sub_category_id':
+                                    case 'category_id':
                                     case 'show_home':
                                         $(`#${field}`).addClass('is-invalid');
                                         $(`#${field}`).next('.invalid-feedback').remove();

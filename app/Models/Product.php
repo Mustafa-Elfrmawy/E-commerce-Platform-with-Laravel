@@ -21,6 +21,7 @@ class Product extends Model
         'track_qty',
         'qty',
         'status',
+        'is_featured',
         'category_id',
         'image_id',
         'sub_category_id',

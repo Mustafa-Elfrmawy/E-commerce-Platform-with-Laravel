@@ -212,8 +212,10 @@
                                 <div class="card-body">
                                     <h2 class="h4 mb-3">Product status</h2>
                                     <div class="mb-3">
-                                        <select name="status" id="status" class="form-control">
-                                            <option {{ old('status') == 1 ? 'selected' : '' }} value="1">Active</option>
+                                        <select name="status" id="status" class="form-control" required>
+                                                <option value="">Select</option>
+                                            <option {{ old('status') == 1 ? 'selected' : '' }} value="1">Active
+                                            </option>
                                             <option {{ old('status') == 0 ? 'selected' : '' }} value="0">Block
                                             </option>
                                         </select>
@@ -231,9 +233,12 @@
                                     <div class="card-body">
                                         <h2 class="h4 mb-3">Product Show</h2>
                                         <div class="mb-3">
-                                            <select name="show_home" id="status" class="form-control">
-                                                <option {{ old('show_home') == 'yes' ? 'selected' : '' }} value="yes">show</option>
-                                                <option {{ old('show_home') == 'no' ? 'selected' : '' }} value="no">no-show</option>
+                                            <select name="show_home" id="status" class="form-control" required>
+                                                <option value="">Select</option>
+                                                <option {{ old('show_home') == 'yes' ? 'selected' : '' }} value="yes">
+                                                    show</option>
+                                                <option {{ old('show_home') == 'no' ? 'selected' : '' }} value="no">
+                                                    no-show</option>
                                             </select>
                                         </div>
                                     </div>
@@ -312,7 +317,8 @@
                                     <div class="card-body">
                                         <h2 class="h4 mb-3">Featured product</h2>
                                         <div class="mb-3">
-                                            <select name="is_featured" id="status" class="form-control">
+                                            <select name="is_featured" id="is_featured" class="form-control" required>
+                                                <option value="">Select</option>
                                                 <option {{ old('is_featured') == 'no' ? 'selected' : '' }} value="no">
                                                     No
                                                 </option>

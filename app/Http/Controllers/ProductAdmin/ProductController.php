@@ -60,7 +60,6 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $images_id = null;
         $data_images = null;
         $request->merge([
             'track_qty' => $request->input('track_qty') == 'on' ? 'yes' : 'no'
@@ -68,10 +67,13 @@ class ProductController extends Controller
 
         $validator = $this->helper->ruleValidate($request, 'storeProduct');
 
-        if ($validator->fails()) {
+        if ($validator->fails() && $request->hasFile('image')) {
             return redirect()->route('admin.product.create')->withInput()
                 ->withErrors($validator)
                 ->with('errorImage', 'please upload your image again and check your error');
+        }elseif($validator->fails()) {
+            return redirect()->route('admin.product.create')->withInput()
+                ->withErrors($validator);
         }
 
 

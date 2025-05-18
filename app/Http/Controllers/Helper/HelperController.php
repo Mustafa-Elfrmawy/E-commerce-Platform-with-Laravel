@@ -80,7 +80,7 @@ class HelperController extends Controller
             'storeBrand' => [
                 'name'            => 'required|string|unique:brands,name',
                 'slug'            => 'required|unique:brands,slug',
-                'sub_category_id' => 'required|integer|exists:sub_categories,id',
+                'category_id' => 'required|integer|exists:categories,id',
                 'status'          => 'required|in:0,1',
                 'show_home'       => 'required|in:yes,no',
             ],

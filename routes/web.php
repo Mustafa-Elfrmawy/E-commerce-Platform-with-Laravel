@@ -22,29 +22,26 @@ Route::group(['prefix' => 'admin'], function () {
 
 
 
-    Route::group(['middleware' => 'auth:admin'], function () {
+    /* start admin =========================================================================================================*/
+        Route::group(['middleware' => 'auth:admin'], function () { 
+            Route::get('/dashboard', [AdminLoginController::class, 'returnDashboard'])->name('admin.dashboard');
+            Route::post('logout', [AdminLoginController::class, 'destroy'])
+            ->name('logout');
 
-        /* start admin =========================================================================================================*/
-        Route::get('/dashboard', [AdminLoginController::class, 'returnDashboard'])->name('admin.dashboard');
-        Route::post('logout', [AdminLoginController::class, 'destroy'])
-        ->name('logout');
+        
+        
         Route::post('/category/uploadImage', [HandllerImage::class, 'store'])->name('admin.category.uploadImage');
-        /* start admin =========================================================================================================*/
-
         /* start category =========================================================================================================*/
         require __DIR__ . '/category.php';
         require __DIR__ . '/auth.php';
         require __DIR__ . '/pp.php';
         /* start category =========================================================================================================*/
-
-
+        
+        
         /* start product =========================================================================================================*/
-       
-/* end product =====================================================================================================================*/
-
-
-
-
-
+        
+        /* end product =====================================================================================================================*/
+        
     });
 });
+/* end admin =========================================================================================================*/

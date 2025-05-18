@@ -19,7 +19,8 @@ class CategoryFactory extends Factory
         return [
             'name' => fake()->unique()->name(),
             'slug' => fake()->unique()->slug(),
-            'status' => rand( 0,1),
+            'sub_category_id' => rand(1, 28),
+            'status' => rand(0, 1),
         ];
     }
 }
