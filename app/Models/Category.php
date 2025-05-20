@@ -9,7 +9,7 @@ class Category extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'image_id',
+        'image_category_id',
         'name',
         'sub_category_id',
         'showhome',
@@ -19,16 +19,13 @@ class Category extends Model
 
     public function image()
     {
-        return $this->belongsTo(ImageCategory::class, 'image_id');
+        return $this->belongsTo(ImageCategory::class, 'image_category_id');
     }
 
    public function subCategory()
    {
        return $this->belongsTo(SubCategory::class , 'sub_category_id');
    }
-      public function brand()
-   {
-       return $this->hasMany(Brand::class, 'category_id');
-   }
+
 
 }

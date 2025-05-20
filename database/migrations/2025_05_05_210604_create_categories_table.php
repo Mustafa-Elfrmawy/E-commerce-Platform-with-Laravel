@@ -16,14 +16,15 @@ return new class extends Migration
             $table->id();
             $table->string('name', 255)->unique();
             $table->string('slug', 255)->unique();
-            $table->tinyInteger('status')->defualt(1);
+
+            $table->tinyInteger('status')->default(1);
             $table->enum('showhome', ['yes', 'no'])->default('yes');
             $table->foreignId('sub_category_id')
                 ->nullable()
                 ->constrained('sub_categories')
                 ->onDelete('set null')
                 ->onUpdate('cascade');
-            $table->foreignIdFor(ImageCategory::class, 'image_id')->nullable();
+            $table->foreignIdFor(ImageCategory::class)->nullable()->constrained()->onDelete('set null')->onUpdate('cascade');
             $table->timestamps();
         });
     }

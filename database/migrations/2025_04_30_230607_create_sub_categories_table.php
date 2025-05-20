@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name' , 255);
             $table->string('slug' , 255);
-            $table->tinyInteger( 'status')->defualt(0);
+            $table->tinyInteger( 'status')->default(0);
             $table->enum( 'showhome', ['yes' , 'no'])->default('yes');
             $table->timestamps();
         });

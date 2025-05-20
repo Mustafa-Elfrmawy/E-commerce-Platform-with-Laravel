@@ -21,6 +21,11 @@ class SubCategory extends Model
        return $this->hasMany(SubCategory::class, 'sub_category_id');
    }
 
+         public function brand()
+   {
+       return $this->hasMany(SubCategory::class, 'sub_category_id');
+   }
+
  
 
 

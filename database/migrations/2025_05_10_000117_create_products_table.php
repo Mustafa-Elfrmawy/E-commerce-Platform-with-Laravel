@@ -40,7 +40,7 @@ return new class extends Migration
             $table->string('barcode', 50)->nullable();
             $table->string('sku', 50);
             $table->integer('qty')->default(1);
-            $table->tinyInteger('status')->default(0);
+            $table->tinyInteger('status')->default(1);
             $table->enum('showhome', ['yes', 'no'])->default('yes');
 
             $table->timestamps();

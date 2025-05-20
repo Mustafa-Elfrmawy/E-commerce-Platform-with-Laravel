@@ -113,7 +113,7 @@ class CategoryController extends Controller
             }
 
             /* check old image && delete */
-            if ($category->image_id) {
+            if ($category->image_category_id) {
                 $this->checkOldImage($category);
             }
             /* check old image && delete */
@@ -121,7 +121,8 @@ class CategoryController extends Controller
 
             /* set new Image id && uploade */
             $imageId = $this->uploadImage($request);
-            $category->image_id = $imageId;
+            // $category->image_category_id = $imageId;
+            $request->merge(['image_category_id' => $imageId]);
             /* set new Image id && uploade */
 
         }
@@ -146,7 +147,7 @@ class CategoryController extends Controller
             ]);
         }
 
-        $imageCategory = ImageCategory::find($category->image_id);
+        $imageCategory = ImageCategory::find($category->image_category_id);
         $category->delete();
         return $this->destroyAssistant($request , $imageCategory);
     }
@@ -179,7 +180,7 @@ class CategoryController extends Controller
 
     private function checkOldImage(object | null  $category)
     {
-        $oldImage = ImageCategory::find($category->image_id);
+        $oldImage = ImageCategory::find($category->image_category_id);
         if ($oldImage) {
             Storage::disk('public')->delete($oldImage->name);
             $oldImage->delete();

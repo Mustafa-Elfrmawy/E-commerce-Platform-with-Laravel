@@ -67,11 +67,13 @@ class ProductController extends Controller
 
         $validator = $this->helper->ruleValidate($request, 'storeProduct');
 
+        $this->checkCategory($request->input('category'));
+
         if ($validator->fails() && $request->hasFile('image')) {
             return redirect()->route('admin.product.create')->withInput()
                 ->withErrors($validator)
                 ->with('errorImage', 'please upload your image again and check your error');
-        }elseif($validator->fails()) {
+        } elseif ($validator->fails()) {
             return redirect()->route('admin.product.create')->withInput()
                 ->withErrors($validator);
         }
@@ -283,5 +285,12 @@ class ProductController extends Controller
             'status' => true,
             'message' => 'Product and associated images deleted successfully',
         ]);
+    }
+
+    protected function checkCategory($category_id)
+    {
+        $categories = Category::where('id', $category_id)
+            ->pluck('sub_category_id');
+            dd($categories);
     }
 }

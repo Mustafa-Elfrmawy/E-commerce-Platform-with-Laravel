@@ -111,7 +111,7 @@
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="Image">Image</label>
-                                    @if (!empty($category->image_id) && $category->image->name != null)
+                                    @if (!empty($category->image_category_id) && $category->image->name != null)
                                         <img src="{{ asset('storage/' . $category->image->name) }}" alt="Category Image"
                                             class="img-fluid">
                                     @endif

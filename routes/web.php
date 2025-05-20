@@ -7,7 +7,7 @@ use App\Http\Controllers\ProductAdmin\ProductController;
 
 
 
-
+    
 // Route::get('/', function () {
 //     return redirect()->route('admin.login');
 // })->name('login');

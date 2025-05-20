@@ -60,7 +60,7 @@
                                     <th width="60">ID</th>
                                     <th>Name</th>
                                     <th>Slug</th>
-                                    <th width="100">category</th>
+                                    <th width="100">subCategory</th>
                                     <th width="100">Status</th>
                                     <th width="100">Action</th>
                                 </tr>
@@ -72,8 +72,8 @@
                                             <td>{{ $brand->id }}</td>
                                             <td>{{ $brand->name }}</td>
                                             <td>{{ $brand->slug }}</td>
-                                            @if (!empty($brand->Category->name))
-                                                <td>{{ $brand->Category->name }}</td>
+                                            @if (!empty($brand->subCategory->name))
+                                                <td>{{ $brand->subCategory->name }}</td>
                                             @else
                                                 <td style="color: red">empty</td>
                                             @endif

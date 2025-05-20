@@ -23,9 +23,9 @@ class BrandController extends Controller
     
     public function create(): View
     {
-        // $sub_categories = SubCategory::pluck('name' , 'id');
-        $categories = Category::pluck('name' , 'id');
-        return view('admin.brand.create' , compact(/* 'sub_categories' */  'categories'));
+        // $categories = Category::pluck('name' , 'id');
+        $sub_categories = SubCategory::pluck('name' , 'id');
+        return view('admin.brand.create' , compact('sub_categories' /* , 'categories' */));
     }
     
     public function index(Request $request): View
@@ -47,7 +47,7 @@ class BrandController extends Controller
         if($validate->passes()) {
 
               Brand::create([
-                'category_id' => $request->input('category_id'),
+                'sub_category_id' => $request->input('sub_category_id'),
                 'name' => $request->input('name'),
                 'slug' => $request->input('slug'),
                 'status' => $request->input('status'),

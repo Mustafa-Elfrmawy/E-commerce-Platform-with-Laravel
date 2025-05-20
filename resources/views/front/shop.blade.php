@@ -38,8 +38,8 @@
                           <div class="accordion-body">
                             <div class="navbar-nav">
                               @if ($categories->isNotEmpty())
-                                <a href="{{ route('front.shop', ['category_id'=>$categories->first()->id,'sub_category_id' =>$sub_category->id] )}}"
-                                  class="nav-item nav-link">all from this ParentCategory</a>
+                                <a href="{{ route('front.shop', ['category_id' => $categories->first()->id, 'sub_category_id' => $sub_category->id]) }}"
+                                  class="nav-item nav-link">all from this {{$sub_category->name}}</a>
                                 @foreach ($categories as $category)
                                   @if ($category->sub_category_id == $sub_category->id)
                                     <a href="{{ route('front.shop', $category->id) }}"

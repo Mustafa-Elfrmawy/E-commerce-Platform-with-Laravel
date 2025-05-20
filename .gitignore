@@ -21,6 +21,5 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
-file.txt
+/Testing
 /laravel_10_ecomm_templates
-

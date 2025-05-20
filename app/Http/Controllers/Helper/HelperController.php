@@ -18,7 +18,7 @@ class HelperController extends Controller
             $category->slug = $request->slug;
             $category->status = $request->status;
             $category->showhome = $request->show_home;
-            $category->image_id = $request->image;
+            $category->image_category_id = $request->image;
             $category->sub_category_id = $request->sub_category_id;
             $category->save();
             $request->session()->flash('success', 'Category created successfully');
@@ -54,7 +54,7 @@ class HelperController extends Controller
                 'name'         => 'required|string|unique:categories,name',
                 'slug'         => 'required|unique:categories,slug',
                 'sub_category_id'  => 'required|integer|exists:sub_categories,id',
-                'image'        => 'nullable|unique:categories,image_id|exists:image_categories,id',
+                'image_category_id'        => 'nullable|unique:categories,image_category_id|exists:image_categories,id',
                 'status'       => 'required|in:0,1',
                 'show_home'       => 'required|in:yes,no',
             ],
@@ -73,14 +73,14 @@ class HelperController extends Controller
             ],
             'updateSubCategory'  => [
                 'name'         => 'required|string|unique:sub_categories,name,' . $request->input('id'),
-                'slug'         => 'required|unique:sub_categories,slug,'.        $request->input('id'),
+                'slug'         => 'required|unique:sub_categories,slug,' .        $request->input('id'),
                 'status'       => 'required|in:0,1',
                 'show_home'       => 'required|in:yes,no',
             ],
             'storeBrand' => [
                 'name'            => 'required|string|unique:brands,name',
                 'slug'            => 'required|unique:brands,slug',
-                'category_id' => 'required|integer|exists:categories,id',
+                'sub_category_id' => 'required|integer|exists:sub_categories,id',
                 'status'          => 'required|in:0,1',
                 'show_home'       => 'required|in:yes,no',
             ],
@@ -151,6 +151,7 @@ class HelperController extends Controller
 
         if ($route == 'admin.category.list') {
             $category->sub_category_id = $request->sub_category_id;
+            $category->image_category_id = $request->image_category_id;
         }
 
         $category->status = $request->status;

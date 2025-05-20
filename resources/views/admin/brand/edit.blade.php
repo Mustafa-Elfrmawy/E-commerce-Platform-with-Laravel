@@ -39,8 +39,8 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="name">SupCategory</label>
-                                        <select name="sub_category_id" id="sub_category_id" class="form-control">
-
+                                        <select name="sub_category_id" id="sub_category_id" class="form-control" required>
+                                            <option value="">Select</option>
                                             @if (isset($sub_categories) && !empty($sub_categories))
                                                 @foreach ($sub_categories as $id => $name)
                                                     <option value="{{ $id }}"

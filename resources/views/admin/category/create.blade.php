@@ -53,6 +53,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <input type="hidden" id="imageValue" name="image">
+                                        {{-- <input type="hidden" name="help" value="1" class="form-control"> --}}
                                         <label for="Image">Image</label>
                                         <div class="dropzone dz-clickable">
                                             <div class="dz-message needsclick">
