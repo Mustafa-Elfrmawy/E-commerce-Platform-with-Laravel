@@ -38,7 +38,13 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid my-2">
-                @include('admin.layout.message')
+                    @if (Session::has('cat&sub'))
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        {{ Session::get('cat&sub') }}
+                    </div>
+                @endif
+                {{-- @include('admin.layout.message') --}}
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1>Update Product</h1>
@@ -212,12 +218,22 @@
                                                         {{ $product->track_qty == 'yes' ? 'checked' : '' }}>
                                                     <label for="track_qty" class="custom-control-label">Track
                                                         Quantity</label>
+                                                    @if ($errors->has('track_qty'))
+                                                        <div class="alert alert-danger mt-2">
+                                                            {{ $errors->first('track_qty') }}
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             </div>
                                             <div class="mb-3">
                                                 <input value="{{ $product->qty }}" type="number" min="0"
                                                     name="qty" id="qty" class="form-control"
                                                     placeholder="qty">
+                                                @if ($errors->has('track_qty'))
+                                                    <div class="alert alert-danger mt-2">
+                                                        {{ $errors->first('qty') }}
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -230,12 +246,17 @@
                                     <h2 class="h4 mb-3">Product status</h2>
                                     <div class="mb-3">
                                         <select name="status" id="status" class="form-control" required>
-                                                <option value="">Select</option>
+                                            <option value="">Select</option>
                                             <option {{ $product->status == 1 ? 'selected' : '' }} value="1">Active
                                             </option>
                                             <option {{ $product->status == 0 ? 'selected' : '' }} value="0">Block
                                             </option>
                                         </select>
+                                        @if ($errors->has('status'))
+                                            <div class="alert alert-danger mt-2">
+                                                {{ $errors->first('status') }}
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -247,12 +268,19 @@
                                         <div class="mb-3">
                                             <select name="show_home" id="status" class="form-control" required>
                                                 <option value="">Select</option>
-                                                <option {{ $product->showhome == 'yes' ? 'selected' : '' }} value="yes">
+                                                <option {{ $product->showhome == 'yes' ? 'selected' : '' }}
+                                                    value="yes">
                                                     show
                                                 </option>
-                                                <option {{ $product->showhome == 'no' ? 'selected' : '' }} value="no">no-show
+                                                <option {{ $product->showhome == 'no' ? 'selected' : '' }} value="no">
+                                                    no-show
                                                 </option>
                                             </select>
+                                            @if ($errors->has('show_home'))
+                                                <div class="alert alert-danger mt-2">
+                                                    {{ $errors->first('show_home') }}
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -265,7 +293,8 @@
                                             <select name="category" id="category" class="form-control" required>
                                                 <option value="">Select</option>
                                                 @if (isset($categories) && $categories != null)
-                                                    @foreach ($categories as $id => $name)d
+                                                    @foreach ($categories as $id => $name)
+                                                        d
                                                         <option value="{{ $id }}"
                                                             {{ $product->category_id == $id ? 'selected' : '' }}>
                                                             {{ $name }}
@@ -273,6 +302,11 @@
                                                     @endforeach
                                                 @endif
                                             </select>
+                                            @if ($errors->has('category'))
+                                                <div class="alert alert-danger mt-2">
+                                                    {{ $errors->first('category') }}
+                                                </div>
+                                            @endif
                                         </div>
                                         <div class="mb-3">
                                             <label for="sub_category">Sub category</label>
@@ -287,6 +321,11 @@
                                                     @endforeach
                                                 @endif
                                             </select>
+                                            @if ($errors->has('sub_category'))
+                                                <div class="alert alert-danger mt-2">
+                                                    {{ $errors->first('sub_category') }}
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -306,6 +345,11 @@
                                                     @endforeach
                                                 @endif
                                             </select>
+                                            @if ($errors->has('brand'))
+                                                <div class="alert alert-danger mt-2">
+                                                    {{ $errors->first('brand') }}
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -325,6 +369,11 @@
                                                     Yes
                                                 </option>
                                             </select>
+                                            @if ($errors->has('brand'))
+                                                <div class="alert alert-danger mt-2">
+                                                    {{ $errors->first('brand') }}
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

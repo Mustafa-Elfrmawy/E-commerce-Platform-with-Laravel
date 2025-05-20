@@ -21,16 +21,14 @@ class UploadImage extends Controller
             ]);
         elseif($status  === 'updateProduct'):
         $validate = Validator::make($request->all(), [
-                'image' => 'nullable|array|max:'.$request->maxImage,
+                'image' => 'nullable|array|max:' . $request->maxImage,
                 'image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
 
         endif;
         if ($validate->fails()) {
-            return ['Image_errors' => $validate->errors()];
-        }
-
-        if ($request->hasFile('image')) {
+            return (object) $validate->errors();
+        } 
             $uploadedImages = [];
 
             foreach ($request->file('image') as $image) {
@@ -38,10 +36,7 @@ class UploadImage extends Controller
                 $uploadedImages[] = $this->uploadImage($image);
             }
 
-            return $uploadedImages;
-        } else {
-            return ['Image_errors' => 'while upload image'];
-        }
+            return $uploadedImages; 
     }
 
     private function uploadImage($image)
@@ -52,10 +47,7 @@ class UploadImage extends Controller
         $imageCreate->image_product = $path;
         $imageCreate->save();
 
-        return [
-            'id' => $imageCreate->id,
-            'image_name' => asset('storage/' . $path),
-        ];
+        return   $imageCreate->id;
     }
 
 

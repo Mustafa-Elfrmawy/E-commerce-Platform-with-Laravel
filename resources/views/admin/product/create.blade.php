@@ -39,6 +39,13 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid my-2">
+
+                @if (Session::has('cat&sub'))
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        {{ Session::get('cat&sub') }}
+                    </div>
+                @endif
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1>Create Product</h1>
@@ -119,7 +126,12 @@
                                             {{-- alert --}}
                                             @include('admin.layout.alertImage')
                                         </div>
-
+                                        @if ($errors->has('price'))
+                                        <div class="alert alert-danger mt-2">
+                                            {{ $errors->first('price') }}
+                                        </div>
+                                        @endif
+                                        {{-- alert --}}
 
 
 
@@ -213,7 +225,7 @@
                                     <h2 class="h4 mb-3">Product status</h2>
                                     <div class="mb-3">
                                         <select name="status" id="status" class="form-control" required>
-                                                <option value="">Select</option>
+                                            <option value="">Select</option>
                                             <option {{ old('status') == 1 ? 'selected' : '' }} value="1">Active
                                             </option>
                                             <option {{ old('status') == 0 ? 'selected' : '' }} value="0">Block
@@ -373,16 +385,16 @@
                 }
             });
         });
-        document.addEventListener('DOMContentLoaded', function() {
-            const imageInput = document.getElementById('imageValue');
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     const imageInput = document.getElementById('imageValue');
 
-            imageInput.addEventListener('change', function() {
-                if (this.files.length > 10) {
-                    alert('sorry you can not upload < 10 image.');
-                    imageInput.value = null;
-                }
-            });
-        });
+        //     imageInput.addEventListener('change', function() {
+        //         if (this.files.length > 10) {
+        //             alert('sorry you can not upload < 10 image.');
+        //             imageInput.value = null;
+        //         }
+        //     });
+        // });
     </script>
 @endsection
 @endsection
