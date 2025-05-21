@@ -157,7 +157,7 @@
 @section('custom-js')
     <script>
         function deleteProduct(id) {
-            if (confirm('Are you sure want to delete this Category')) {
+            if (confirm('Are you sure want to delete this Product')) {
                 var url = "{{ route('admin.product.deleteProduct', ['product_id' => ':id']) }}";
                 var newUrl = url.replace(':id', id);
                 $.ajax({

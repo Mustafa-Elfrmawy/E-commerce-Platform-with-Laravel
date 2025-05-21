@@ -48,9 +48,9 @@ class ProductController extends Controller
     public function create()
     {
 
-        $sub_categories = SubCategory::pluck('name', 'id');
-        $brands = Brand::pluck('name', 'id');
-        $categories = Category::pluck('name', 'id');
+        $sub_categories = $this->returnData(SubCategory::class);
+        $brands =         $this->returnData(Brand::class);
+        $categories =     $this->returnData(Category::class);
 
         return view('admin.product.create', compact('sub_categories', 'brands', 'categories'));
     }
@@ -61,39 +61,35 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $data_images = null;
-        $request->merge([
-            'track_qty' => $request->input('track_qty') === 'on' ? 'yes' : 'no'
-        ]);
+
+        $this->changeTrackQty($request);
+
+
 
         $checkCategory = $this->checkCategory($request->input('category'), $request->input('sub_category'));
-        if ($checkCategory):
-            return  $this->checkCategoryRedirect('no need', 'admin.product.create');
+        if ($checkCategory && $request->hasFile('image')):
+            return  $this->checkRedirect('no need', 'checkCategoryStore');
+        elseif ($checkCategory):
+            return  $this->checkRedirect('no need', 'checkCategoryStore2');
         endif;
-        $validator = $this->helper->ruleValidate($request, 'storeProduct');
 
+        $validator = $this->helper->ruleValidate($request, 'storeProduct');
         if ($validator->fails() && $request->hasFile('image')) :
-            return redirect()->route('admin.product.create')->withInput()
-                ->withErrors($validator)
-                ->with('errorImage', 'please upload your image again and check your error');
+            return  $this->checkRedirect('no need', 'validate&&image', $validator);
         elseif ($validator->fails()) :
-            return redirect()->route('admin.product.create')->withInput()
-                ->withErrors($validator);
+            return  $this->checkRedirect('no need', 'validate', $validator);
         endif;
 
 
         if ($request->image) {
             $information_images  = $this->helperImage->store($request, 'storeProduct');
             if (is_object($information_images)) {
-                return redirect()->route('admin.product.create')->withInput()->withErrors($information_images)->with('errorImage', 'please upload your image again and check your error');
+                return  $this->checkRedirect('no need', 'validateImage', $information_images);
             }
         }
         if (isset($information_images) && is_array($information_images)) {
             $request->merge([
                 'image_id' => implode(',', $information_images),
-            ]);
-        } else {
-            $request->merge([
-                'image_id' => null,
             ]);
         }
 
@@ -118,11 +114,14 @@ class ProductController extends Controller
         if (empty($product)) {
             return redirect()->route('admin.product.list')->withErrors('Product not found');
         }
+
         $images = ProductImage::latest()->whereIn('id', explode(',', $product->image_id))
             ->pluck('image_product', 'id');
-        $sub_categories = SubCategory::pluck('name', 'id');
-        $brands = Brand::pluck('name', 'id');
-        $categories = Category::pluck('name', 'id');
+
+        $sub_categories = $this->returnData(SubCategory::class);
+        $brands =         $this->returnData(Brand::class);
+        $categories =     $this->returnData(Category::class);
+
         return view('admin.product.edit', compact('product', 'sub_categories', 'brands', 'categories', 'images'));
     }
     /**
@@ -132,28 +131,14 @@ class ProductController extends Controller
     {
         $information_images = null;
         $product = Product::find($product_id);
+
         if (!$product) {
             return redirect()->route('admin.product.list')->withErrors('Product not found');
         }
-        $request->merge([
-            'track_qty' => $request->input('track_qty') === 'on' ? 'yes' : 'no'
-        ]);
-        $no_change =
-            $product->title             ==        $request->input('title')   &&
-            $product->slug              ==            $request->input('slug') &&
-            $product->barcode           ==         $request->input('barcode') &&
-            $product->sku               ==             $request->input('sku') &&
-            $product->description       ==     $request->input('description') &&
-            $product->price             ==           $request->input('price') &&
-            $product->compare_price     ==   $request->input('compare_price') &&
-            $product->track_qty         ==       $request->input('track_qty') &&
-            $product->qty               ==             $request->input('qty') &&
-            $product->status            ==          $request->input('status') &&
-            $product->is_featured       ==     $request->input('is_featured') &&
-            $product->category_id       ==     $request->input('category')   &&
-            $product->sub_category_id   == $request->input('sub_category')   &&
-            $product->showhome   == $request->input('show_home')   &&
-            $product->brand_id          ==        $request->input('brand');
+
+        $this->changeTrackQty($request);
+
+        $no_change = $this->noChanges($product, $request);
 
         if ($no_change && !$request->hasFile('image')) {
             return redirect()->route('admin.product.list')->with('warning', 'No changes detected');
@@ -161,18 +146,17 @@ class ProductController extends Controller
         $checkCategory = $this->checkCategory($request->input('category'), $request->input('sub_category'));
 
         if ($checkCategory):
-            return  $this->checkCategoryRedirect($product_id, 'admin.product.edit');
+            return  $this->checkRedirect($product_id, 'checkCategory');
         endif;
 
 
 
 
         $validator = $this->helper->ruleValidate($request, 'updateProduct');
-        if ($validator->fails()) {
-            return redirect()->route('admin.product.edit', $product_id)
-                ->withInput()
-                ->withErrors($validator->errors())
-                ->with('errorImage', 'please upload your image again and check your error');
+        if ($validator->fails() && $request->hasFile('image')) {
+            return  $this->checkRedirect($product_id, 'validate&&imageUpdate', $validator);
+        } elseif ($validator->fails()) {
+            return  $this->checkRedirect($product_id, 'validateUpdate', $validator);
         }
 
 
@@ -180,13 +164,16 @@ class ProductController extends Controller
             $request->merge([
                 'maxImage' => empty($product->image_id) ? 10 : 10 - count(explode(',', $product->image_id)),
             ]);
+
             if ($request->maxImage < 1):
                 return redirect()->route('admin.product.edit', $product_id)->withInput()->with('error_image', 'You have reached the maximum number of images allowed for this product.');
             endif;
+
             $information_images  = $this->helperImage->store($request, 'updateProduct');
             if (is_object($information_images)) {
-                return redirect()->route('admin.product.edit', $product_id)->withInput()->withErrors($information_images);
+                return  $this->checkRedirect($product_id, 'validateUpdate', $validator);
             }
+
             $this->updateAssistantChild($product->image_id,  $information_images,  $request);
         }
 
@@ -296,7 +283,6 @@ class ProductController extends Controller
     {
         $categories = Category::where('id', $category_id)
             ->pluck('sub_category_id');
-        // dd($categories[0] , $sub_category_id );
         if ($categories[0] == $sub_category_id) {
             return false;
         } else {
@@ -304,22 +290,87 @@ class ProductController extends Controller
         }
     }
 
-    protected function checkCategoryRedirect(string $product_id, string $route)
+    protected function checkRedirect(string $product_id, string $statusRedirect, object $validator = null)
     {
 
         // $this->checkCategoryRedirect( $product_id , 'admin.product.edit' );
-        if ($route === 'admin.product.edit') {
-            return redirect()->route($route, $product_id)->withInput()
-                ->with('cat&sub', 'You will be violating the rules of the system. Please adjust the categories to match subcategory and brand and upload your image again.')
-                ->with('errorImage', 'please upload your image again and check your error');
+
+        switch ($statusRedirect) {
+            case 'checkCategory':
+                return redirect()->route('admin.product.edit', $product_id)->withInput()
+                    ->with('cat&sub', 'You will be violating the rules of the system. Please adjust the categories to match subcategory and brand and upload your image again.')
+                    ->with('errorImage', 'please upload your image again and check your error');
+                break;
+            case 'checkCategoryStore':
+                return redirect()->route('admin.product.create')->withInput()
+                    ->with('cat&sub', 'You will be violating the rules of the system. Please adjust the categories to match subcategory and brand and upload your image again.')
+                    ->with('errorImage', 'please upload your image again and check your error');
+                break;
+            case 'checkCategoryStore2':
+                return redirect()->route('admin.product.create')->withInput()
+                    ->with('cat&sub', 'You will be violating the rules of the system. Please adjust the categories to match subcategory and brand and upload your image again.');
+                break;
+            case 'validate&&image' || 'validateImage':
+                return redirect()->route('admin.product.create')->withInput()
+                    ->withErrors($validator)
+                    ->with('errorImage', 'please upload your image again and check your error');
+                break;
+            case 'validate':
+                return redirect()->route('admin.product.create')->withInput()
+                    ->withErrors($validator);
+                break;
+            case 'validate&&imageUpdate':
+                return redirect()->route('admin.product.edit', $product_id)
+                    ->withInput()
+                    ->withErrors($validator)
+                    ->with('errorImage', 'please upload your image again and check your error');
+                break;
+            case 'validateUpdate':
+                return redirect()->route('admin.product.edit', $product_id)->withInput()
+                    ->withErrors($validator);
+                break;
+            default:
+                return redirect()->route('admin.product.list');
+                break;
         }
-        if ($route === 'admin.product.create') {
-            return redirect()->route('admin.product.create')->withInput()
-                ->with('cat&sub', 'You will be violating the rules of the system. Please adjust the categories to match subcategory and brand and upload your image again.')
-                ->with('errorImage', 'please upload your image again and check your error');
+    }
+
+    protected function returnData(string $class_name)
+    {
+
+        $data = $class_name::pluck('name', 'id');
+
+        return $data;
+    }
+
+    protected function noChanges(object $product, Request $request)
+    {
+        $no_change =
+            $product->title             ==        $request->input('title')   &&
+            $product->slug              ==            $request->input('slug') &&
+            $product->barcode           ==         $request->input('barcode') &&
+            $product->sku               ==             $request->input('sku') &&
+            $product->description       ==     $request->input('description') &&
+            $product->price             ==           $request->input('price') &&
+            $product->compare_price     ==   $request->input('compare_price') &&
+            $product->track_qty         ==       $request->input('track_qty') &&
+            $product->qty               ==             $request->input('qty') &&
+            $product->status            ==          $request->input('status') &&
+            $product->is_featured       ==     $request->input('is_featured') &&
+            $product->category_id       ==     $request->input('category')   &&
+            $product->sub_category_id   == $request->input('sub_category')   &&
+            $product->showhome   == $request->input('show_home')   &&
+            $product->brand_id          ==        $request->input('brand');
+
+        if ($no_change) {
+            return true;
+        } else {
+            return false;
         }
-        // return redirect()->route('admin.product.edit', $product_id)->withInput()
-        // ->with('cat&sub', 'You will be violating the rules of the system. Please adjust the categories to match subcategory and brand and upload your image again.')
-        // ->with('errorImage', 'please upload your image again and check your error');
+    }
+
+    protected function changeTrackQty(Request $request)
+    {
+        $request->merge(['track_qty' => $request->input('track_qty') === 'on' ? 'yes' : 'no']);
     }
 }

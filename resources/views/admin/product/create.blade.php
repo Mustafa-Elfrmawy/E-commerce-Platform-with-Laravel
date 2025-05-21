@@ -61,7 +61,7 @@
         <section class="content">
             <!-- Default box -->
             <div class="container-fluid">
-                <form action="{{ route('admin.product.store') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('admin.product.store') }}" method="post"  enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <div class="col-md-8">
@@ -126,11 +126,6 @@
                                             {{-- alert --}}
                                             @include('admin.layout.alertImage')
                                         </div>
-                                        @if ($errors->has('price'))
-                                        <div class="alert alert-danger mt-2">
-                                            {{ $errors->first('price') }}
-                                        </div>
-                                        @endif
                                         {{-- alert --}}
 
 

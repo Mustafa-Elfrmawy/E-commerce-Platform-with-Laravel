@@ -27,7 +27,7 @@ class UploadImage extends Controller
 
         endif;
         if ($validate->fails()) {
-            return (object) $validate->errors();
+            return  $validate;
         } 
             $uploadedImages = [];
 

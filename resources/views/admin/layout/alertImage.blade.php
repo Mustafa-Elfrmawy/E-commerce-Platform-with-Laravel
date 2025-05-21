@@ -9,9 +9,10 @@
         @if (Session::has('errors'))
             @foreach ($errors->all() as $item)
                 @if (
-                    $item === 'The image.0 field must be a file of type: jpeg, png, jpg, gif, svg.' ||
+                        $item === 'The image.0 field must be a file of type: jpeg, png, jpg, gif, svg.' ||
                         $item === 'The image.0 field must be an image.' ||
-                        $item === 'please upload your image again and check your error')
+                        $item === 'please upload your image again and check your error' ||
+                        $item === 'The image.0 field must not be greater than 2048 kilobytes.' )
                     <div class="alert alert-danger">
                         {{ $item }}
                     </div>

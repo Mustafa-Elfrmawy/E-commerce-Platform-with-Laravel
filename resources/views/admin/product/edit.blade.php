@@ -135,7 +135,7 @@
                                                             <img src="{{ asset('storage/' . $name) }}" class="card-img-top"
                                                                 alt="Image" style="height: 200px;">
                                                         @else
-                                                            <img src="{{ asset('product/images/default.png') }}"
+                                                            <img src="{{ asset('Front/product/images/default.png') }}"
                                                                 class="card-img-top" alt="Image not found"
                                                                 style="height: 200px;">
                                                         @endif
