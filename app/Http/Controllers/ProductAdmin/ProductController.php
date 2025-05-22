@@ -310,7 +310,8 @@ class ProductController extends Controller
                 return redirect()->route('admin.product.create')->withInput()
                     ->with('cat&sub', 'You will be violating the rules of the system. Please adjust the categories to match subcategory and brand and upload your image again.');
                 break;
-            case 'validate&&image' || 'validateImage':
+            case 'validate&&image' :
+            case 'validateImage':
                 return redirect()->route('admin.product.create')->withInput()
                     ->withErrors($validator)
                     ->with('errorImage', 'please upload your image again and check your error');

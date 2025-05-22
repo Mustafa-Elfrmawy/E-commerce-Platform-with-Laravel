@@ -25,7 +25,10 @@ class Helpers
         $this->categories = Category::where('showhome', 'yes')->where('status', 1)->latest()->get();
         $this->sub_categories = SubCategory::where('showhome', 'yes')->where('status', 1)->latest()->get();
         $this->brands = Brand::where([['showhome', 'yes'],  ['status', 1]])->latest()->get();
-        $this->products = Product::where([['showhome', 'yes'], ['is_featured', 'yes'], ['status', 1]]);
+        $this->products = Product::query()
+            ->where('showhome', 'yes')
+            ->where('is_featured', 'yes')
+            ->where('status', 1);
         $this->products_latest = Product::where([['showhome', 'yes'], ['is_featured', 'no'], ['status', 1]])->latest()->get();
     }
 
