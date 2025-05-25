@@ -27,4 +27,9 @@ class Product extends Model
         'sub_category_id',
         'brand_id',
     ];
+
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
 }

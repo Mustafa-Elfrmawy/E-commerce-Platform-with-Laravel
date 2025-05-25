@@ -1,5 +1,8 @@
 <!-- /.navbar -->
 <!-- Main Sidebar Container -->
+@php
+    use function App\Url\my_asset;
+@endphp
 @extends('admin.layout.app')
 @section('title')
     Dashboard
@@ -112,7 +115,7 @@
                                 <div class="mb-3">
                                     <label for="Image">Image</label>
                                     @if (!empty($category->image_category_id) && $category->image->name != null)
-                                        <img src="{{ asset('storage/' . $category->image->name) }}" alt="Category Image"
+                                        <img src="{{ my_asset('storage/' . $category->image->name) }}" alt="Category Image"
                                             class="img-fluid">
                                     @endif
                                     <div>

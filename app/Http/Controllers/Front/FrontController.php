@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductImage;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 
@@ -20,6 +21,21 @@ class FrontController extends Controller
         // $products = Product::where('showhome' , 'yes')->where('is_featured' , 'yes')->where('status' , 1)->latest()->get();
         // $products_latest = Product::where('showhome' , 'yes')->where('is_featured' , 'no')->where('status' , 1)->latest()->get();
         return view('front.home'  /* compact('categories' , 'sub_categories' , 'products' , 'products_latest' )  */);
+    }
+    public function indexProduct(string $id)
+    {
+        $product = Product::find($id);
+        if ( empty($product) || $product->status != 1) {
+            return redirect()->route('front.home')->with('error', 'Product not found or inactive.');
+        }
+        $products_related = Product::where('status', 1)
+            ->where('showhome', 'yes')
+            ->where('id', '!=' , $product->id)
+            ->where('category_id', $product->category_id)
+            ->get();
+            $images = explode( ',' , $product->image_id);
+        $images = ProductImage::whereIn('id', $images)->get();
+        return view('front.product', compact('product', 'products_related' , 'images'));
     }
 
     /**

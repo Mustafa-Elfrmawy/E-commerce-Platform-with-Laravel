@@ -7,11 +7,11 @@ use App\Http\Controllers\ProductAdmin\ProductController;
 
 
 
-    
+
 // Route::get('/', function () {
 //     return redirect()->route('admin.login');
 // })->name('login');
-        require __DIR__ . '/front.php';
+
 
 
 Route::group(['prefix' => 'admin'], function () {
@@ -23,25 +23,24 @@ Route::group(['prefix' => 'admin'], function () {
 
 
     /* start admin =========================================================================================================*/
-        Route::group(['middleware' => 'auth:admin'], function () { 
-            Route::get('/dashboard', [AdminLoginController::class, 'returnDashboard'])->name('admin.dashboard');
-            Route::post('logout', [AdminLoginController::class, 'destroy'])
+    Route::group(['middleware' => 'auth:admin'], function () {
+        Route::get('/dashboard', [AdminLoginController::class, 'returnDashboard'])->name('admin.dashboard');
+        Route::post('logout', [AdminLoginController::class, 'destroy'])
             ->name('logout');
 
-        
-        
-        Route::post('/category/uploadImage', [HandllerImage::class, 'store'])->name('admin.category.uploadImage');
+
+
         /* start category =========================================================================================================*/
+        Route::post('/category/uploadImage', [HandllerImage::class, 'store'])->name('admin.category.uploadImage');
         require __DIR__ . '/category.php';
         require __DIR__ . '/auth.php';
         require __DIR__ . '/pp.php';
         /* start category =========================================================================================================*/
-        
-        
-        /* start product =========================================================================================================*/
-        
-        /* end product =====================================================================================================================*/
-        
     });
 });
 /* end admin =========================================================================================================*/
+
+
+/* start product =========================================================================================================*/
+require __DIR__ . '/front.php';
+/* end product =====================================================================================================================*/
