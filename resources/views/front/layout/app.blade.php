@@ -247,7 +247,7 @@
                 success: function(response) {
                     if (response.status == true) {
                         if (confirm(response.message + ' ' + productTitle +
-                            ', do you want to go to the cart?')) {
+                                ', do you want to go to the cart?')) {
                             window.location.href = "{{ route('front.showCart') }}";
                         }
                     } else {
@@ -282,9 +282,10 @@
                 }
             });
         }
-        quantityCartIcon()
     </script>
-
+    @if (Auth::guard('user')->check())
+        <script> quantityCartIcon() </script>
+    @endif
     @yield('custom-js')
 </body>
 

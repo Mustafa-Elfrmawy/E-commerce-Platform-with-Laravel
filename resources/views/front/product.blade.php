@@ -3,7 +3,7 @@
 @endphp
 
 {{-- @dd(Auth::guard('user')->user()) --}}
-@if (Auth::guard('user')->check())
+@if (Auth::guard('user')->check() )
     <p>المستخدم مسجل دخول: {{ Auth::guard('user')->user()->name }}</p>
 @else
     <p>المستخدم غير مسجل دخول</p>

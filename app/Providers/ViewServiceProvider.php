@@ -11,14 +11,12 @@ class ViewServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        // تأكد من عدم التنفيذ في سطر الأوامر (Console)
         if ($this->app->runningInConsole()) {
             return;
         }
 
         $urlSegments = $this->getUrlSegments();
 
-        // تنفيذ فقط على الصفحة الرئيسية (home)
         if (!$this->isHomeRoute($urlSegments) || $this->isInvalidMethod()) {
             return;
         }
