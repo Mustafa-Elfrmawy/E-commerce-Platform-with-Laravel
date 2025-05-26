@@ -2,18 +2,39 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Http\Controllers\Controller;
 use App\Models\Cart;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
     //
     public function cart()
     {
-        return view('front.cart');
+        $carts = Cart::where('user_id', Auth::id())->get();
+        if ($carts->isEmpty()) {
+            return redirect()->route('front.home')->with('message', 'Your cart is empty.');
+        }
+        return view('front.cart', compact('carts'));
     }
+    public function quantityCartIcon()
+    {
+        $count = \App\Models\Cart::where('user_id', Auth::id())->count();
+        if (!$count) {
+            return response()->json([
+                'status' => true,
+                'message' => 0
+            ]);
+        }
+        return response()->json([
+            'status' => true,
+            'message' => $count
+        ]);
+    }
+
     public function addToCart(string $id)
     {
         $cart = Cart::where('user_id', Auth::id())
@@ -36,6 +57,96 @@ class CartController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Item with has been added to the cart.name:'
+        ]);
+    }
+
+    public function plusQuantity(Request $request)
+    {
+        $checkQty = Product::find($request->product_id);
+        $checkQtyCart = Cart::where('product_id', $request->product_id)->where('user_id', Auth::id())->first();
+
+
+        if (!empty($checkQtyCart) && !empty($checkQty) && $checkQty->qty > $checkQtyCart->quantity) {
+
+            $updated = DB::table('cart')
+                ->where('product_id', $request->product_id)
+                ->where('user_id', $request->user_id)
+                ->increment('quantity');
+            if ($updated) :
+                $cart = DB::table('cart')
+                    ->where('product_id', $request->product_id)
+                    ->where('user_id', $request->user_id)
+                    ->first();
+
+                return response()->json([
+                    'status' => true,
+                    'new_quantity' => $cart->quantity,
+                ]);
+            endif;
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Cart item not found.  or  We are out of stock the stock available' . $checkQty->qty
+        ]);
+    }
+
+    public function minusQuantity(Request $request)
+    {
+        $cart = DB::table('cart')
+            ->where('product_id', $request->product_id)
+            ->where('user_id', $request->user_id)
+            ->first();
+
+        if ($cart) {
+            if ($cart->quantity > 1) {
+                DB::table('cart')
+                    ->where('product_id', $request->product_id)
+                    ->where('user_id', $request->user_id)
+                    ->decrement('quantity');
+
+                $updatedCart = DB::table('cart')
+                    ->where('product_id', $request->product_id)
+                    ->where('user_id', $request->user_id)
+                    ->first();
+
+                return response()->json([
+                    'status' => true,
+                    'new_quantity' => $updatedCart->quantity,
+
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Minimum quantity reached.',
+                    'new_quantity' => $cart->quantity,
+                ]);
+            }
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Cart item not found.'
+        ]);
+    }
+
+    public function deleteCart(Request $request)
+    {
+        $deleted = DB::table('cart')
+            ->where('product_id', $request->product_id)
+            ->where('user_id', Auth::id())
+            ->delete();
+
+        if ($deleted) {
+            return response()->json([
+                'status' => true,
+                'message' => 'delete success.',
+            ]);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'product cart not found name: ' . $request->product_title,
         ]);
     }
 }

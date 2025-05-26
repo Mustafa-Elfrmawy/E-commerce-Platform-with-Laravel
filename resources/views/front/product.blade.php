@@ -24,8 +24,8 @@
         <div class="container">
             <div class="light-font">
                 <ol class="breadcrumb primary-color mb-0">
-                    <li class="breadcrumb-item"><a class="white-text" href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a class="white-text" href="#">Shop</a></li>
+                    <li class="breadcrumb-item"><a class="white-text" href="{{ route('front.home') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a class="white-text" href="{{ route('front.shop' , [2 , $product->sub_category_id] ) }}">Shop</a></li>
                     <li class="breadcrumb-item">{{ $product->title }}</li>
                 </ol>
             </div>
@@ -193,30 +193,6 @@
 @endsection
 @section('custom-js')
     <script type="text/javascript">
-        function addToCart(productId, productTitle) {
-            $.ajax({
-                url: "{{ route('front.addToCart', ':id') }}".replace(':id', productId),
-                type: "POST",
-                data: {
-                    product_id: productId,
-                },
-                success: function(response) {
-                    if (response.status == true) {
-                        if(confirm(response.message + ' ' + productTitle + ', do you want to go to the cart?')) {
-                            window.location.href ="{{ route('front.showCart') }}";
-                        }
-                    } else {
-                        alert(response.message + productTitle);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    if (error == 'Unauthorized') {
-                        if (confirm(error + ' :: You must be logged in to add items to the cart')) {} else {}
-                    }
-                }
-
-
-            });
-        }
+       
     </script>
 @endsection

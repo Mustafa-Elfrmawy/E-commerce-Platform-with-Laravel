@@ -172,12 +172,14 @@
                                     @endif
                                 </div>
                                 <div class="right">
-                                    <div class="cat-data">
-                                        <div class="cat-data w-50">
-                                            <h2> {{ $category->name }}</h2>
+                                    <a href="{{ route('front.shop', $category->id) }}">
+                                        <div class="cat-data">
+                                            <div class="cat-data w-50">
+                                                <h2 style="color: black"> {{ $category->name }}</h2>
+                                            </div>
+                                            <p> {{ $category->name }}</p>
                                         </div>
-                                        <p> {{ $category->name }}</p>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -218,7 +220,8 @@
                                     @endif
                                     <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
                                     <div class="product-action">
-                                        <a class="btn btn-dark" href="#">
+                                        <a class="btn btn-dark" href="javascript:void(0);"
+                                            onclick="addToCart({{ $product->id }}, '{{ addslashes($product->title) }}')">
                                             <i class="fa fa-shopping-cart"></i> Add To Cart
                                         </a>
                                     </div>
@@ -259,8 +262,8 @@
                                         }
                                     @endphp
                                     @if (!empty($images_latest))
-                                        <a href="{{ route('front.product', $product_latest->id) }}" class="product-img"><img
-                                                class="card-img-top"
+                                        <a href="{{ route('front.product', $product_latest->id) }}"
+                                            class="product-img"><img class="card-img-top"
                                                 src="{{ my_asset('storage/' . $images_latest->first()->image_product) }}"
                                                 alt=""></a>
                                     @else
@@ -270,7 +273,8 @@
                                     <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
 
                                     <div class="product-action">
-                                        <a class="btn btn-dark" href="#">
+                                        <a class="btn btn-dark" href="javascript:void(0);"
+                                            onclick="addToCart({{ $product_latest->id }}, '{{ addslashes($product_latest->title) }}')">
                                             <i class="fa fa-shopping-cart"></i> Add To Cart
                                         </a>
                                     </div>

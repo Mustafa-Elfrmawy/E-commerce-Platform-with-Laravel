@@ -50,12 +50,10 @@
 
 
     <style>
-        /* أخفاء المحتوى افتراضياً */
         #content_load {
             display: none;
         }
 
-        /* إظهار اللودر أفتراضياً */
         #loader_load {
             position: fixed;
             top: 50%;
@@ -142,7 +140,8 @@
                                             <ul class="dropdown-menu dropdown-menu-dark">
                                                 @foreach ($filteredCategories as $category)
                                                     <li><a class="dropdown-item nav-link"
-                                                            href="#">{{ $category->name }}</a></li>
+                                                            href="{{ route('front.shop', $category->id) }}">{{ $category->name }}</a>
+                                                    </li>
                                                 @endforeach
                                             </ul>
                                         @endif
@@ -151,11 +150,15 @@
                             </ul>
                         @endif
                     </div>
-                    <div class="right-nav py-0">
-                        <a href="cart.php" class="ml-3 d-flex pt-2">
-                            <i class="fas fa-shopping-cart text-primary"></i>
-                        </a>
-                    </div>
+                    <a href="{{ route('front.showCart') }}" type="button" class="btn btn-warning position-relative">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cart-count"
+                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            <span class="visually-hidden">unread messages</span>
+
+                        </span>
+                    </a>
+
                 </nav>
             </div>
         </header>
@@ -233,6 +236,53 @@
             document.getElementById('loader_load').style.display = 'none';
             document.getElementById('content_load').style.display = 'block';
         });
+
+        function addToCart(productId, productTitle) {
+            $.ajax({
+                url: "{{ route('front.addToCart', ':id') }}".replace(':id', productId),
+                type: "POST",
+                data: {
+                    product_id: productId,
+                },
+                success: function(response) {
+                    if (response.status == true) {
+                        if (confirm(response.message + ' ' + productTitle +
+                            ', do you want to go to the cart?')) {
+                            window.location.href = "{{ route('front.showCart') }}";
+                        }
+                    } else {
+                        alert(response.message + productTitle);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    if (error == 'Unauthorized') {
+                        if (confirm(error + ' :: You must be logged in to add items to the cart')) {} else {}
+                    }
+                }
+
+
+            });
+        }
+
+        function quantityCartIcon() {
+            $.ajax({
+                url: "{{ route('front.quantityCartIcon') }}",
+                type: "GET",
+                success: function(response) {
+                    if (response.status == true) {
+                        $('#cart-count').text(response.message);
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    if (error == 'Unauthorized') {
+                        if (confirm(error + ' :: You must be logged in to add items to the cart')) {} else {}
+                    }
+                }
+            });
+        }
+        quantityCartIcon()
     </script>
 
     @yield('custom-js')
