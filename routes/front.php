@@ -14,10 +14,15 @@ Route::get('/', function () {
 
 #################################guestNonAuthenticateOnly routes######################################
 Route::group(['middleware' => 'guest:user'], function () {
-    Route::get('/user/login', [UserAuthenticateController::class, 'index'])->name('user.login');
-    Route::post('/user/authenticate', [UserAuthenticateController::class, 'authenticate'])->name('user.authenticate');
+    Route::prefix('home')->group(function () {
+        Route::get('/user/login', [UserAuthenticateController::class, 'index'])->name('user.login');
+        Route::get('/user/register', [UserAuthenticateController::class, 'register'])->name('user.register');
+        Route::post('/user/proccessRegister', [UserAuthenticateController::class, 'proccessRegister'])->name('user.proccessRegister');
+        Route::post('/user/authenticate', [UserAuthenticateController::class, 'authenticate'])->name('user.authenticate');
+    });
 });
 #################################guestNonAuthenticateOnly routes######################################
+
 #################################guest routes#########################################################
 Route::prefix('home')->middleware('guest')->group(function () {
     Route::get('/', [FrontController::class, 'index'])->name('front.home');
@@ -26,16 +31,3 @@ Route::prefix('home')->middleware('guest')->group(function () {
 });
 #################################guest routes###########################################################
 
-#################################auth routes############################################################
-Route::prefix('home')->group(function () {
-    Route::group(['middleware' => 'auth:user'], function () {
-        Route::get('/showCart', [CartController::class, 'cart'])->name('front.showCart');
-        Route::get('/quantityCartIcon', [CartController::class, 'quantityCartIcon'])->name('front.quantityCartIcon');
-        Route::post('/plusQuantity', [CartController::class, 'plusQuantity'])->name('front.plusQuantity');
-        Route::post('/minusQuantity', [CartController::class, 'minusQuantity'])->name('front.minusQuantity');
-        Route::post('/addToCart/{id}', [CartController::class, 'addToCart'])->name('front.addToCart');
-        Route::post('/user/logout', [UserAuthenticateController::class, 'destroy'])->name('user.logout');
-        Route::delete('/deleteCart', [CartController::class, 'deleteCart'])->name('front.deleteCart');
-    });
-});
-#################################auth routes############################################################

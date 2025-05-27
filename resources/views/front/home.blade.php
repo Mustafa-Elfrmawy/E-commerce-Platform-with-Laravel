@@ -215,8 +215,9 @@
                                                 src="{{ my_asset('storage/' . $images->first()->image_product) }}"
                                                 alt=""></a>
                                     @else
-                                        <a href="" class="product-img"><img class="card-img-top"
-                                                src="{{ my_asset('Front/images/product-1.jpg') }}" alt=""></a>
+                                        <a href="{{ route('front.product', $product->id) }}" class="product-img"><img
+                                                class="card-img-top" src="{{ my_asset('Front/images/product-1.jpg') }}"
+                                                alt=""></a>
                                     @endif
                                     <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
                                     <div class="product-action">

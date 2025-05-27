@@ -5,15 +5,6 @@ use App\Http\Controllers\admin\AdminLoginController;
 use App\Http\Controllers\CategoriesAdmin\HandllerImage;
 use App\Http\Controllers\ProductAdmin\ProductController;
 
-
-
-
-// Route::get('/', function () {
-//     return redirect()->route('admin.login');
-// })->name('login');
-
-
-
 Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => 'guest:admin'], function () {
         Route::get('/login', [AdminLoginController::class, 'index'])->name('login');
@@ -33,7 +24,6 @@ Route::group(['prefix' => 'admin'], function () {
         /* start category =========================================================================================================*/
         Route::post('/category/uploadImage', [HandllerImage::class, 'store'])->name('admin.category.uploadImage');
         require __DIR__ . '/category.php';
-        require __DIR__ . '/auth.php';
         require __DIR__ . '/pp.php';
         /* start category =========================================================================================================*/
     });
@@ -43,4 +33,9 @@ Route::group(['prefix' => 'admin'], function () {
 
 /* start product =========================================================================================================*/
 require __DIR__ . '/front.php';
+/* end product =====================================================================================================================*/
+
+
+/* start product =========================================================================================================*/
+require __DIR__ . '/home_auth.php';
 /* end product =====================================================================================================================*/

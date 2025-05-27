@@ -46,6 +46,18 @@
 
     <!-- Fav Icon -->
     <link rel="shortcut icon" type="image/x-icon" href="#" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    {{-- <link rel="stylesheet" href="{{ my_asset('admin-asset/plugins/fontawesome-free/css/all.min.css') }}"> --}}
+    <!-- Dropzone -->
+    {{-- <link rel="stylesheet" href="{{ my_asset('admin-asset/plugins/dropzone/min/dropzone.min.css') }}"> --}}
+    <!-- Summernote -->
+    {{-- <link rel="stylesheet" href="{{ my_asset('admin-asset/plugins/summernote/summernote.min.css') }}"> --}}
+    <!-- Theme style -->
+    {{-- <link rel="stylesheet" href="{{ my_asset('admin-asset/css/adminlte.min.css') }}"> --}}
+    {{-- <link rel="stylesheet" href="{{ my_asset('admin-asset/css/custom.css') }}"> --}}
+    
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
@@ -94,7 +106,7 @@
                         </a>
                     </div>
                     <div class="col-lg-6 col-6 text-left d-flex justify-content-end align-items-center">
-                        <a href="account.php" class="nav-link text-dark">My Account</a>
+                        <a href="{{ route('front.profile') }}" class="nav-link text-dark">My Account</a>
                         <form action="">
                             <div class="input-group">
                                 <input type="text" placeholder="Search For Products" class="form-control"
@@ -110,7 +122,7 @@
         </div>
 
         <header class="bg-dark">
-            <div class="container">
+            <div class="">
                 <nav class="navbar navbar-expand-xl" id="navbar">
                     <a href="index.php" class="text-decoration-none mobile-logo">
                         <span class="h2 text-uppercase text-primary bg-dark">Online</span>
@@ -150,13 +162,16 @@
                             </ul>
                         @endif
                     </div>
-                    <a href="{{ route('front.showCart') }}" type="button" class="btn btn-warning position-relative">
+                    <a href="{{ route('front.showCart') }}" type="button"
+                        class="btn btn-warning position-relative">
                         <i class="fas fa-shopping-cart"></i>
-                        <span id="cart-count"
-                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            <span class="visually-hidden">unread messages</span>
+                        @if (Auth::guard('user')->check())
+                            <span id="cart-count"
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                <span class="visually-hidden">unread messages</span>
 
-                        </span>
+                            </span>
+                        @endif
                     </a>
 
                 </nav>
@@ -218,6 +233,10 @@
             </div>
         </footer>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script src="{{ my_asset('Front/js/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ my_asset('Front/js/bootstrap.bundle.5.1.3.min.js') }}"></script>
@@ -284,7 +303,9 @@
         }
     </script>
     @if (Auth::guard('user')->check())
-        <script> quantityCartIcon() </script>
+        <script>
+            quantityCartIcon()
+        </script>
     @endif
     @yield('custom-js')
 </body>

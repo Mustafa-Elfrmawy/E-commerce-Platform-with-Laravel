@@ -3,7 +3,7 @@
 @endphp
 
 {{-- @dd(Auth::guard('user')->user()) --}}
-@if (Auth::guard('user')->check() )
+@if (Auth::guard('user')->check())
     <p>المستخدم مسجل دخول: {{ Auth::guard('user')->user()->name }}</p>
 @else
     <p>المستخدم غير مسجل دخول</p>
@@ -25,7 +25,8 @@
             <div class="light-font">
                 <ol class="breadcrumb primary-color mb-0">
                     <li class="breadcrumb-item"><a class="white-text" href="{{ route('front.home') }}">Home</a></li>
-                    <li class="breadcrumb-item"><a class="white-text" href="{{ route('front.shop' , [2 , $product->sub_category_id] ) }}">Shop</a></li>
+                    <li class="breadcrumb-item"><a class="white-text"
+                            href="{{ route('front.shop', [2, $product->sub_category_id]) }}">Shop</a></li>
                     <li class="breadcrumb-item">{{ $product->title }}</li>
                 </ol>
             </div>
@@ -192,7 +193,5 @@
     </section>
 @endsection
 @section('custom-js')
-    <script type="text/javascript">
-       
-    </script>
+    <script type="text/javascript"></script>
 @endsection

@@ -23,8 +23,8 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        Category::factory()->count(30)->create();
         SubCategory::factory()->count(30)->create();
+        Category::factory()->count(30)->create();
         Brand::factory()->count(30)->create();
 
         $faker = Faker::create();
