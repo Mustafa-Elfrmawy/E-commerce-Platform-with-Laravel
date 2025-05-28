@@ -19,7 +19,7 @@ class SubCategoryFactory extends Factory
         return [
             'name' => fake()->unique()->name(),
             'slug' => fake()->unique()->slug(),
-            'status' => rand( 0,1),
+            // 'status' => rand( 0,1),
         ];
     }
 }

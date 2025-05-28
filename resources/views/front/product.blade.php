@@ -2,12 +2,7 @@
     use function App\Url\my_asset;
 @endphp
 
-{{-- @dd(Auth::guard('user')->user()) --}}
-@if (Auth::guard('user')->check())
-    <p>المستخدم مسجل دخول: {{ Auth::guard('user')->user()->name }}</p>
-@else
-    <p>المستخدم غير مسجل دخول</p>
-@endif
+
 
 @extends('front.layout.app')
 @section('Home')
@@ -51,6 +46,10 @@
                                     </div>
                                 @endforeach
                             @else
+                                <div class="">
+                                    <img src="{{ my_asset('Front/images/150x150.png') }}" class="d-block w-100"
+                                        alt="Image" style="height: 400px; object-fit: cover;">
+                                </div>
                             @endif
                         </div>
 
@@ -156,12 +155,17 @@
                                             }
                                         @endphp
                                         @if ($images && $images->first() != null)
-                                            <a href="" class="product-img">
+                                            <a href="{{ route('front.product', $product_related->id) }}" class="product-img">
                                                 <img class="card-img-top"
                                                     src="{{ my_asset('storage/' . $images->first()) }}" alt=""
                                                     style="height: 100%; width: 100%; object-fit: cover;">
                                             </a>
                                         @endif
+                                        @else 
+                                        <a href="{{ route('front.product', $product_related->id) }}" class="product-img">
+                                            <img src="{{ my_asset('Front/images/150x150.png') }}" class="card-img-top"
+                                                alt="Image" style="height: 100%; width: 100%; object-fit: cover;">
+                                        </a>
                                     @endif
 
                                     <a class="whishlist" href="222"><i class="far fa-heart"></i></a>

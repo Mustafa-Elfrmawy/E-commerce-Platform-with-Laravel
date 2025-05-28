@@ -53,11 +53,10 @@
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <!-- <img src="asset('Front/images/carousel-1.jpg')" class="d-block w-100" alt=""> -->
-
                     <picture>
-                        <source media="(max-width: 799px)" srcset="{{ my_asset('Front/images/carousel-1-m.jpg') }}" />
-                        <source media="(min-width: 800px)" srcset="{{ my_asset('Front/images/carousel-1.jpg') }}" />
-                        <img src="{{ my_asset('Front/images/carousel-1.jpg') }}" alt="" />
+                        <source media="(max-width: 799px)" srcset="{{ my_asset('Front/images/150x150.png') }}" />
+                        <source media="(min-width: 800px)" srcset="{{ my_asset('Front/images/150x150.png') }}" />
+                        <img src="{{ my_asset('Front/images/150x150.png') }}" alt="" />
                     </picture>
 
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
@@ -73,9 +72,9 @@
                 <div class="carousel-item">
 
                     <picture>
-                        <source media="(max-width: 799px)" srcset="{{ my_asset('Front/images/carousel-2-m.jpg') }}" />
-                        <source media="(min-width: 800px)" srcset="{{ my_asset('Front/images/carousel-2.jpg') }}" />
-                        <img src="{{ my_asset('Front/images/carousel-2.jpg') }}" alt="" />
+                        <source media="(max-width: 799px)" srcset="{{ my_asset('Front/images/150x150.png') }}" />
+                        <source media="(min-width: 800px)" srcset="{{ my_asset('Front/images/150x150.png') }}" />
+                        <img src="{{ my_asset('Front/images/150x150.png') }}" alt="" />
                     </picture>
 
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
@@ -89,12 +88,12 @@
                     </div>
                 </div>
                 <div class="carousel-item">
-                    {{-- <!-- <img src="{{ asset('Front/images/carousel-3.jpg') }}" class="d-block w-100" alt=""> --> --}}
+                    {{-- <img src="{{ asset('Front/images/150x150.png') }}" class="d-block w-100" alt=""> --}}
 
                     <picture>
-                        <source media="(max-width: 799px)" srcset="{{ my_asset('Front/images/carousel-3-m.jpg') }}" />
-                        <source media="(min-width: 800px)" srcset="{{ my_asset('Front/images/carousel-3.jpg') }}" />
-                        <img src="{{ my_asset('Front/images/carousel-2.jpg') }}" alt="" />
+                        <source media="(max-width: 799px)" srcset="{{ my_asset('Front/images/150x150.png') }}" />
+                        <source media="(min-width: 800px)" srcset="{{ my_asset('Front/images/150x150.png') }}" />
+                        <img src="{{ my_asset('Front/images/150x150.png') }}" alt="" />
                     </picture>
 
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
@@ -167,7 +166,7 @@
                                         <img src="{{ my_asset('storage/' . $category->image->name) }}"
                                             class="img-fluid w-100 h-100" alt="">
                                     @else
-                                        <img src="{{ my_asset('Front/images/cat-1.jpg') }}" class="img-fluid"
+                                        <img src="{{ my_asset('Front/images/150x150.png') }}" class="img-fluid"
                                             alt="">
                                     @endif
                                 </div>
@@ -216,7 +215,7 @@
                                                 alt=""></a>
                                     @else
                                         <a href="{{ route('front.product', $product->id) }}" class="product-img"><img
-                                                class="card-img-top" src="{{ my_asset('Front/images/product-1.jpg') }}"
+                                                class="card-img-top" src="{{ my_asset('Front/images/150x150.png') }}"
                                                 alt=""></a>
                                     @endif
                                     <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
@@ -268,8 +267,9 @@
                                                 src="{{ my_asset('storage/' . $images_latest->first()->image_product) }}"
                                                 alt=""></a>
                                     @else
-                                        <a href="" class="product-img"><img class="card-img-top"
-                                                src="{{ my_asset('Front/images/product-1.jpg') }}" alt=""></a>
+                                        <a href="{{ route('front.product', $product_latest->id) }}"
+                                            class="product-img"><img class="card-img-top"
+                                                src="{{ my_asset('Front/images/150x150.png') }}" alt=""></a>
                                     @endif
                                     <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
 

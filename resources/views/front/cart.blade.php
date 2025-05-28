@@ -19,118 +19,124 @@
         </div>
     </section>
 
-    <section class=" section-9 pt-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="table-responsive">
-                        <table class="table" id="cart">
-                            <thead>
-                                <tr>
-                                    <th>Item</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Total</th>
-                                    <th>Remove</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @php $subTotal = 0; @endphp
-                                @foreach ($carts as $cart)
-                                    @php
-                                        $subTotal += $cart->product->price * $cart->quantity;
-                                        $images = collect();
-                                        if (!empty($cart->product->image_id)) {
-                                            $images = App\Models\ProductImage::whereIn(
-                                                'id',
-                                                explode(',', $cart->product->image_id),
-                                            )
-                                                ->latest()
-                                                ->pluck('image_product');
-                                        }
-                                    @endphp
+    @if ($carts->isNotEmpty())
+        <section class=" section-9 pt-4">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="table-responsive">
+                            <table class="table" id="cart">
+                                <thead>
                                     <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                @if (file_exists(public_path('storage/' . $images->first())))
-                                                    <img src="{{ my_asset('storage/' . $images->first()) }}" width="100"
-                                                        height="100" alt="{{ $cart->product->title }}">
-                                                @endif
-                                                <h2>{{ $cart->product->title }} </h2>
-                                            </div>
-                                        </td>
-                                        <td id="price-{{ $cart->product_id }}">${{ $cart->product->price }}</td>
-                                        <td>
-                                            <div class="input-group quantity mx-auto" style="width: 100px;">
-                                                <div class="input-group-btn">
-                                                    <button
-                                                        onclick="minusQuantity({{ $cart->product_id }}, {{ Auth::id() }})"
-                                                        class="btn btn-sm btn-dark btn-minus p-2 pt-1 pb-1">
-                                                        <i class="fa fa-minus"></i>
-                                                    </button>
-                                                </div>
-                                                <input id="qty-input-{{ $cart->product_id }}" type="text"
-                                                    class="form-control form-control-sm border-0 text-center"
-                                                    value="{{ $cart->quantity }}" readonly>
-                                                <div class="input-group-btn">
-                                                    <button
-                                                        onclick="plusQuantity({{ $cart->product_id }}, {{ Auth::id() }})"
-                                                        class="btn btn-sm btn-dark btn-plus p-2 pt-1 pb-1">
-                                                        <i class="fa fa-plus"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td id="cart-total-{{ $cart->product_id }}">
-                                            ${{ $cart->product->price * $cart->quantity }}
-                                        </td>
-                                        <td>
-                                            <button
-                                                onclick="deleteCart({{ $cart->product_id }}, '{{ addslashes($cart->product->title) }}')"
-                                                class="btn btn-sm btn-danger">
-                                                <i class="fa fa-times"></i>
-                                            </button>
-
-                                        </td>
+                                        <th>Item</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Total</th>
+                                        <th>Remove</th>
                                     </tr>
-                                @endforeach
-                                {{-- @dd($subTotal) --}}
+                                </thead>
+                                <tbody>
+                                    @php $subTotal = 0; @endphp
+                                    @foreach ($carts as $cart)
+                                        @php
+                                            $subTotal += $cart->product->price * $cart->quantity;
+                                            $images = collect();
+                                            if (!empty($cart->product->image_id)) {
+                                                $images = App\Models\ProductImage::whereIn(
+                                                    'id',
+                                                    explode(',', $cart->product->image_id),
+                                                )
+                                                    ->latest()
+                                                    ->pluck('image_product');
+                                            }
+                                        @endphp
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    @if (file_exists(public_path('storage/' . $images->first())))
+                                                        <img src="{{ my_asset('storage/' . $images->first()) }}"
+                                                            width="100" height="100" alt="{{ $cart->product->title }}">
+                                                    @else
+                                                        <img src="{{ my_asset('Front/images/150x150.png') }}" width="100"
+                                                            height="100" alt="{{ $cart->product->title }}">
+                                                    @endif
+                                                    <h2>{{ $cart->product->title }} </h2>
+                                                </div>
+                                            </td>
+                                            <td id="price-{{ $cart->product_id }}">${{ $cart->product->price }}</td>
+                                            <td>
+                                                <div class="input-group quantity mx-auto" style="width: 100px;">
+                                                    <div class="input-group-btn">
+                                                        <button
+                                                            onclick="minusQuantity({{ $cart->product_id }}, {{ Auth::id() }})"
+                                                            class="btn btn-sm btn-dark btn-minus p-2 pt-1 pb-1">
+                                                            <i class="fa fa-minus"></i>
+                                                        </button>
+                                                    </div>
+                                                    <input id="qty-input-{{ $cart->product_id }}" type="text"
+                                                        class="form-control form-control-sm border-0 text-center"
+                                                        value="{{ $cart->quantity }}" readonly>
+                                                    <div class="input-group-btn">
+                                                        <button
+                                                            onclick="plusQuantity({{ $cart->product_id }}, {{ Auth::id() }})"
+                                                            class="btn btn-sm btn-dark btn-plus p-2 pt-1 pb-1">
+                                                            <i class="fa fa-plus"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td id="cart-total-{{ $cart->product_id }}">
+                                                ${{ $cart->product->price * $cart->quantity }}
+                                            </td>
+                                            <td>
+                                                <button
+                                                    onclick="deleteCart({{ $cart->product_id }}, '{{ addslashes($cart->product->title) }}')"
+                                                    class="btn btn-sm btn-danger">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
 
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card cart-summery">
-                        <div class="sub-title">
-                            <h2 class="bg-white">Cart Summery</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between pb-2">
-                                <div>Subtotal</div>
-                                <div id="subTotalPrice">${{ $subTotal }}</div>
-                            </div>
-                            <div class="d-flex justify-content-between pb-2">
-                                <div>Shipping</div>
-                                <div>$0</div>
-                            </div>
-                            <div class="d-flex justify-content-between summery-end">
-                                <div>Total</div>
-                                <div id="totalSales">${{ $subTotal }}</div>
-                            </div>
-                            <div class="pt-5">
-                                <a href="login.php" class="btn-dark btn btn-block w-100">Proceed to Checkout</a>
-                            </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    {{-- @dd($subTotal) --}}
+
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <div class="input-group apply-coupan mt-4">
-                        <input type="text" placeholder="Coupon Code" class="form-control">
-                        <button class="btn btn-dark" type="button" id="button-addon2">Apply Coupon</button>
+                    <div class="col-md-4">
+                        <div class="card cart-summery">
+                            <div class="sub-title">
+                                <h2 class="bg-white">Cart Summery</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between pb-2">
+                                    <div>Subtotal</div>
+                                    <div id="subTotalPrice">${{ $subTotal }}</div>
+                                </div>
+                                <div class="d-flex justify-content-between pb-2">
+                                    <div>Shipping</div>
+                                    <div>$0</div>
+                                </div>
+                                <div class="d-flex justify-content-between summery-end">
+                                    <div>Total</div>
+                                    <div id="totalSales">${{ $subTotal }}</div>
+                                </div>
+                                <div class="pt-5">
+                                    <a href="{{ route('front.checkout') }}" class="btn-dark btn btn-block w-100">Proceed to
+                                        Checkout</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group apply-coupan mt-4">
+                            <input type="text" placeholder="Coupon Code" class="form-control">
+                            <button class="btn btn-dark" type="button" id="button-addon2">Apply Coupon</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    @endif
 @endsection
 
 @section('custom-js')

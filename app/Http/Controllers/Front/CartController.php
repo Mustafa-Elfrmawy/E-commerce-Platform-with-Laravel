@@ -15,9 +15,6 @@ class CartController extends Controller
     public function cart()
     {
         $carts = Cart::where('user_id', Auth::id())->get();
-        if ($carts->isEmpty()) {
-            return redirect()->route('front.home')->with('message', 'Your cart is empty.');
-        }
         return view('front.cart', compact('carts'));
     }
     public function quantityCartIcon()

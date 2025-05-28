@@ -57,7 +57,7 @@
     <!-- Theme style -->
     {{-- <link rel="stylesheet" href="{{ my_asset('admin-asset/css/adminlte.min.css') }}"> --}}
     {{-- <link rel="stylesheet" href="{{ my_asset('admin-asset/css/custom.css') }}"> --}}
-    
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
@@ -100,13 +100,17 @@
             <div class="container">
                 <div class="row align-items-center py-3 d-none d-lg-flex justify-content-between">
                     <div class="col-lg-4 logo">
-                        <a href="index.php" class="text-decoration-none">
+                        <a href="{{ route('front.shop') }}" class="text-decoration-none">
                             <span class="h1 text-uppercase text-primary bg-dark px-2">Online</span>
                             <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">SHOP</span>
                         </a>
                     </div>
                     <div class="col-lg-6 col-6 text-left d-flex justify-content-end align-items-center">
-                        <a href="{{ route('front.profile') }}" class="nav-link text-dark">My Account</a>
+                        @if (Auth::guard('user')->check())
+                            <a href="{{ route('front.profile') }}" class="nav-link text-dark">My Account</a>
+                            @else
+                            <a href="{{ route('user.login') }}" class="nav-link text-dark">Sign-in</a>
+                        @endif
                         <form action="">
                             <div class="input-group">
                                 <input type="text" placeholder="Search For Products" class="form-control"
@@ -125,7 +129,7 @@
             <div class="">
                 <nav class="navbar navbar-expand-xl" id="navbar">
                     <a href="index.php" class="text-decoration-none mobile-logo">
-                        <span class="h2 text-uppercase text-primary bg-dark">Online</span>
+                    <span class="h2 text-uppercase text-primary bg-dark">Online</span>
                         <span class="h2 text-uppercase text-white px-2">SHOP</span>
                     </a>
                     <button class="navbar-toggler menu-btn" type="button" data-bs-toggle="collapse"

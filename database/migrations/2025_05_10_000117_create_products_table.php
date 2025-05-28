@@ -34,7 +34,7 @@ return new class extends Migration
             $table->foreignIdFor(SubCategory::class, 'sub_category_id')->constrained();
             $table->foreignIdFor(Brand::class, 'brand_id')->constrained();
 
-            $table->enum('is_featured', ['yes', 'no'])->default('no');
+            $table->enum('is_featured', ['yes', 'no'])->default('yes');
             $table->enum('track_qty', ['yes', 'no'])->default('yes');
 
             $table->string('barcode', 50)->nullable();
