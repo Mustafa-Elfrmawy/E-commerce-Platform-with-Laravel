@@ -155,13 +155,14 @@
                                             }
                                         @endphp
                                         @if ($images && $images->first() != null)
-                                            <a href="{{ route('front.product', $product_related->id) }}" class="product-img">
+                                            <a href="{{ route('front.product', $product_related->id) }}"
+                                                class="product-img">
                                                 <img class="card-img-top"
                                                     src="{{ my_asset('storage/' . $images->first()) }}" alt=""
                                                     style="height: 100%; width: 100%; object-fit: cover;">
                                             </a>
                                         @endif
-                                        @else 
+                                    @else
                                         <a href="{{ route('front.product', $product_related->id) }}" class="product-img">
                                             <img src="{{ my_asset('Front/images/150x150.png') }}" class="card-img-top"
                                                 alt="Image" style="height: 100%; width: 100%; object-fit: cover;">

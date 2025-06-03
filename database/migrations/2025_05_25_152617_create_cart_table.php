@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('cart', function (Blueprint $table) {
-            $table->foreignIdFor(\App\Models\User::class)->constrained()->onDelete('cascade');
-            $table->foreignIdFor(\App\Models\Product::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(\App\Models\User::class)->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignIdFor(\App\Models\Product::class)->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->smallInteger('quantity')->default(1);
+            $table->decimal('total_price', 10, 2);
             $table->timestamps();
         });
     }

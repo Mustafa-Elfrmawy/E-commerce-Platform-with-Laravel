@@ -180,13 +180,14 @@
                                                             alt=""></a>
                                                 @else
                                                     <a href="" class="product-img"><img class="card-img-top"
-                                                            src="{{ my_asset('Front/images/product-2.jpg') }}"
-                                                            alt=""></a>
+                                                            src="{{ my_asset('Front/images/150x150.png') }}"
+                                                            alt="image"></a>
                                                 @endif
                                                 <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
 
                                                 <div class="product-action">
-                                                    <a onclick="addToCart({{ $product->id }}, {{ $product->id }})" class="btn btn-dark" href="#">
+                                                    <a onclick="addToCart({{ $product->id }}, '{{ addslashes($product->title) }}')"
+                                                        class="btn btn-dark" href="#">
                                                         <i class="fa fa-shopping-cart"></i> Add To Cart
                                                     </a>
                                                 </div>

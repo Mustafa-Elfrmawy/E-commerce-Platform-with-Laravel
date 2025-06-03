@@ -1,3 +1,6 @@
+{{-- @if ($errors->any())
+@dd($errors->all())
+@endif --}}
 @extends('front.layout.app')
 
 @section('Home')
@@ -130,8 +133,8 @@
 
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <input value="{{ old('phone') }}" type="text" name="mobile" id="mobile"
-                                                class="form-control" placeholder="Mobile No.">
+                                            <input value="{{ old('phone') }}" type="text" name="phone"
+                                                id="mobile" class="form-control" placeholder="Mobile No.">
                                             @error('phone')
                                                 <p style="color:red;">{{ $message }}</p>
                                             @enderror
@@ -141,9 +144,9 @@
 
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <textarea name="order_notes" id="order_notes" cols="30" rows="2" placeholder="Order Notes (optional)"
+                                            <textarea name="notes_order" id="notes_order" cols="30" rows="2" placeholder="Order Notes (optional)"
                                                 class="form-control">{{ old('order_notes') }}</textarea>
-                                            @error('order_notes')
+                                            @error('notes_order')
                                                 <p style="color:red;">{{ $message }}</p>
                                             @enderror
                                         </div>
@@ -151,7 +154,8 @@
                                     <div>
                                         <button type="submit" class="btn-dark btn btn-block w-100">Pay Now</button>
                                     </div>
-                                </form>
+
+
                             </div>
                         </div>
                     </div>
@@ -162,68 +166,103 @@
                     </div>
                     <div class="card cart-summery">
                         <div class="card-body">
-                            <div class="d-flex justify-content-between pb-2">
-                                <div class="h6">Product Name Goes Here X 1</div>
-                                <div class="h6">$100</div>
-                            </div>
-                            <div class="d-flex justify-content-between pb-2">
-                                <div class="h6">Product Name Goes Here X 1</div>
-                                <div class="h6">$100</div>
-                            </div>
-                            <div class="d-flex justify-content-between pb-2">
-                                <div class="h6">Product Name Goes Here X 1</div>
-                                <div class="h6">$100</div>
-                            </div>
-                            <div class="d-flex justify-content-between pb-2">
-                                <div class="h6">Product Name Goes Here X 1</div>
-                                <div class="h6">$100</div>
-                            </div>
+                            @php
+                                $sub_total = 0;
+                            @endphp
+                            @foreach ($carts as $cart)
+                                @php
+                                    $sub_total += (float) $cart->total_price;
+                                @endphp
+                                <div class="d-flex justify-content-between pb-2">
+                                    <div class="h6">{{ $cart->product->title }} x {{ $cart->quantity }}</div>
+                                    <div class="h6">${{ $cart->product->price * $cart->quantity }}</div>
+                                </div>
+                            @endforeach
                             <div class="d-flex justify-content-between summery-end">
                                 <div class="h6"><strong>Subtotal</strong></div>
-                                <div class="h6"><strong>$400</strong></div>
+                                <div class="h6"><strong>${{ $sub_total }}</strong></div>
                             </div>
                             <div class="d-flex justify-content-between mt-2">
                                 <div class="h6"><strong>Shipping</strong></div>
-                                <div class="h6"><strong>$20</strong></div>
+                                <div class="h6"><strong>$0</strong></div>
                             </div>
                             <div class="d-flex justify-content-between mt-2 summery-end">
                                 <div class="h5"><strong>Total</strong></div>
-                                <div class="h5"><strong>$420</strong></div>
+                                <div class="h5"><strong>${{ $sub_total }}</strong></div>
                             </div>
+                            
+                            <div class="d-flex justify-content-between mt-2 summery-end" id="total-discount">
+                                <div class="h5"><strong>Total_Discount</strong></div>
+                                @if($discountUser)
+                                <div class="h5"><strong id="discount-value">${{$discountUser->total_discount}}</strong></div>
+                                @else
+                                <div class="h5"><strong id="discount-value"></strong></div>
+                                @endif
+                            </div>
+                            @if($discountUser)
+                            {{-- @dd($discountUser) --}}
+                            <input  value="{{$discountUser->total_discount}}" name="discount_value_input" id="discount-value_input" type="hidden">
+                            @else
+                            <input   name="discount_value_input" id="discount-value_input" type="hidden">
+                            @endif
+                        </form>
+
+
+
                         </div>
                     </div>
 
-                    <div class="card payment-form ">
-                        <h3 class="card-title h5 mb-3">Payment Details</h3>
-                        <div class="card-body p-0">
-                            <div class="mb-3">
-                                <label for="card_number" class="mb-2">Card Number</label>
-                                <input type="text" name="card_number" id="card_number"
-                                    placeholder="Valid Card Number" class="form-control">
-                                @error('card_number')
-                                    <p style="color:red;">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label for="expiry_date" class="mb-2">Expiry Date</label>
-                                    <input type="text" name="expiry_date" id="expiry_date" placeholder="MM/YYYY"
-                                        class="form-control">
-                                    @error('expiry_date')
-                                        <p style="color:red;">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="cvv_code" class="mb-2">CVV Code</label>
-                                    <input type="text" name="cvv_code" id="cvv_code" placeholder="123"
-                                        class="form-control">
-                                    @error('cvv_code')
-                                        <p style="color:red;">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="pt-4">
-                                <button type="submit" class="btn-dark btn btn-block w-100">Pay Now</button>
-                            </div>
-                        </div>
-                    @endsection
+                    <div class="input-group apply-coupan mt-4">
+                        <form method="post" id="couponForm">
+                            <input type="text" placeholder="Coupon Code" class="form-control" id="coupon_code"
+                                name="coupon_code">
+                            <button class="btn btn-dark mt-3" type="button" id="button-addon2"
+                                onclick="applyDiscount()">Apply Coupon</button>
+                        </form>
+                    </div>
+
+                    <div id="coupon-message" class="mt-2"></div>
+
+                @section('custom-js')
+                    <script>
+                        function applyDiscount() {
+                            var code = $('#coupon_code').val();
+
+                            if (code.trim() === '') {
+                                $('#coupon-message').html('<div class="alert alert-danger">Please enter a coupon code.</div>');
+                                return;
+                            }
+
+                            $.ajax({
+                                url: '{{ route('front.applyCoupon') }}',
+                                type: 'POST',
+                                data: {
+                                    coupon_code: code,
+                                },
+                                success: function(response) {
+                                    if (response.status) {
+                                        $('#total-discount').show();
+
+                                        $('#discount-value').text('$' + response.discount)
+                                        $('#discount-value_input').val(response.discount)
+
+                                        $('#coupon-message').html('<div class="alert alert-success">' + response.message +
+                                            '</div>');
+
+                                    } else {
+                                        $('#total-discount').hide();
+
+                                        $('#coupon-message').html('<div class="alert alert-danger">' + response.message +
+                                            '</div>');
+                                    }
+                                },
+                                error: function(xhr) {
+                                    $('#total-discount').hide();
+                                    $('#coupon-message').html(
+                                        '<div class="alert alert-danger">An error occurred. Please try again.</div>');
+                                }
+                            });
+                        }
+                    </script>
+                @endsection
+            @endsection

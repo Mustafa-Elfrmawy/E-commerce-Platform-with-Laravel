@@ -128,10 +128,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="input-group apply-coupan mt-4">
-                            <input type="text" placeholder="Coupon Code" class="form-control">
-                            <button class="btn btn-dark" type="button" id="button-addon2">Apply Coupon</button>
-                        </div>
+
+
+                        {{-- pay now --}}
+
                     </div>
                 </div>
             </div>
@@ -152,19 +152,29 @@
                 success: function(response) {
                     if (response.status === true) {
                         $('#qty-input-' + productId).val(response.new_quantity);
-                        let cartTotal = $('#cart-total-' + productId).text();
-                        let price = $('#price-' + productId).text();
-                        let subTotalPrice = $('#subTotalPrice').text();
-                        let subTotalPriceFilter = parseFloat(subTotalPrice.replace(/[^\d.]/g, ''));
-                        let priceTotal = parseFloat(cartTotal.replace(/[^\d.]/g, ''));
-                        let priceFilter = parseFloat(price.replace(/[^\d.]/g, ''));
-                        let subtotal = priceTotal + priceFilter;
-                        $('#subTotalPrice').text('$' + (subTotalPriceFilter + priceFilter));
-                        $('#totalSales').text('$' + (subTotalPriceFilter + priceFilter));
-                        $('#cart-total-' + productId).text('$' + subtotal);
+
+                        let cartTotalText = $('#cart-total-' + productId).text();
+                        let priceText = $('#price-' + productId).text();
+                        let subTotalPriceText = $('#subTotalPrice').text();
+
+                        let subTotalPriceValue = parseFloat(subTotalPriceText.replace(/[^\d.]/g, '')) || 0;
+                        let priceTotalValue = parseFloat(cartTotalText.replace(/[^\d.]/g, '')) || 0;
+                        let priceFilterValue = parseFloat(priceText.replace(/[^\d.]/g, '')) || 0;
+
+                        let newCartTotalValue = priceTotalValue + priceFilterValue;
+                        let newSubTotalValue = subTotalPriceValue + priceFilterValue;
+
+                        let newCartTotalText = '$' + newCartTotalValue.toFixed(2);
+                        let newSubTotalText = '$' + newSubTotalValue.toFixed(2);
+
+                        $('#subTotalPrice').text(newSubTotalText);
+                        $('#totalSales').text(newSubTotalText);
+                        $('#cart-total-' + productId).text(newCartTotalText);
+
                     } else {
                         alert(response.message);
                     }
+
                 },
                 error: function(xhr, status, error) {
                     console.error(error);
@@ -185,21 +195,28 @@
                     if (response.status === true) {
                         $('#qty-input-' + productId).val(response.new_quantity);
 
-                        let cartTotal = $('#cart-total-' + productId).text();
-                        let price = $('#price-' + productId).text();
-                        let subTotalPrice = $('#subTotalPrice').text();
-                        let subTotalPriceFilter = parseFloat(subTotalPrice.replace(/[^\d.]/g, ''));
-                        let priceTotal = parseFloat(cartTotal.replace(/[^\d.]/g, ''));
-                        let priceFilter = parseFloat(price.replace(/[^\d.]/g, ''));
-                        let subtotal = priceTotal - priceFilter;
-                        $('#subTotalPrice').text('$' + (subTotalPriceFilter - priceFilter));
-                        $('#totalSales').text('$' + (subTotalPriceFilter - priceFilter));
-                        $('#cart-total-' + productId).text('$' + subtotal);
-                        // alert(subtotal);
+                        let cartTotalText = $('#cart-total-' + productId).text();
+                        let priceText = $('#price-' + productId).text();
+                        let subTotalPriceText = $('#subTotalPrice').text();
+
+                        let subTotalPriceValue = parseFloat(subTotalPriceText.replace(/[^\d.]/g, '')) || 0;
+                        let priceTotalValue = parseFloat(cartTotalText.replace(/[^\d.]/g, '')) || 0;
+                        let priceFilterValue = parseFloat(priceText.replace(/[^\d.]/g, '')) || 0;
+
+                        let newCartTotalValue = priceTotalValue - priceFilterValue;
+                        let newSubTotalValue = subTotalPriceValue - priceFilterValue;
+
+                        let newCartTotalText = '$' + newCartTotalValue.toFixed(2);
+                        let newSubTotalText = '$' + newSubTotalValue.toFixed(2);
+
+                        $('#subTotalPrice').text(newSubTotalText);
+                        $('#totalSales').text(newSubTotalText);
+                        $('#cart-total-' + productId).text(newCartTotalText);
 
                     } else {
                         alert(response.message);
                     }
+
                 },
 
                 error: function(xhr, status, error) {

@@ -47,6 +47,46 @@ class DatabaseSeeder extends Seeder
         }
 
         DB::table('products')->insert($products);
+        $subcategories = [
+            ['name' => 'electronics', 'slug' => 'electronics'],
+            ['name' => 'home-appliances', 'slug' => 'home-appliances'],
+            ['name' => 'Sports', 'slug' => 'Sports'],
+            ['name' => 'baby-products', 'slug' => 'baby-products'],
+            ['name' => 'toys', 'slug' => 'toys'],
+            ['name' => 'sports-equipment', 'slug' => 'sports-equipment'],
+            ['name' => 'books', 'slug' => 'books'],
+            // ['name' => 'mobile-phones', 'slug' => 'mobile-phones'],
+            // ['name' => 'computers', 'slug' => 'computers'],
+            // ['name' => 'mens-clothing', 'slug' => 'mens-clothing'],
+            // ['name' => 'womens-clothing', 'slug' => 'womens-clothing'],
+            // ['name' => 'shoes', 'slug' => 'shoes'],
+            ['name' => 'fitness-equipment', 'slug' => 'fitness-equipment'],
+            ['name' => 'food-products', 'slug' => 'food-products'],
+            ['name' => 'beverages', 'slug' => 'beverages'],
+            ['name' => 'kitchen-supplies', 'slug' => 'kitchen-supplies'],
+            ['name' => 'furniture', 'slug' => 'furniture'],
+            ['name' => 'home-decor', 'slug' => 'home-decor'],
+            ['name' => 'beauty-products', 'slug' => 'beauty-products'],
+            ['name' => 'skincare-products', 'slug' => 'skincare-products'],
+            ['name' => 'haircare-products', 'slug' => 'haircare-products'],
+            ['name' => 'health-products', 'slug' => 'health-products'],
+            ['name' => 'medical-equipment', 'slug' => 'medical-equipment'],
+            ['name' => 'office-supplies', 'slug' => 'office-supplies'],
+            ['name' => 'school-supplies', 'slug' => 'school-supplies'],
+        ];
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\user;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\RedirectResponse;
@@ -23,7 +24,20 @@ class UserAuthenticateController extends Controller
         if (!Auth::guard('user')->check()) {
             return redirect()->route('user.login')->with('error', 'You must be logged in to view your profile.');
         }
-
+        // $arr_formats_product = [];
+        // $arr_formats_quantity = [];
+        // $orders = Order::all();  
+        // foreach ($orders as $order) {
+        //     foreach (explode(',', $order->product_id) as $arr_format) :
+        //         $pos = strpos($arr_format, 'x');
+        //         $arr_formats_product[] = substr($arr_format, 0, $pos);
+        //         $arr_formats_quantity[] = substr($arr_format,  $pos + 1);
+        //     endforeach;
+        // }
+        // echo "<pre>";
+        // print_r($arr_formats_product);
+        // print_r($arr_formats_quantity);
+        // dd($orders);
         // Get the authenticated user
         $user = Auth::guard('user')->user();
         return view('front.user.profile', compact('user'));

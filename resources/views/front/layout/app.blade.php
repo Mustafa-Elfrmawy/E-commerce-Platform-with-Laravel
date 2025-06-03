@@ -171,7 +171,7 @@
                         <i class="fas fa-shopping-cart"></i>
                         @if (Auth::guard('user')->check())
                             <span id="cart-count"
-                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                class="position-absolute top-0  start-90 translate-middle badge rounded-pill bg-danger">
                                 <span class="visually-hidden">unread messages</span>
 
                             </span>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Models\Cart;
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 class CartController extends Controller
 {
     //
+ 
     public function cart()
     {
         $carts = Cart::where('user_id', Auth::id())->get();
@@ -38,6 +40,7 @@ class CartController extends Controller
             ->where('product_id', $id)
             ->first();
 
+        $product = Product::find($id);
         if ($cart) {
             return response()->json([
                 'status' => false,
@@ -48,6 +51,7 @@ class CartController extends Controller
         Cart::create([
             'user_id' => Auth::id(),
             'product_id' => $id,
+            'total_price' => $product->price,
             'quantity' => 1
         ]);
 
@@ -75,6 +79,13 @@ class CartController extends Controller
                     ->where('user_id', $request->user_id)
                     ->first();
 
+                DB::table('cart')
+                    ->where('product_id', $request->product_id)
+                    ->where('user_id', $request->user_id)
+                    ->update([
+                        'total_price' => $cart->quantity * $checkQty->price,
+                    ]);
+
                 return response()->json([
                     'status' => true,
                     'new_quantity' => $cart->quantity,
@@ -90,6 +101,8 @@ class CartController extends Controller
 
     public function minusQuantity(Request $request)
     {
+        $checkQty = Product::find($request->product_id);
+
         $cart = DB::table('cart')
             ->where('product_id', $request->product_id)
             ->where('user_id', $request->user_id)
@@ -106,6 +119,13 @@ class CartController extends Controller
                     ->where('product_id', $request->product_id)
                     ->where('user_id', $request->user_id)
                     ->first();
+
+                DB::table('cart')
+                    ->where('product_id', $request->product_id)
+                    ->where('user_id', $request->user_id)
+                    ->update([
+                        'total_price' => $updatedCart->quantity * $checkQty->price,
+                    ]);
 
                 return response()->json([
                     'status' => true,

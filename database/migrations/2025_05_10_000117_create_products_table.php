@@ -30,9 +30,9 @@ return new class extends Migration
             $table->foreignIdFor(Admin::class, 'deleted_by')->nullable();
 
             $table->string('image_id', 255)->nullable();
-            $table->foreignIdFor(Category::class, 'category_id')->constrained();
-            $table->foreignIdFor(SubCategory::class, 'sub_category_id')->constrained();
-            $table->foreignIdFor(Brand::class, 'brand_id')->constrained();
+            $table->foreignIdFor(Category::class, 'category_id')->nullable()->constrained()->onDelete('set null')->onUpdate('cascade');
+            $table->foreignIdFor(SubCategory::class, 'sub_category_id')->nullable()->constrained()->onDelete('set null')->onUpdate('cascade');;
+            $table->foreignIdFor(Brand::class, 'brand_id')->nullable()->constrained()->onDelete('set null')->onUpdate('cascade');;
 
             $table->enum('is_featured', ['yes', 'no'])->default('yes');
             $table->enum('track_qty', ['yes', 'no'])->default('yes');
