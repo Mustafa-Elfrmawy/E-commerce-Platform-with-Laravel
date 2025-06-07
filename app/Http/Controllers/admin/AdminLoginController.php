@@ -48,7 +48,7 @@ class AdminLoginController extends Controller
     {
         if ($validate->passes()) {
 
-            if (auth()->guard('admin')->attempt($credentials, $request->remember)) {
+            if (auth()->guard('admin')->attempt($credentials, $request->remember) ) {
                 return redirect()->route('admin.dashboard');
             }else {
                 return redirect()->back()->withErrors(['email' => 'Invalid credentials'])->withInput($request->only('email', 'remember'));
