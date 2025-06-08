@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('slug' , 255);
             $table->tinyInteger( 'status')->default(1);
             $table->enum( 'showhome', ['yes' , 'no'])->default('yes');
-            $table->foreignId('sub_category_id')
+            $table->foreignId('sub_category_id')    
             ->nullable() 
             ->constrained('sub_categories')  
             ->onDelete('set null')  

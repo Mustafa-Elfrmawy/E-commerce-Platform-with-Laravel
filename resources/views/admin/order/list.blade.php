@@ -69,7 +69,7 @@
                                             <td>{{ $order->phone }}</td>
                                             <td>
                                                 @if ($order->status === 1)
-                                                    <span class="badge bg-success">Awating Delivery</span>
+                                                    <span class="badge bg-danger">Awating Delivery</span>
                                                 @else
                                                     <span class="badge bg-success">Delivered</span>
                                                 @endif

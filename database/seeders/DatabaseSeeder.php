@@ -19,9 +19,107 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        SubCategory::factory()->count(10)->create();
-        Category::factory()->count(10)->create();
-        Brand::factory()->count(10)->create();
+        // SubCategory::factory()->count(10)->create();
+        // Category::factory()->count(10)->create();
+        // Brand::factory()->count(10)->create();
+
+
+        $subcategories = [
+            ['name' => 'electronics', 'slug' => 'electronics'],
+            ['name' => 'home-appliances', 'slug' => 'home-appliances'],
+            ['name' => 'Sports', 'slug' => 'Sports'],
+            ['name' => 'baby-products', 'slug' => 'baby-products'],
+            ['name' => 'toys', 'slug' => 'toys'],
+            ['name' => 'sports-equipment', 'slug' => 'sports-equipment'],
+            ['name' => 'books', 'slug' => 'books'],
+            ['name' => 'food-products', 'slug' => 'food-products'],
+            ['name' => 'fitness-equipment', 'slug' => 'fitness-equipment'],
+            ['name' => 'beverages', 'slug' => 'beverages'],
+            ['name' => 'kitchen-supplies', 'slug' => 'kitchen-supplies'],
+            ['name' => 'furniture', 'slug' => 'furniture'],
+            ['name' => 'school-supplies', 'slug' => 'school-supplies'],
+            ['name' => 'home-decor', 'slug' => 'home-decor'],
+            ['name' => 'shoes', 'slug' => 'shoes'],
+            ['name' => 'clothing', 'slug' => 'clothing'],
+        ];
+        DB::table('sub_categories')->insert($subcategories);
+
+
+
+
+        $categories = [
+            ['name' => 'mobiles', 'slug' => 'mobiles', 'sub_category_id' => 1],
+            ['name' => 'computers', 'slug' => 'computers', 'sub_category_id' => 1],
+            ['name' => 'Tv', 'slug' => 'Tv', 'sub_category_id' => 1],
+            ['name' => 'wristwatches', 'slug' => 'wristwatches', 'sub_category_id' => 1],
+            ['slug' => 'clothing&shoes',   'name' => 'clothing&shoes',   'sub_category_id' => 10],
+            ['name' => 'refrigerators', 'slug' => 'refrigerators', 'sub_category_id' => 2],
+            ['name' => 'washing-machines', 'slug' => 'washing-machines', 'sub_category_id' => 2],
+            ['name' => 'microwaves', 'slug' => 'microwaves', 'sub_category_id' => 2],
+            ['name' => 'air-conditioners', 'slug' => 'air-conditioners', 'sub_category_id' => 2],
+            ['name' => 'football', 'slug' => 'football', 'sub_category_id' => 3],
+            ['name' => 'basketball', 'slug' => 'basketball', 'sub_category_id' => 3],
+            ['name' => 'tennis', 'slug' => 'tennis', 'sub_category_id' => 3],
+            ['slug' => 'diapers',   'name' => 'diapers', 'sub_category_id' => 4],
+            ['slug' => 'baby-food', 'name' => 'baby Food', 'sub_category_id' => 4,],
+            ['slug' => 'baby-clothes', 'name' => 'baby Clothes', 'sub_category_id' => 4,],
+            ['slug' => 'strollers', 'name' => 'strollers', 'sub_category_id' => 4,],
+            ['slug' => 'educational-toys', 'name' => 'educational Toys', 'sub_category_id' => 5],
+            ['slug' => 'soft-toys',        'name' => 'soft Toys',        'sub_category_id' => 5],
+            ['slug' => 'action-figures',   'name' => 'action Figures',   'sub_category_id' => 5],
+            ['slug' => 'puzzles',          'name' => 'puzzles',          'sub_category_id' => 5],
+            ['slug' => 'treadmills',        'name' => 'treadmills',        'sub_category_id' => 6],
+            ['slug' => 'dumbbells',         'name' => 'dumbbells',         'sub_category_id' => 6],
+            ['slug' => 'exercise-bikes',    'name' => 'exercise Bikes',    'sub_category_id' => 6],
+            ['slug' => 'yoga-mats',         'name' => 'yoga Mats',         'sub_category_id' => 6],
+            ['slug' => 'fiction',        'name' => 'fiction',        'sub_category_id' => 7],
+            ['slug' => 'non-fiction',    'name' => 'non-Fiction',    'sub_category_id' => 7],
+            ['slug' => 'children-books', 'name' => 'children Books', 'sub_category_id' => 7],
+            ['slug' => 'educational',    'name' => 'educational',    'sub_category_id' => 7],
+            ['slug' => 'snacks',           'name' => 'snacks',           'sub_category_id' => 8],
+            ['slug' => 'beverages',        'name' => 'beverages',        'sub_category_id' => 8],
+            ['slug' => 'canned-food',      'name' => 'canned Food',      'sub_category_id' => 8],
+            ['slug' => 'dry-goods',        'name' => 'dry Goods',        'sub_category_id' => 8],
+            ['slug' => 'resistance-bands', 'name' => 'resistance Bands', 'sub_category_id' => 9],
+            ['slug' => 'kettlebells',      'name' => 'kettlebells',      'sub_category_id' => 9],
+            ['slug' => 'pull-up-bars',     'name' => 'pull-Up Bars',     'sub_category_id' => 9],
+            ['slug' => 'foam-rollers',     'name' => 'foam Rollers',     'sub_category_id' => 9],
+            ['slug' => 'mens-clothing',     'name' => 'men\'s Clothing',     'sub_category_id' => 10],
+            ['slug' => 'women\'s-clothing',   'name' => 'women\'s Clothing',   'sub_category_id' => 10],
+            ['slug' => 'kids-clothing',     'name' => 'kids Clothing',       'sub_category_id' => 10],
+            ['slug' => 'accessories',       'name' => 'accessories',         'sub_category_id' => 10],
+        ];
+        DB::table('categories')->insert($categories);
+
+        $brands = [
+            ['name' => 'Samsung', 'slug' => 'samsung',   'sub_category_id' =>  1 ],
+            ['name' => 'Apple', 'slug' => 'apple'    ,   'sub_category_id' =>  1 ],
+            ['name' => 'Sony', 'slug' => 'sony'      ,   'sub_category_id' =>  1 ],
+            ['name' => 'LG', 'slug' => 'lg'          ,   'sub_category_id' =>  1 ],
+            ['name' => 'HP', 'slug' => 'hp'          ,   'sub_category_id' =>  1 ],
+            ['name' => 'Dell', 'slug' => 'dell'      ,   'sub_category_id' =>  1     ],
+            ['name' => 'Lenovo', 'slug' => 'lenovo'  ,   'sub_category_id' =>  1         ],
+            ['name' => 'Asus', 'slug' => 'asus'      ,   'sub_category_id' =>  1     ],
+            ['name' => 'Rolex', 'slug' => 'rolex'    ,   'sub_category_id' =>  1       ],
+            ['name' => 'Casio', 'slug' => 'casio'    ,   'sub_category_id' =>  1       ],
+            ['name' => 'Seiko', 'slug' => 'seiko'    ,   'sub_category_id' =>  1       ],
+            ['name' => 'Garmin', 'slug' => 'garmin'  ,   'sub_category_id' =>  1         ],
+            ['name' => 'Fossil', 'slug' => 'fossil'  ,   'sub_category_id' =>  1         ],
+            ['name' => 'Nike', 'slug' => 'nike'      ,   'sub_category_id' =>  10     ],
+            ['name' => 'Adidas', 'slug' => 'adidas'  ,   'sub_category_id' =>  10         ],
+            ['name' => 'Puma', 'slug' => 'puma'      ,   'sub_category_id' =>  10     ],
+            // ['name' => 'Nestle', 'slug' => 'nestle'],
+            // ['name' => 'Pepsi', 'slug' => 'pepsi'],
+            // ['name' => 'Coca-Cola', 'slug' => 'coca-cola'],
+            // ['name' => 'Philips', 'slug' => 'philips'],
+            // ['name' => 'Panasonic', 'slug' => 'panasonic'],
+            // ['name' => 'Toshiba', 'slug' => 'toshiba'],
+            // ['name' => 'Sharp', 'slug' => 'sharp'],
+            // ['name' => 'Whirlpool', 'slug' => 'whirlpool'],
+            // ['name' => 'Bosch', 'slug' => 'bosch'],
+        ];
+        DB::table('brands')->insert($brands);
+
 
         $faker = Faker::create();
         $products = [];
@@ -33,7 +131,7 @@ class DatabaseSeeder extends Seeder
                 'description' => $faker->text(200),
                 'category_id' => rand(1, 9),
                 'sub_category_id' => rand(1, 9),
-                'brand_id' => rand(1, 9),
+                'brand_id' => rand(1, 16),
                 'price' => $faker->randomFloat(2, 50, 500),
                 'compare_price' => $faker->randomFloat(2, 60, 600),
                 // 'is_featured' => $faker->randomElement(['yes', 'no']),
@@ -47,33 +145,6 @@ class DatabaseSeeder extends Seeder
         }
 
         DB::table('products')->insert($products);
-        $subcategories = [
-            ['name' => 'electronics', 'slug' => 'electronics'],
-            ['name' => 'home-appliances', 'slug' => 'home-appliances'],
-            ['name' => 'Sports', 'slug' => 'Sports'],
-            ['name' => 'baby-products', 'slug' => 'baby-products'],
-            ['name' => 'toys', 'slug' => 'toys'],
-            ['name' => 'sports-equipment', 'slug' => 'sports-equipment'],
-            ['name' => 'books', 'slug' => 'books'],
-            // ['name' => 'mobile-phones', 'slug' => 'mobile-phones'],
-            // ['name' => 'computers', 'slug' => 'computers'],
-            // ['name' => 'mens-clothing', 'slug' => 'mens-clothing'],
-            // ['name' => 'womens-clothing', 'slug' => 'womens-clothing'],
-            // ['name' => 'shoes', 'slug' => 'shoes'],
-            ['name' => 'fitness-equipment', 'slug' => 'fitness-equipment'],
-            ['name' => 'food-products', 'slug' => 'food-products'],
-            ['name' => 'beverages', 'slug' => 'beverages'],
-            ['name' => 'kitchen-supplies', 'slug' => 'kitchen-supplies'],
-            ['name' => 'furniture', 'slug' => 'furniture'],
-            ['name' => 'home-decor', 'slug' => 'home-decor'],
-            ['name' => 'beauty-products', 'slug' => 'beauty-products'],
-            ['name' => 'skincare-products', 'slug' => 'skincare-products'],
-            ['name' => 'haircare-products', 'slug' => 'haircare-products'],
-            ['name' => 'health-products', 'slug' => 'health-products'],
-            ['name' => 'medical-equipment', 'slug' => 'medical-equipment'],
-            ['name' => 'office-supplies', 'slug' => 'office-supplies'],
-            ['name' => 'school-supplies', 'slug' => 'school-supplies'],
-        ];
 
 
 
@@ -82,7 +153,47 @@ class DatabaseSeeder extends Seeder
 
 
 
+        // $products = [
+        //     ['title' => 'Samsung Galaxy S24', 'slug' => 'samsung-galaxy-s24', 'description' => 'Latest Samsung smartphone', 'price' => 899.99, 'compare_price' => 999.99, 'category_id' => 1, 'sub_category_id' => 1, 'brand_id' => 1, 'image_id' => '1', 'sku' => 'SGS24-001', 'barcode' => '1000000000001', 'qty' => 50, 'status' => 1, 'is_featured' => 'yes', 'track_qty' => 'yes', 'showhome' => 'yes'],
+        //     ['title' => 'iPhone 14 Pro', 'slug' => 'iphone-14-pro', 'description' => 'Newest Apple iPhone', 'price' => 1099.99, 'compare_price' => 1199.99, 'category_id' => 1,  'sub_category_id' => 1, 'brand_id' => 2, 'image_id' => '2', 'sku' => 'IP14PRO-002', 'barcode' => '1000000000002', 'qty' => 30, 'status' => 1, 'is_featured' => 'yes', 'track_qty' => 'yes', 'showhome' => 'yes'],
+        //     ['title' => 'OnePlus 11', 'slug' => 'oneplus-11', 'description' => 'High-end Android phone', 'price' => 749.99, 'compare_price' => 849.99, 'category_id' => 1, 'sub_category_id' => 1, 'brand_id' => 3, 'image_id' => '3', 'sku' => 'OP11-003', 'barcode' => '1000000000003', 'qty' => 45, 'status' => 1, 'is_featured' => 'yes', 'track_qty' => 'yes', 'showhome' => 'yes'],
+        //     ['title' => 'Xiaomi Mi 13', 'slug' => 'xiaomi-mi-13', 'description' => 'Affordable flagship', 'price' => 599.99, 'compare_price' => 699.99, 'category_id' => 1, 'sub_category_id' => 1, 'brand_id' => 4, 'image_id' => '4', 'sku' => 'MI13-004', 'barcode' => '1000000000004', 'qty' => 60, 'status' => 1, 'is_featured' => 'yes', 'track_qty' => 'yes', 'showhome' => 'yes'],
+        //     ['title' => 'Nokia X200', 'slug' => 'nokia-x200', 'description' => 'Reliable mobile phone', 'price' => 199.99, 'compare_price' => 249.99, 'category_id' => 1, 'sub_category_id' => 1, 'brand_id' => 5, 'image_id' => '5', 'sku' => 'NX200-005', 'barcode' => '1000000000005', 'qty' => 70, 'status' => 1, 'is_featured' => 'yes', 'track_qty' => 'yes', 'showhome' => 'yes'],
+        //     ['title' => 'Google Pixel 8', 'slug' => 'google-pixel-8', 'description' => 'Google flagship phone', 'price' => 899.99, 'compare_price' => 999.99, 'category_id' => 1, 'sub_category_id' => 1, 'brand_id' => 6, 'image_id' => '6', 'sku' => 'GP8-006', 'barcode' => '1000000000006', 'qty' => 40, 'status' => 1, 'is_featured' => 'yes', 'track_qty' => 'yes', 'showhome' => 'yes'],
 
+        //     ['title' => 'Dell Inspiron 15', 'slug' => 'dell-inspiron-15', 'description' => 'Affordable laptop from Dell', 'price' => 699.99, 'compare_price' => 799.99, 'category_id' => 2, 'sub_category_id' => 1, 'brand_id' => 7, 'image_id' => '7', 'sku' => 'DI15-007', 'barcode' => '1000000000007', 'qty' => 30, 'status' => 1, 'is_featured' => 'yes', 'track_qty' => 'yes', 'showhome' => 'yes'],
+        //     ['title' => 'Apple MacBook Air M2', 'slug' => 'macbook-air-m2', 'description' => 'Lightweight Apple laptop', 'price' => 1299.99, 'compare_price' => 1499.99, 'category_id' => 2, 'sub_category_id' => 1, 'brand_id' => 2, 'image_id' => '8', 'sku' => 'MBA2-008', 'barcode' => '1000000000008', 'qty' => 20, 'status' => 1, 'is_featured' => 'yes', 'track_qty' => 'yes', 'showhome' => 'yes'],
+        //     ['title' => 'HP Pavilion', 'slug' => 'hp-pavilion', 'description' => 'Popular HP model', 'price' => 599.99, 'compare_price' => 699.99, 'category_id' => 2, 'sub_category_id' => 1, 'brand_id' => 8, 'image_id' => '9', 'sku' => 'HPPAV-009', 'barcode' => '1000000000009', 'qty' => 35, 'status' => 1, 'is_featured' => 'yes', 'track_qty' => 'yes', 'showhome' => 'yes'],
+        //     ['title' => 'Lenovo ThinkPad E15', 'slug' => 'lenovo-thinkpad-e15', 'description' => 'Business class laptop', 'price' => 899.99, 'compare_price' => 999.99, 'category_id' => 2, 'sub_category_id' => 1, 'brand_id' => 9, 'image_id' => '10', 'sku' => 'LTE15-010', 'barcode' => '1000000000010', 'qty' => 25, 'status' => 1, 'is_featured' => 'yes', 'track_qty' => 'yes', 'showhome' => 'yes'],
+        //     ['title' => 'Asus ZenBook', 'slug' => 'asus-zenbook', 'description' => 'Compact and powerful', 'price' => 999.99, 'compare_price' => 1099.99, 'category_id' => 2, 'sub_category_id' => 1, 'brand_id' => 10, 'image_id' => '11', 'sku' => 'AZB-011', 'barcode' => '1000000000011', 'qty' => 28, 'status' => 1, 'is_featured' => 'yes', 'track_qty' => 'yes', 'showhome' => 'yes'],
+        //     ['title' => 'MSI Gaming Laptop', 'slug' => 'msi-gaming-laptop', 'description' => 'Gaming powerhouse', 'price' => 1399.99, 'compare_price' => 1599.99, 'category_id' => 2, 'sub_category_id' => 1, 'brand_id' => 11, 'image_id' => '12', 'sku' => 'MSIG-012', 'barcode' => '1000000000012', 'qty' => 15, 'status' => 1, 'is_featured' => 'yes', 'track_qty' => 'yes', 'showhome' => 'yes'],
+
+        //     ['title' => 'Samsung 55" Smart TV', 'slug' => 'samsung-55-smart-tv', 'description' => '4K UHD Smart TV', 'price' => 599.99, 'compare_price' => 659.99, 'category_id' => 3, 'sub_category_id' => 1, 'brand_id' => 12, 'image_id' => '13', 'sku' => 'TV-013', 'barcode' => '1000000000013', 'qty' => 28, 'status' => 1, 'is_featured' => 'yes', 'track_qty' => 'yes', 'showhome' => 'yes'],
+        //     ['title' => 'LG OLED CX', 'slug' => 'lg-oled-cx', 'description' => 'High-end OLED TV', 'price' => 1299.99, 'compare_price' => 1429.99, 'category_id' => 3, 'sub_category_id' => 1, 'brand_id' => 13, 'image_id' => '14', 'sku' => 'TV-014', 'barcode' => '1000000000014', 'qty' => 39, 'status' => 1, 'is_featured' => 'yes', 'track_qty' => 'yes', 'showhome' => 'yes'],
+        //     ['title' => 'Sony Bravia X90J', 'slug' => 'sony-bravia-x90j', 'description' => 'Full Array LED TV', 'price' => 999.99, 'compare_price' => 1099.99, 'category_id' => 3, 'sub_category_id' => 1, 'brand_id' => 14, 'image_id' => '15', 'sku' => 'TV-015', 'barcode' => '1000000000015', 'qty' => 27, 'status' => 1, 'is_featured' => 'yes', 'track_qty' => 'yes', 'showhome' => 'yes'],
+        //     ['title' => 'TCL Roku TV 50"', 'slug' => 'tcl-roku-tv-50', 'description' => 'Budget 4K Smart TV', 'price' => 349.99, 'compare_price' => 384.99, 'category_id' => 3, 'sub_category_id' => 1, 'brand_id' => 15, 'image_id' => '16', 'sku' => 'TV-016', 'barcode' => '1000000000016', 'qty' => 61, 'status' => 1, 'is_featured' => 'yes', 'track_qty' => 'yes', 'showhome' => 'yes'],
+        //     ['title' => 'Hisense U8G', 'slug' => 'hisense-u8g', 'description' => 'Premium ULED TV', 'price' => 749.99, 'compare_price' => 824.99, 'category_id' => 3, 'sub_category_id' => 1, 'brand_id' => 16, 'image_id' => '17', 'sku' => 'TV-017', 'barcode' => '1000000000017', 'qty' => 40, 'status' => 1, 'is_featured' => 'yes', 'track_qty' => 'yes', 'showhome' => 'yes'],
+        //     ['title' => 'Panasonic HX700', 'slug' => 'panasonic-hx700', 'description' => 'Smart LED TV', 'price' => 499.99, 'compare_price' => 549.99, 'category_id' => 3, 'sub_category_id' => 1, 'brand_id' => 17, 'image_id' => '18', 'sku' => 'TV-018', 'barcode' => '1000000000018', 'qty' => 60, 'status' => 1, 'is_featured' => 'yes', 'track_qty' => 'yes', 'showhome' => 'yes'],
+
+
+        //     ['title' => 'Rolex Submariner', 'slug' => 'rolex-submariner', 'description' => 'Luxury diving watch by Rolex', 'price' => 7999.99, 'compare_price' => 8999.99, 'category_id' => 4, 'sub_category_id' => 1, 'brand_id' => 4, 'image_id' => '4', 'sku' => 'RW-001', 'barcode' => '1000000000025', 'qty' => 10, 'status' => 1, 'is_featured' => 'yes', 'track_qty' => 'yes', 'showhome' => 'yes'],
+        //     ['title' => 'Casio G-Shock GA-2100', 'slug' => 'casio-g-shock-ga-2100', 'description' => 'Durable and stylish G-Shock watch', 'price' => 99.99, 'compare_price' => 129.99, 'category_id' => 4, 'sub_category_id' => 1, 'brand_id' => 4, 'image_id' => '4', 'sku' => 'RW-002', 'barcode' => '1000000000026', 'qty' => 100, 'status' => 1, 'is_featured' => 'no', 'track_qty' => 'yes', 'showhome' => 'no'],
+        //     ['title' => 'Apple Watch Series 9', 'slug' => 'apple-watch-series-9', 'description' => 'Smartwatch with health tracking features', 'price' => 399.99, 'compare_price' => 449.99, 'category_id' => 4, 'sub_category_id' => 1, 'brand_id' => 4, 'image_id' => '4', 'sku' => 'RW-003', 'barcode' => '1000000000027', 'qty' => 35, 'status' => 1, 'is_featured' => 'yes', 'track_qty' => 'yes', 'showhome' => 'yes'],
+        //     ['title' => 'Fossil Gen 6', 'slug' => 'fossil-gen-6', 'description' => 'Hybrid smartwatch from Fossil', 'price' => 219.99, 'compare_price' => 249.99, 'category_id' => 4, 'sub_category_id' => 1, 'brand_id' => 4, 'image_id' => '4', 'sku' => 'RW-004', 'barcode' => '1000000000028', 'qty' => 60, 'status' => 1, 'is_featured' => 'no', 'track_qty' => 'yes', 'showhome' => 'no'],
+        //     ['title' => 'Seiko 5 Sports', 'slug' => 'seiko-5-sports', 'description' => 'Automatic watch by Seiko', 'price' => 149.99, 'compare_price' => 179.99, 'category_id' => 4, 'sub_category_id' => 1, 'brand_id' => 4, 'image_id' => '4', 'sku' => 'RW-005', 'barcode' => '1000000000029', 'qty' => 40, 'status' => 1, 'is_featured' => 'no', 'track_qty' => 'yes', 'showhome' => 'yes'],
+        //     ['title' => 'Garmin Forerunner 255', 'slug' => 'garmin-forerunner-255', 'description' => 'GPS running smartwatch by Garmin', 'price' => 299.99, 'compare_price' => 349.99, 'category_id' => 4, 'sub_category_id' => 1, 'brand_id' => 4, 'image_id' => '4', 'sku' => 'RW-006', 'barcode' => '1000000000030', 'qty' => 25, 'status' => 1, 'is_featured' => 'yes', 'track_qty' => 'yes', 'showhome' => 'yes'],
+
+
+        //     ['title' => 'LG Front Load Washer', 'slug' => 'lg-front-load-washer', 'description' => 'Efficient front load washing machine by LG', 'price' => 649.99, 'compare_price' => 699.99, 'category_id' => 6, 'sub_category_id' => 2, 'brand_id' => 2, 'image_id' => '16', 'sku' => 'LGWM-001', 'barcode' => '1000000000021', 'qty' => 30, 'status' => 1, 'is_featured' => 'yes', 'track_qty' => 'yes', 'showhome' => 'yes'],
+        //     ['title' => 'Samsung EcoBubble', 'slug' => 'samsung-ecobubble', 'description' => 'Samsung EcoBubble smart washer', 'price' => 599.99, 'compare_price' => 649.99, 'category_id' => 6, 'sub_category_id' => 2, 'brand_id' => 1, 'image_id' => '17', 'sku' => 'SEB-001', 'barcode' => '1000000000022', 'qty' => 40, 'status' => 1, 'is_featured' => 'no', 'track_qty' => 'yes', 'showhome' => 'no'],
+        //     ['title' => 'Bosch Series 6', 'slug' => 'bosch-series-6', 'description' => 'Reliable and silent washer from Bosch', 'price' => 719.99, 'compare_price' => 769.99, 'category_id' => 6, 'sub_category_id' => 2, 'brand_id' => 3, 'image_id' => '18', 'sku' => 'BS6-001', 'barcode' => '1000000000023', 'qty' => 25, 'status' => 1, 'is_featured' => 'yes', 'track_qty' => 'yes', 'showhome' => 'yes'],
+        //     ['title' => 'Whirlpool Supreme Care', 'slug' => 'whirlpool-supreme-care', 'description' => 'Top performance washing machine from Whirlpool', 'price' => 689.99, 'compare_price' => 749.99, 'category_id' => 6, 'sub_category_id' => 2, 'brand_id' => 4, 'image_id' => '19', 'sku' => 'WSC-001', 'barcode' => '1000000000024', 'qty' => 35, 'status' => 1, 'is_featured' => 'no', 'track_qty' => 'yes', 'showhome' => 'no'],
+        //     ['title' => 'Electrolux UltraCare', 'slug' => 'electrolux-ultracare', 'description' => 'Premium care for clothes', 'price' => 799.99, 'compare_price' => 849.99, 'category_id' => 6, 'sub_category_id' => 2, 'brand_id' => 5, 'image_id' => '20', 'sku' => 'EUC-001', 'barcode' => '1000000000025', 'qty' => 20, 'status' => 1, 'is_featured' => 'yes', 'track_qty' => 'yes', 'showhome' => 'yes'],
+        //     ['title' => 'Panasonic Smart Inverter', 'slug' => 'panasonic-smart-inverter', 'description' => 'Smart inverter motor washer from Panasonic', 'price' => 629.99, 'compare_price' => 679.99, 'category_id' => 6, 'sub_category_id' => 2, 'brand_id' => 6, 'image_id' => '21', 'sku' => 'PSI-001', 'barcode' => '1000000000026', 'qty' => 28, 'status' => 1, 'is_featured' => 'no', 'track_qty' => 'yes', 'showhome' => 'no'],
+
+
+
+        // ];
 
 
 

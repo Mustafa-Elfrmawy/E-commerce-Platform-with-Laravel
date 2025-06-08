@@ -12,8 +12,8 @@
         <div class="container">
             <div class="light-font">
                 <ol class="breadcrumb primary-color mb-0">
-                    <li class="breadcrumb-item"><a class="white-text" href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a class="white-text" href="#">Shop</a></li>
+                    <li class="breadcrumb-item"><a class="white-text" href="{{ route('front.home') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a class="white-text" href="{{ route('front.shop') }}">Shop</a></li>
                     <li class="breadcrumb-item">Checkout</li>
                 </ol>
             </div>
@@ -145,7 +145,7 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <textarea name="notes_order" id="notes_order" cols="30" rows="2" placeholder="Order Notes (optional)"
-                                                class="form-control">{{ old('order_notes') }}</textarea>
+                                                class="form-control">{{ old('notes_order') }}</textarea>
                                             @error('notes_order')
                                                 <p style="color:red;">{{ $message }}</p>
                                             @enderror

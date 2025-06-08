@@ -27,7 +27,8 @@ Route::group(['middleware' => 'guest:user'], function () {
 Route::prefix('home')->middleware('guest')->group(function () {
     Route::get('/', [FrontController::class, 'index'])->name('front.home');
     Route::get('/product/{id}', [FrontController::class, 'indexProduct'])->name('front.product');
-    Route::get('/shop/{category_id?}/{sub_category_id?}/{brand_id?}/{minPrice?}/{maxPrice?}', [FrontController::class, 'shop'])->name('front.shop');
+    Route::get('/shop/{category_id?}/{sub_category_id?}/{brand_id?}/{minPrice?}/{maxPrice?}', 
+    [FrontController::class, 'shop'])->name('front.shop');
 });
 #################################guest routes###########################################################
 

@@ -47,12 +47,12 @@
                                                @foreach ($orders as $order)
                                                    <tr>
                                                        <td>
-                                                           <a href="order-detail.php">OR{{ $order->id }}</a>
+                                                           <a href="{{ route('front.detailsOrder' , $order->id ) }}">OR{{ $order->id }}</a>
                                                        </td>
                                                        <td>{{ $order->created_at->format('d-m-Y') }}</td>
                                                        <td>
                                                         @if($order->status == 1)
-                                                        <span class="badge bg-success">Delivered</span>
+                                                        <span class="badge bg-danger">Awating Delivered</span>
                                                         @else
                                                         <span class="badge bg-danger">Delivered</span>
                                                         @endif

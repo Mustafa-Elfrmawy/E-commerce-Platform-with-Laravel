@@ -52,37 +52,37 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="#" class="nav-link">
                         <!-- <i class="nav-icon fas fa-tag"></i> -->
                         <i class="fas fa-truck nav-icon"></i>
                         <p>Shipping</p>
                     </a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
                     <a href="{{route('admin.order')}}" class="nav-link">
                         <i class="nav-icon fas fa-shopping-bag"></i>
                         <p>Orders</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="discount{{-- {{route('')}} --}}" class="nav-link">
+                {{-- <li class="nav-item">
+                    <a href="discount{{route('')}}" class="nav-link">
                         <i class="nav-icon  fa fa-percent" aria-hidden="true"></i>
                         <p>Discount</p>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="users{{-- {{route('')}} --}}" class="nav-link">
+                </li> --}}
+                {{-- <li class="nav-item">
+                    <a href="users{{route('')}}" class="nav-link">
                         <i class="nav-icon  fas fa-users"></i>
                         <p>Users</p>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="pages{{-- {{route('')}} --}}" class="nav-link">
+                </li> --}}
+                {{-- <li class="nav-item">
+                    <a href="pages{{route('')}}" class="nav-link">
                         <i class="nav-icon  far fa-file-alt"></i>
                         <p>Pages</p>
                     </a>
-                </li>
+                </li> --}}
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

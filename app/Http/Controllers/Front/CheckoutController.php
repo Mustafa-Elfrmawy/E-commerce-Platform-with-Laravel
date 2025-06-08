@@ -36,7 +36,7 @@ class CheckoutController extends Controller
         $total = \App\Models\Cart::where('user_id', Auth::id())->sum('total_price');
         $discount_user = DiscountUser::where('user_id', Auth::id())->first();
 
-        if ($discount_user->total_discount) :
+        if ( $discount_user && $discount_user->total_discount) :
             $request->merge([
                 'total' => $discount_user->total_discount
             ]);

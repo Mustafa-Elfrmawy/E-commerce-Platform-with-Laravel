@@ -209,28 +209,28 @@
                 <h2>Featured Products</h2>
             </div>
             <div class="row pb-3">
+
+
+
+
                 @if ($products->isNotEmpty())
                     @foreach ($products as $product)
                         <div class="col-md-3">
                             <div class="card product-card">
                                 <div class="product-image position-relative">
                                     @php
-                                        if ($product->image_id) {
-                                            $images = App\Models\ProductImage::latest()
+                                        $img = $product->image_id
+                                            ? App\Models\ProductImage::latest()
                                                 ->whereIn('id', explode(',', $product->image_id))
-                                                ->get();
-                                        }
+                                                ->first()
+                                            : null;
                                     @endphp
-                                    @if (!empty($images))
-                                        <a href="{{ route('front.product', $product->id) }}" class="product-img"><img
-                                                class="card-img-top"
-                                                src="{{ my_asset('storage/' . $images->first()->image_product) }}"
-                                                alt=""></a>
-                                    @else
-                                        <a href="{{ route('front.product', $product->id) }}" class="product-img"><img
-                                                class="card-img-top" src="{{ my_asset('Front/images/150x150.png') }}"
-                                                alt=""></a>
-                                    @endif
+
+                                    <a href="{{ route('front.product', $product->id) }}" class="product-img">
+                                        <img class="card-img-top"
+                                            src="{{ my_asset($img ? 'storage/' . $img->image_product : 'Front/images/150x150.png') }}"
+                                            alt="">
+                                    </a>
                                     <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
                                     <div class="product-action">
                                         <a class="btn btn-dark" href="javascript:void(0);"
@@ -252,6 +252,10 @@
                         </div>
                     @endforeach
                 @endif
+
+
+
+
             </div>
     </section>
 
@@ -268,22 +272,23 @@
                             <div class="card product-card">
                                 <div class="product-image position-relative">
                                     @php
-                                        if ($product_latest->image_id) {
-                                            $images_latest = App\Models\ProductImage::latest()
+                                        $images_latest = $product_latest->image_id
+                                            ? App\Models\ProductImage::latest()
                                                 ->whereIn('id', explode(',', $product_latest->image_id))
-                                                ->get();
-                                        }
+                                                ->get()
+                                            : collect();
                                     @endphp
-                                    @if (!empty($images_latest))
-                                        <a href="{{ route('front.product', $product_latest->id) }}"
-                                            class="product-img"><img class="card-img-top"
-                                                src="{{ my_asset('storage/' . $images_latest->first()->image_product) }}"
-                                                alt=""></a>
-                                    @else
-                                        <a href="{{ route('front.product', $product_latest->id) }}"
-                                            class="product-img"><img class="card-img-top"
-                                                src="{{ my_asset('Front/images/150x150.png') }}" alt=""></a>
-                                    @endif
+
+                                    @php
+                                        $img = $images_latest->first();
+                                    @endphp
+
+                                    <a href="{{ route('front.product', $product_latest->id) }}" class="product-img">
+                                        <img class="card-img-top"
+                                            src="{{ my_asset($img ? 'storage/' . $img->image_product : 'Front/images/150x150.png') }}"
+                                            alt="">
+                                    </a>
+
                                     <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
 
                                     <div class="product-action">

@@ -37,7 +37,7 @@ class ProductController extends Controller
         if ($request->get('keyword') != null) {
             $products = $products->where('title', 'LIKE', '%' . $request->get('keyword') . '%');
         }
-        $products = $products->paginate(20);
+        $products = $products->paginate(10);
         $images = Product::whereIn('id', [$products])->get();
         return view('admin.product.list', compact('products'));
     }

@@ -53,7 +53,7 @@
                                         <tr>
                                             <td>
                                                 <div class="d-flex align-items-center">
-                                                    @if (file_exists(public_path('storage/' . $images->first())))
+                                                    @if ( $images->isNotEmpty() && file_exists(public_path('storage/' . $images->first())))
                                                         <img src="{{ my_asset('storage/' . $images->first()) }}"
                                                             width="100" height="100" alt="{{ $cart->product->title }}">
                                                     @else

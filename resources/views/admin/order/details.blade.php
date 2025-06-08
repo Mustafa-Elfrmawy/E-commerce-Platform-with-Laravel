@@ -63,7 +63,7 @@
                                             <b>Total:</b> ${{ $discount_user->total_discount }}<br>
                                         @endif
                                         @if ($order->status === 1)
-                                            <b>Status:</b> <span class="text-success">Awating Delivery</span>
+                                            <b>Status:</b> <span class="text-danger">Awating Delivery</span>
                                         @else
                                             <b>Status:</b> <span class="text-success">Delivered</span>
                                         @endif

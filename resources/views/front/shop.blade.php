@@ -175,11 +175,11 @@
                                         <div class="card product-card">
                                             <div class="product-image position-relative">
                                                 @if ($images && $images->first() != null)
-                                                    <a href="" class="product-img"><img class="card-img-top"
+                                                    <a href="{{ route('front.product' , $product->id) }}" class="product-img"><img class="card-img-top"
                                                             src="{{ my_asset('storage/' . $images->first()) }}"
                                                             alt=""></a>
                                                 @else
-                                                    <a href="" class="product-img"><img class="card-img-top"
+                                                    <a href="{{ route('front.product' , $product->id) }}" class="product-img"><img class="card-img-top"
                                                             src="{{ my_asset('Front/images/150x150.png') }}"
                                                             alt="image"></a>
                                                 @endif
