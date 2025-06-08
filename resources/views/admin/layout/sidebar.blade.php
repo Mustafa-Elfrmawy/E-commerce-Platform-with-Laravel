@@ -60,7 +60,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="orders{{-- {{route('')}} --}}" class="nav-link">
+                    <a href="{{route('admin.order')}}" class="nav-link">
                         <i class="nav-icon fas fa-shopping-bag"></i>
                         <p>Orders</p>
                     </a>

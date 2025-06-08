@@ -268,12 +268,15 @@
                     product_id: productId,
                 },
                 success: function(response) {
-                    if (response.status == true) {
+                    if (response.status === true) {
                         if (confirm(response.message + ' ' + productTitle +
                                 ', do you want to go to the cart?')) {
                             window.location.href = "{{ route('front.showCart') }}";
                         }
-                    } else {
+                    } else if(response.status === "non") {
+                        alert(response.message );
+                    }
+                    else {
                         alert(response.message + productTitle);
                     }
                 },

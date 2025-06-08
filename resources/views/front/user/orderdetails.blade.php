@@ -40,7 +40,7 @@
                                                 <h6 class="heading-xxxs text-muted">Order No:</h6>
                                                 <!-- Text -->
                                                 <p class="mb-lg-0 fs-sm fw-bold">
-                                                    673290789
+                                                    {{ $order->id }}
                                                 </p>
                                             </div>
                                             <div class="col-6 col-lg-3">
@@ -48,8 +48,8 @@
                                                 <h6 class="heading-xxxs text-muted">Shipped date:</h6>
                                                 <!-- Text -->
                                                 <p class="mb-lg-0 fs-sm fw-bold">
-                                                    <time datetime="2019-10-01">
-                                                        01 Oct, 2019
+                                                    <time datetime="{{ $order->created_at }}">
+                                                        {{ \Carbon\Carbon::parse($order->created_at)->format('d M, Y') }}
                                                     </time>
                                                 </p>
                                             </div>
@@ -57,16 +57,23 @@
                                                 <!-- Heading -->
                                                 <h6 class="heading-xxxs text-muted">Status:</h6>
                                                 <!-- Text -->
-                                                <p class="mb-0 fs-sm fw-bold">
-                                                    Awating Delivery
-                                                </p>
+                                                @if ($order->status === 1)
+                                                    <p class="mb-0 fs-sm fw-bold">Awating Delivery</p>
+                                                @else
+                                                    <p class="mb-0 fs-sm fw-bold">Delivered</p>
+                                                @endif
                                             </div>
                                             <div class="col-6 col-lg-3">
                                                 <!-- Heading -->
                                                 <h6 class="heading-xxxs text-muted">Order Amount:</h6>
                                                 <!-- Text -->
                                                 <p class="mb-0 fs-sm fw-bold">
-                                                    $259.00
+                                                    @if (!$discount_user)
+                                                        ${{ $order->sub_total }}
+                                                    @else
+                                                        {{-- @dd($discount_user) --}}
+                                                        ${{ $discount_user->total_discount }}
+                                                    @endif
                                                 </p>
                                             </div>
                                         </div>
@@ -84,91 +91,88 @@
 
                                 <!-- List group -->
                                 <ul>
-                                    <li class="list-group-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-4 col-md-3 col-xl-2">
-                                                <!-- Image -->
-                                                <a href="product.html"><img src="images/product-1.jpg" alt="..."
-                                                        class="img-fluid"></a>
-                                            </div>
-                                            <div class="col">
-                                                <!-- Title -->
-                                                <p class="mb-4 fs-sm fw-bold">
-                                                    <a class="text-body" href="product.html">Cotton floral print Dress x
-                                                        1</a> <br>
-                                                    <span class="text-muted">$40.00</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-4 col-md-3 col-xl-2">
-                                                <!-- Image -->
-                                                <a href="#"><img src="images/product-2.jpg" alt="..."
-                                                        class="img-fluid"></a>
-                                            </div>
-                                            <div class="col">
-                                                <!-- Title -->
-                                                <p class="mb-4 fs-sm fw-bold">
-                                                    <a class="text-body" href="#">Suede cross body Bag x 1</a> <br>
-                                                    <span class="text-muted">$49.00</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </li>
-
-                                    <li class="list-group-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-4 col-md-3 col-xl-2">
-                                                <!-- Image -->
-                                                <a href="#"><img src="images/product-3.jpg" alt="..."
-                                                        class="img-fluid"></a>
-
-                                            </div>
-                                            <div class="col">
-
-                                                <!-- Title -->
-                                                <p class="mb-4 fs-sm fw-bold">
-                                                    <a class="text-body" href="#">Sweatshirt with Pocket</a> <br>
-                                                    <span class="text-muted">$39.00</span>
-                                                </p>
-
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
+                                    @foreach ($products as $index => $product)
+                                        <li class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col-4 col-md-3 col-xl-2">
+                                                    @php
+                                                        $Image = collect();
+                                                        $Image = App\Models\ProductImage::find(
+                                                            explode(',', $product->image_id)[0],
+                                                        );
+                                                    @endphp
+                                                    <!-- Image -->
+                                                    <a href="product.html">
+                                                        @if ($Image)
+                                                            <img src="{{ my_asset('storage/' . $Image->image_product) }}"
+                                                                alt="..." class="img-fluid">
+                                                    </a>
+                                                @else
+                                                    <img src="{{ my_asset('Front/images/150x150.png') }}" alt="..."
+                                                        class="img-fluid"> </a>
+                                    @endif
+                            </div>
+                            <div class="col">
+                                <!-- Title -->
+                                <p class="mb-4 fs-sm fw-bold">
+                                    <a class="text-body"
+                                        href="{{ route('front.product', $product->id) }}">{{ $product->title }} x
+                                        {{ $quantity[$index] }}</a> <br>
+                                    <span class="text-muted">${{ $product->price }}</span>
+                                </p>
                             </div>
                         </div>
-
-                        <div class="card card-lg mb-5 mt-3">
-                            <div class="card-body">
-                                <!-- Heading -->
-                                <h6 class="mt-0 mb-3 h5">Order Total</h6>
-
-                                <!-- List group -->
-                                <ul>
-                                    <li class="list-group-item d-flex">
-                                        <span>Subtotal</span>
-                                        <span class="ms-auto">$128.00</span>
-                                    </li>
-                                    <li class="list-group-item d-flex">
-                                        <span>Tax</span>
-                                        <span class="ms-auto">$0.00</span>
-                                    </li>
-                                    <li class="list-group-item d-flex">
-                                        <span>Shipping</span>
-                                        <span class="ms-auto">$8.00</span>
-                                    </li>
-                                    <li class="list-group-item d-flex fs-lg fw-bold">
-                                        <span>Total</span>
-                                        <span class="ms-auto">$136.00</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                        </li>
+                        @endforeach
+                        {{-- @if ($images->isNotEmpty())
+                                @foreach ($images as $index => $filename)
+                                    <div class="carousel-item @if ($index === 0) active @endif">
+                                        <img src="{{ my_asset('storage/' . $filename->image_product) }}"
+                                            class="d-block w-100" alt="Image {{ $index + 1 }}"
+                                            style="height: 400px; object-fit: cover;">
+                                    </div>
+                                @endforeach
+                            @else
+                               
+                            @endif --}}
+                        </ul>
                     </div>
                 </div>
+
+                <div class="card card-lg mb-5 mt-3">
+                    <div class="card-body">
+                        <!-- Heading -->
+                        <h6 class="mt-0 mb-3 h5">Order Total</h6>
+
+                        <!-- List group -->
+                        <ul>
+                            <li class="list-group-item d-flex">
+                                <span>Subtotal</span>
+                                <span class="ms-auto">${{ $order->sub_total }}</span>
+                            </li>
+                            <li class="list-group-item d-flex">
+                                <span>Tax</span>
+                                <span class="ms-auto">$0.00</span>
+                            </li>
+                            <li class="list-group-item d-flex">
+                                <span>Shipping</span>
+                                <span class="ms-auto">$0.00</span>
+                            </li>
+                            <li class="list-group-item d-flex fs-lg fw-bold">
+                                <span>Total</span>
+                                <span class="ms-auto">
+                                    @if (!$discount_user)
+                                        ${{ $order->sub_total }}
+                                    @else
+                                        ${{ $discount_user->total_discount }}
+                                    @endif
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            </div>
             </div>
         </section>
     @endsection

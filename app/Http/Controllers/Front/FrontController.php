@@ -16,11 +16,8 @@ class FrontController extends Controller
      */
     public function index()
     {
-        // $categories = Category::where('showhome' , 'yes')->where('status' , 1)->latest()->get();
-        // $sub_categories = SubCategory::where('showhome' , 'yes')->where('status' , 1)->latest()->get();
-        // $products = Product::where('showhome' , 'yes')->where('is_featured' , 'yes')->where('status' , 1)->latest()->get();
-        // $products_latest = Product::where('showhome' , 'yes')->where('is_featured' , 'no')->where('status' , 1)->latest()->get();
-        return view('front.home'  /* compact('categories' , 'sub_categories' , 'products' , 'products_latest' )  */);
+        
+        return view('front.home');
     }
     public function indexProduct(string $id)
     {

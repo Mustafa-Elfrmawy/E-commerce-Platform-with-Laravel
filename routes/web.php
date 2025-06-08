@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AdminLoginController;
+use App\Http\Controllers\admin\OrderAdminController;
 use App\Http\Controllers\CategoriesAdmin\HandllerImage;
 use App\Http\Controllers\ProductAdmin\ProductController;
 
@@ -16,6 +17,8 @@ Route::group(['prefix' => 'admin'], function () {
     /* start admin =========================================================================================================*/
     Route::group(['middleware' => 'auth:admin'], function () {
         Route::get('/dashboard', [AdminLoginController::class, 'returnDashboard'])->name('admin.dashboard');
+        Route::get('/order', [OrderAdminController::class, 'index'])->name('admin.order');
+        Route::get('/orderDetails/{idOrder}', [OrderAdminController::class, 'indexDetails'])->name('admin.orderDetails');
         Route::post('logout', [AdminLoginController::class, 'destroy'])
             ->name('logout');
 

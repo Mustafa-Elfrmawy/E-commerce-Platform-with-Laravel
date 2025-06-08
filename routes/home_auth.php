@@ -27,7 +27,7 @@ Route::prefix('home')->group(function () {
         Route::post('/user/logout', [UserAuthenticateController::class, 'destroy'])->name('user.logout');
         Route::put('/user/update-information', [UserAuthenticateController::class, 'updateInformation'])->name('user.updateInformation');
         Route::get('/showOrder', [OrderController::class, 'showOrder'])->name('front.order');
-        Route::get('/detailsOrder', [OrderController::class, 'detailsOrder'])->name('front.detailsOrder');
+        Route::get('/detailsOrder/{idOrder}', [OrderController::class, 'detailsOrder'])->name('front.detailsOrder');
         #################################Profile routes############################################################
         
         #################################Profile routes############################################################

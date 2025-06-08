@@ -34,7 +34,7 @@
                                     @csrf
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <input value="{{ old('first_name') }}" type="text" name="first_name"
+                                            <input value="{{ old('first_name')?? explode(' ' , auth()->guard('user')->user()->name)[0] }}" type="text" name="first_name"
                                                 id="first_name" class="form-control" placeholder="First Name">
                                             @error('first_name')
                                                 <p style="color:red;">{{ $message }}</p>
@@ -43,7 +43,7 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <input value="{{ old('last_name') }}" type="text" name="last_name"
+                                            <input value="{{ old('last_name')??  explode(' ' , auth()->guard('user')->user()->name)[1]?? "" }}" type="text" name="last_name"
                                                 id="last_name" class="form-control" placeholder="Last Name">
                                             @error('last_name')
                                                 <p style="color:red;">{{ $message }}</p>
@@ -53,7 +53,7 @@
 
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <input value="{{ old('email') }}" type="email" name="email" id="email"
+                                            <input value="{{ old('email')?? auth()->guard('user')->user()->email }}" type="email" name="email" id="email"
                                                 class="form-control" placeholder="Email">
                                             @error('email')
                                                 <p style="color:red;">{{ $message }}</p>

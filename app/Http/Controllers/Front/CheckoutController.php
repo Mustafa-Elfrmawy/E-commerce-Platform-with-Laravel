@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\Country;
 use App\Models\Product;
 use App\Models\DiscountCode;
+use App\Models\DiscountUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Validator;
 
 class CheckoutController extends Controller
 {
- 
+
     public function checkout()
     {
         // $orders  = Order::where('user_id', Auth::id())->get();
@@ -33,11 +34,11 @@ class CheckoutController extends Controller
     public function store(Request $request)
     {
         $total = \App\Models\Cart::where('user_id', Auth::id())->sum('total_price');
+        $discount_user = DiscountUser::where('user_id', Auth::id())->first();
 
-        // dd($request->input('discount_value_input'));
-        if ($request->input('discount_value_input') != null) :
+        if ($discount_user->total_discount) :
             $request->merge([
-                'total' => $request->input('discount_value_input')
+                'total' => $discount_user->total_discount
             ]);
         else :
             $request->merge([
@@ -69,13 +70,8 @@ class CheckoutController extends Controller
 
     protected function finishStore(Request $request)
     {
-        // $arr_format = [];
-        // $arr_products = Cart::where('user_id', Auth::id())->pluck('quantity' , 'product_id')->toArray();
-        // foreach($arr_products as $key => $value) {
-        //     $arr_format[] = $key.'x'. $value;
-        // }
+
         $arr_format = $this->assistantFinishStoreOrder();
-        // $productIdsList = implode(',', $productIds);
         $order = new Order();
         $order->first_name = $request->first_name;
         $order->last_name = $request->last_name;
@@ -92,10 +88,8 @@ class CheckoutController extends Controller
         $order->notes_order = $request->notes_order;
         $order->sub_total = $request->total;
         $order->save();
+        $this->deleteCartAndDiscountUser();
 
-        DB::table('discount_users')
-            ->where('user_id', Auth::id())
-            ->delete();
 
         return ($order) ? redirect()->route('front.home')
             ->with('successOrder', 'create order success') :
@@ -122,7 +116,7 @@ class CheckoutController extends Controller
         if (!$total) :
             return response()->json([
                 'status' => false,
-                'message' => 'error while search product.'
+                'message' => 'error while search your product.'
             ]);
         endif;
 
@@ -194,5 +188,13 @@ class CheckoutController extends Controller
             $arr_format[] = $key . 'x' . $value;
         }
         return  $arr_format = implode(',', $arr_format);
+    }
+
+    protected function deleteCartAndDiscountUser()
+    {
+        Cart::where('user_id', Auth::id())->delete();
+        DB::table('discount_users')
+            ->where('user_id', Auth::id())
+            ->delete();
     }
 }

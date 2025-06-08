@@ -8,12 +8,13 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\DiscountUser;
 use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
     //
- 
+
     public function cart()
     {
         $carts = Cart::where('user_id', Auth::id())->get();
@@ -36,6 +37,13 @@ class CartController extends Controller
 
     public function addToCart(string $id)
     {
+        $discount_user = DiscountUser::where('user_id', Auth::id())->first();
+        if ($discount_user) :
+            return response()->json([
+                'status' => "non",
+                'message' => 'please Complete your transaction before add a new product because your discount is available'
+            ]);
+        endif;
         $cart = Cart::where('user_id', Auth::id())
             ->where('product_id', $id)
             ->first();
