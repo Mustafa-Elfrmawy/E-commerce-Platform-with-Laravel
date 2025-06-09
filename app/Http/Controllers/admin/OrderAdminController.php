@@ -42,4 +42,28 @@ class OrderAdminController extends Controller
         $quantity = $matches[2];
         return view('admin.order.details'  , compact('products'  , 'order', 'quantity' ,  'discount_user'));
     }
+    
+
+
+
+
+
+    public function discountCreate() {
+        return view('admin.discount.create'  /* , compact('products'  , 'order', 'quantity' ,  'discount_user') */);
+
+    }
+
+
+
+    public function userCreate() {
+        return view('admin.user.create'  /* , compact('products'  , 'order', 'quantity' ,  'discount_user') */);
+
+    }
+
+        public function userUser() {
+        return view('admin.user.user'  /* , compact('products'  , 'order', 'quantity' ,  'discount_user') */);
+
+    }
+    
+
 }

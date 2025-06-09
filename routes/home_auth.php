@@ -11,6 +11,11 @@ use App\Http\Controllers\user\UserAuthenticateController;
 Route::prefix('home')->group(function () {
     Route::group(['middleware' => 'auth:user'], function () {
         #################################Cart routes############################################################
+Route::get('/user/changePassword/create', [UserAuthenticateController::class, 'changePasswordCreate'])
+->name('user.changePassword.create');
+Route::post('/user/changePassword/store', [UserAuthenticateController::class, 'changePasswordStore'])
+->name('user.changePassword.store');
+        Route::post('/user/logout', [UserAuthenticateController::class, 'destroy'])->name('user.logout');
         Route::get('/showCart', [CartController::class, 'cart'])->name('front.showCart');
         Route::get('/quantityCartIcon', [CartController::class, 'quantityCartIcon'])->name('front.quantityCartIcon');
         Route::post('/plusQuantity', [CartController::class, 'plusQuantity'])->name('front.plusQuantity');
@@ -24,7 +29,6 @@ Route::prefix('home')->group(function () {
         
         #################################Profile routes############################################################
         Route::get('/show-profile', [UserAuthenticateController::class, 'showProfile'])->name('front.profile');
-        Route::post('/user/logout', [UserAuthenticateController::class, 'destroy'])->name('user.logout');
         Route::put('/user/update-information', [UserAuthenticateController::class, 'updateInformation'])->name('user.updateInformation');
         Route::get('/showOrder', [OrderController::class, 'showOrder'])->name('user.order');
         Route::get('/detailsOrder/{idOrder}', [OrderController::class, 'detailsOrder'])->name('user.detailsOrder');

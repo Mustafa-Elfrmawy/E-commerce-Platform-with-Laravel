@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\user;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Order;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use function Laravel\Prompts\error;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Casts\Json;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 
-use function Laravel\Prompts\error;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Eloquent\Casts\Json;
 
 class UserAuthenticateController extends Controller
 {
@@ -141,5 +142,31 @@ class UserAuthenticateController extends Controller
         $user->address = $request->address;
         $user->save();
         return redirect()->back()->with('success', 'changes successfully ');
+    }
+    public function changePasswordCreate() {
+
+        return view('front.user.changepassword');
+    }
+    public function changePasswordStore(Request $request): RedirectResponse
+    {
+        $user = Auth::guard('user')->user();
+
+        $validate = Validator::make($request->all(), [
+            'current_password' => 'required',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        if ($validate->fails()) {
+            return redirect()->back()->withErrors($validate)->withInput();
+        }
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return redirect()->back()->withErrors(['current_password' => 'Current password is incorrect'])->withInput();
+        }
+
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        return redirect()->back()->with('successChangePassword', 'Password changed successfully.');
     }
 }

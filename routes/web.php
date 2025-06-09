@@ -20,8 +20,12 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/order', [OrderAdminController::class, 'index'])->name('admin.order');
         Route::get('/orderDetails/{idOrder}', [OrderAdminController::class, 'indexDetails'])->name('admin.orderDetails');
         Route::post('logout', [AdminLoginController::class, 'destroy'])
-            ->name('logout');
-
+        ->name('logout');
+        
+        
+        Route::get('/discount/create', [OrderAdminController::class, 'discountCreate'])->name('admin.discountCreate');
+        Route::get('/user/create', [OrderAdminController::class, 'userCreate'])->name('admin.userCreate');
+        Route::get('/user/user', [OrderAdminController::class, 'userUser'])->name('admin.userUser');
 
 
         /* start category =========================================================================================================*/
