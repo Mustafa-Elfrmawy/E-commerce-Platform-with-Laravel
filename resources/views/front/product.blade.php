@@ -9,12 +9,6 @@
     product
 @endsection
 @section('content')
-    <div>
-        <form action="{{ route('user.logout') }}" method="POST">
-            @csrf
-            <button type="submit">logout</button>
-        </form>
-    </div>
     <section class="section-5 pt-3 pb-3 mb-3 bg-white">
         <div class="container">
             <div class="light-font">
@@ -169,7 +163,7 @@
                                         </a>
                                     @endif
 
-                                    <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
+                                    <a class="whishlist" onclick="wishList({{ $product_related->id }}); return false;" href="#"><i class="far fa-heart"></i></a>
 
                                     <div class="product-action" style="bottom: 10px; right: 10px;">
                                         <a class="btn btn-dark btn-sm" href="#">

@@ -14,11 +14,14 @@ class FrontController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    /* #region dfdsfs */ 
     public function index()
     {
         
         return view('front.home');
     }
+
     public function indexProduct(string $id)
     {
         $product = Product::find($id);
@@ -34,6 +37,8 @@ class FrontController extends Controller
         $images = ProductImage::whereIn('id', $images)->get();
         return view('front.product', compact('product', 'products_related' , 'images'));
     }
+
+    /* #endregion  */
 
     /**
      * Show the form for creating a new resource.

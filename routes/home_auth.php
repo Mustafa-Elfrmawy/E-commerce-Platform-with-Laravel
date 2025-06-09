@@ -26,8 +26,11 @@ Route::prefix('home')->group(function () {
         Route::get('/show-profile', [UserAuthenticateController::class, 'showProfile'])->name('front.profile');
         Route::post('/user/logout', [UserAuthenticateController::class, 'destroy'])->name('user.logout');
         Route::put('/user/update-information', [UserAuthenticateController::class, 'updateInformation'])->name('user.updateInformation');
-        Route::get('/showOrder', [OrderController::class, 'showOrder'])->name('front.order');
-        Route::get('/detailsOrder/{idOrder}', [OrderController::class, 'detailsOrder'])->name('front.detailsOrder');
+        Route::get('/showOrder', [OrderController::class, 'showOrder'])->name('user.order');
+        Route::get('/detailsOrder/{idOrder}', [OrderController::class, 'detailsOrder'])->name('user.detailsOrder');
+        Route::get('/wishlist', [OrderController::class, 'wishlist'])->name('user.wishlist');
+        Route::post('/wishListStore', [OrderController::class, 'wishListStore'])->name('user.wishList.store');
+        Route::delete('/wishListDelete', [OrderController::class, 'deleteWishList'])->name('user.wishList.delete');
         #################################Profile routes############################################################
         
         #################################Profile routes############################################################

@@ -3,11 +3,15 @@
 namespace App\Http\Controllers\Front;
 
 use App\Models\Order;
+use App\Models\Product;
+use App\Models\WishList;
+use App\Models\DiscountUser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\DiscountUser;
-use App\Models\Product;
+use Illuminate\Database\Eloquent\Casts\Json;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
@@ -36,5 +40,79 @@ class OrderController extends Controller
 
 
         return view('front.user.orderdetails', compact('order', 'products', 'quantity',  'discount_user'));
+    }
+
+    public function wishlist()
+    {
+        $wishLists = WishList::where('user_id', Auth::id())->get();
+
+        return view('front.user.wishlist', compact('wishLists'));
+    }
+
+    public function wishListStore(Request $request)
+    {
+
+        $validated = Validator::make($request->all(), [
+            'product_id' => 'required|exists:products,id'
+        ]);
+
+        $checkWishList = WishList::where('product_id', $request->product_id)
+            ->where('user_id', Auth::guard('user')->user()->id)
+            ->first();
+
+        if ($validated->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Error while adding to wishList.',
+                'errors' => $validated->errors()
+            ]);
+        }
+
+        if ($checkWishList) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Product already exists in wishlist.'
+            ]);
+        }
+
+        WishList::create([
+            'product_id' => $request->product_id,
+            'user_id' => Auth::guard('user')->user()->id,
+        ]);
+        return response()->json([
+            'status' => true,
+            'message' => 'add wishList successfully.'
+        ]);
+    }
+
+    public function deleteWishList(Request $request): JsonResponse
+    {
+        $validated = Validator::make($request->all(), [
+            'product_id' => 'required|exists:wish_lists,product_id'
+        ]);
+
+        if ($validated->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid product_id.',
+                'errors' => $validated->errors()
+            ]);
+        }
+
+        $checkWishList = WishList::where('product_id', $request->product_id)
+            ->where('user_id', Auth::guard('user')->user()->id)
+            ->first();
+
+        if (!$checkWishList) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Error while deleting wishList.'
+            ]);
+        }
+        $checkWishList->delete();
+        return response()->json([
+            'status' => true,
+            'message' => 'WishList deleted successfully.'
+        ]);
     }
 }

@@ -183,7 +183,7 @@
                                                             src="{{ my_asset('Front/images/150x150.png') }}"
                                                             alt="image"></a>
                                                 @endif
-                                                <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
+                                                <a class="whishlist" onclick="wishList({{ $product->id }}); return false;" href="#"><i class="far fa-heart"></i></a>
 
                                                 <div class="product-action">
                                                     <a onclick="addToCart({{ $product->id }}, '{{ addslashes($product->title) }}')"

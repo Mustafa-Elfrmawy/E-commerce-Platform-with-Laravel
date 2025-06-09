@@ -24,21 +24,6 @@ class UserAuthenticateController extends Controller
         if (!Auth::guard('user')->check()) {
             return redirect()->route('user.login')->with('error', 'You must be logged in to view your profile.');
         }
-        // $arr_formats_product = [];
-        // $arr_formats_quantity = [];
-        // $orders = Order::all();  
-        // foreach ($orders as $order) {
-        //     foreach (explode(',', $order->product_id) as $arr_format) :
-        //         $pos = strpos($arr_format, 'x');
-        //         $arr_formats_product[] = substr($arr_format, 0, $pos);
-        //         $arr_formats_quantity[] = substr($arr_format,  $pos + 1);
-        //     endforeach;
-        // }
-        // echo "<pre>";
-        // print_r($arr_formats_product);
-        // print_r($arr_formats_quantity);
-        // dd($orders);
-        // Get the authenticated user
         $user = Auth::guard('user')->user();
         return view('front.user.profile', compact('user'));
     }
@@ -70,7 +55,7 @@ class UserAuthenticateController extends Controller
         $user->phone = $request->phone;
         $user->password = bcrypt($request->password);
         $user->save();
-        return redirect()->route('user.login')->with('success', 'Registration successful. Please login.');
+        return redirect()->route('user.login')->with('successRegister', "Thank you Mr.$user->name .");
     }
 
 

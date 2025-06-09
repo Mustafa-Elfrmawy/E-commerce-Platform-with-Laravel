@@ -228,10 +228,10 @@
 
                                     <a href="{{ route('front.product', $product->id) }}" class="product-img">
                                         <img class="card-img-top"
-                                            src="{{ my_asset($img ? 'storage/' . $img->image_product : 'Front/images/150x150.png') }}"
+                                            src=" {{ my_asset($img ? 'storage/' . $img->image_product : 'Front/images/150x150.png') }}"
                                             alt="">
                                     </a>
-                                    <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
+                                    <a class="whishlist" onclick="wishList({{ $product->id }}); return false;" href="#"><i class="far fa-heart"></i></a>
                                     <div class="product-action">
                                         <a class="btn btn-dark" href="javascript:void(0);"
                                             onclick="addToCart({{ $product->id }}, '{{ addslashes($product->title) }}')">
@@ -289,7 +289,7 @@
                                             alt="">
                                     </a>
 
-                                    <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
+                                    <a class="whishlist" onclick="wishList({{ $product_latest->id }})" href="#"><i class="far fa-heart"></i></a>
 
                                     <div class="product-action">
                                         <a class="btn btn-dark" href="javascript:void(0);"
@@ -320,6 +320,10 @@
 
 @section('custom-js')
     <script>
+
+
+
+
         window.onscroll = function() {
             myFunction()
         };

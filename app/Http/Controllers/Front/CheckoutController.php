@@ -185,6 +185,12 @@ class CheckoutController extends Controller
         $arr_format = [];
         $arr_products = Cart::where('user_id', Auth::id())->pluck('quantity', 'product_id')->toArray();
         foreach ($arr_products as $key => $value) {
+            $product = Product::find($key);
+            if ($product) {
+                $product->update([
+                    'qty' => ($product->qty - $value), 
+                ]);
+            }
             $arr_format[] = $key . 'x' . $value;
         }
         return  $arr_format = implode(',', $arr_format);

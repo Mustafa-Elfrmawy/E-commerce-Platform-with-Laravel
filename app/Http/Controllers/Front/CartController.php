@@ -49,12 +49,19 @@ class CartController extends Controller
             ->first();
 
         $product = Product::find($id);
-        if ($cart) {
+        if ($product->qty < 1) :
+            return response()->json([
+                'status' => false,
+                'message' => 'We are out of stock the stock available:0 '
+            ]);
+        endif;
+
+        if ($cart) :
             return response()->json([
                 'status' => false,
                 'message' => 'Item with is already in the cart. name:'
             ]);
-        }
+        endif;
 
         Cart::create([
             'user_id' => Auth::id(),
@@ -103,7 +110,7 @@ class CartController extends Controller
 
         return response()->json([
             'status' => false,
-            'message' => 'Cart item not found.  or  We are out of stock the stock available' . $checkQty->qty
+            'message' => 'Cart item not found.  or  We are out of stock the stock available ' . $checkQty->qty
         ]);
     }
 

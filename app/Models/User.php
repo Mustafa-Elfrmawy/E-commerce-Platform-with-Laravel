@@ -3,9 +3,13 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Cart;
+use App\Models\Order;
+use App\Models\WishList;
+use App\Models\DiscountUser;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -58,5 +62,10 @@ class User extends Authenticatable
     public function discount()
     {
         return $this->hasMany(DiscountUser::class, 'user_id');
+    }
+
+     public function wishlist()
+    {
+        return $this->hasMany(WishList::class, 'user_id');
     }
 }

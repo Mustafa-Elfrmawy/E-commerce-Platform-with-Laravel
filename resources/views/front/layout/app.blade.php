@@ -108,7 +108,7 @@
                     <div class="col-lg-6 col-6 text-left d-flex justify-content-end align-items-center">
                         @if (Auth::guard('user')->check())
                             <a href="{{ route('front.profile') }}" class="nav-link text-dark">My Account</a>
-                            @else
+                        @else
                             <a href="{{ route('user.login') }}" class="nav-link text-dark">Sign-in</a>
                         @endif
                         <form action="">
@@ -129,7 +129,7 @@
             <div class="">
                 <nav class="navbar navbar-expand-xl" id="navbar">
                     <a href="index.php" class="text-decoration-none mobile-logo">
-                    <span class="h2 text-uppercase text-primary bg-dark">Online</span>
+                        <span class="h2 text-uppercase text-primary bg-dark">Online</span>
                         <span class="h2 text-uppercase text-white px-2">SHOP</span>
                     </a>
                     <button class="navbar-toggler menu-btn" type="button" data-bs-toggle="collapse"
@@ -273,10 +273,9 @@
                                 ', do you want to go to the cart?')) {
                             window.location.href = "{{ route('front.showCart') }}";
                         }
-                    } else if(response.status === "non") {
-                        alert(response.message );
-                    }
-                    else {
+                    } else if (response.status === "non") {
+                        alert(response.message);
+                    } else {
                         alert(response.message + productTitle);
                     }
                 },
@@ -305,6 +304,31 @@
                     if (error == 'Unauthorized') {
                         if (confirm(error + ' :: You must be logged in to add items to the cart')) {} else {}
                     }
+                }
+            });
+        }
+
+        function wishList(product_id) {
+            $.ajax({
+                url: "{{ route('user.wishList.store') }}",
+                type: "POST",
+                data: {
+                    product_id: product_id,
+                },
+                success: function(response) {
+                    if (response.status === true) {
+                        alert(response.message);
+                        // Change heart icon to full color yellow
+                        $('a.whishlist[onclick*="wishList(' + product_id + ')"] i').removeClass('far').addClass(
+                            'fas').css('color', 'yellow');
+                        // window.location.reload();
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                    alert('Your Unauthenticated please sign in and try again.');
                 }
             });
         }

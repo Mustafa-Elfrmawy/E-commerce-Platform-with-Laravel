@@ -33,21 +33,23 @@
                            </div>
                            <div class="card-body p-4">
                                <div class="table-responsive">
-                                   <table class="table">
-                                       <thead>
-                                           <tr>
-                                               <th>Orders #</th>
-                                               <th>Date Purchased</th>
-                                               <th>Status</th>
-                                               <th>Total</th>
-                                           </tr>
-                                       </thead>
+                                {{-- #region --}}
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Orders #</th>
+                                            <th>Date Purchased</th>
+                                            <th>Status</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    {{-- #endregion --}}
                                        <tbody>
                                            @if ($orders->isNotEmpty())
                                                @foreach ($orders as $order)
                                                    <tr>
                                                        <td>
-                                                           <a href="{{ route('front.detailsOrder' , $order->id ) }}">OR{{ $order->id }}</a>
+                                                           <a href="{{ route('user.detailsOrder' , $order->id ) }}">OR{{ $order->id }}</a>
                                                        </td>
                                                        <td>{{ $order->created_at->format('d-m-Y') }}</td>
                                                        <td>
