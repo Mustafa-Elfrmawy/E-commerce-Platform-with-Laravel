@@ -1,62 +1,275 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
+````markdown
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <!-- <a href="https://your-ecommerce-site.example.com" target="_blank"> -->
+    <img src="https://raw.githubusercontent.com/yourusername/E-commerce-Platform-with-Laravel/main/logo.png" width="400" alt="E-commerce Platform Logo">
+  </a>
 </p>
 
-## About Laravel
+<p align="center">
+  <a href="https://github.com/yourusername/E-commerce-Platform-with-Laravel/actions"><img src="https://github.com/yourusername/E-commerce-Platform-with-Laravel/workflows/tests/badge.svg" alt="Build Status"></a>
+  <a href="https://packagist.org/packages/yourusername/ecommerce-platform"><img src="https://img.shields.io/packagist/dt/yourusername/ecommerce-platform" alt="Total Downloads"></a>
+  <a href="https://packagist.org/packages/yourusername/ecommerce-platform"><img src="https://img.shields.io/packagist/v/yourusername/ecommerce-platform" alt="Latest Stable Version"></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🚀 E-commerce Platform with Laravel
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+A full-featured E-commerce application built on Laravel featuring category and subcategory management, role-based permissions, and a dedicated admin dashboard for site administration.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🛠️ Features
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **Category & Subcategory Management**: Create, update, and organize product categories and subcategories.
+- **Role-Based Permissions**: Define custom roles and permissions for users and admins using Laravel Gates and Policies.
+- **Admin Dashboard**: Separate, secure dashboard for administrators to manage products, orders, users, and settings.
+- **Product & Inventory**: CRUD for products with images, SKUs, stock tracking, and status flags.
+- **Coupon & Discount System**: Create and manage discount coupons with usage limits and expiration dates.
+- **Authentication & Security**: Laravel built-in auth scaffolding, JWT support for API, CSRF protection, and HttpOnly cookies.
+- **RESTful API**: API endpoints for mobile apps or third-party integrations.
+- **Reporting & Analytics**: Basic sales and order reports in the admin panel.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 📦 Included Packages
 
-## Laravel Sponsors
+- **Laravel Framework** (v{{ framework_version }})
+- **Spatie Laravel-Permission** for RBAC
+- **Intervention Image** for product image processing
+- **blade_engine** 
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## 🔧 Installation
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development/)**
-- **[Active Logic](https://activelogic.com)**
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/E-commerce-Platform-with-Laravel.git
+   cd E-commerce-Platform-with-Laravel
+````
 
-## Contributing
+2. \*\*Install dependencies  \*\*
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+   ```bash
+   composer install
+   npm install && npm run dev
+   ```
 
-## Code of Conduct
+3. \*\*Environment setup  \*\*
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
-## Security Vulnerabilities
+   Configure your database credentials and other settings in `.env`  .
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+4. \*\*Run migrations & seeders  \*\*
 
-## License
+   ```bash
+   php artisan migrate --seed
+   ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# E-commerce-Platform-with-Laravel
+5. \*\*Start the development server  \*\*
+
+   ```bash
+   php artisan serve
+   ```
+
+---
+
+## 📝 Usage &#x20;
+
+* Access the homepage at `http://localhost:8000`  .
+* Admin panel at `http://localhost:8000/admin` (use seeded admin credentials). &#x20;
+* API endpoints under `http://localhost:8000/api` with Sanctum authentication. &#x20;
+
+---
+
+## 📂 Project Structure &#x20;
+
+```text
+app/
+├── Http/
+│   ├── Controllers/
+│   │   ├── Admin/
+│   │   └── CategoryAdmin/
+│   │   └── ProductAdmin/
+│   │   └── Front/
+│   │   └── user/
+│   └── Middleware/
+├── Models/
+├── Policies/
+├── Repositories/
+resources/
+├── views/
+│   ├── admin/
+│   └── front/
+routes/
+├── web.php
+└── category.php
+└── home_auth.php
+└── front.php
+└── pp.php
+```
+
+---
+```
+
+
+
+````markdown
+<p align="center">
+  <a href="https://your-ecommerce-site.example.com" target="_blank">
+    <img src="https://raw.githubusercontent.com/yourusername/E-commerce-Platform-with-Laravel/main/logo.png" width="400" alt="E-commerce Platform Logo">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/yourusername/E-commerce-Platform-with-Laravel/actions"><img src="https://github.com/yourusername/E-commerce-Platform-with-Laravel/workflows/tests/badge.svg" alt="Build Status"></a>
+  <a href="https://packagist.org/packages/yourusername/ecommerce-platform"><img src="https://img.shields.io/packagist/dt/yourusername/ecommerce-platform" alt="Total Downloads"></a>
+  <a href="https://packagist.org/packages/yourusername/ecommerce-platform"><img src="https://img.shields.io/packagist/v/yourusername/ecommerce-platform" alt="Latest Stable Version"></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
+</p>
+
+## 🚀 E-commerce Platform with Laravel
+
+A full-featured E-commerce application built on Laravel featuring category and subcategory management, role-based permissions, and a dedicated admin dashboard for site administration.
+
+---
+
+## 🛠️ Features
+
+- **Category & Subcategory Management**: Create, update, and organize product categories and subcategories.
+- **Role-Based Permissions**: Define custom roles and permissions for users and admins using Laravel Gates and Policies.
+- **Admin Dashboard**: Separate, secure dashboard for administrators to manage products, orders, users, and settings.
+- **Product & Inventory**: CRUD for products with images, SKUs, stock tracking, and status flags.
+- **Coupon & Discount System**: Create and manage discount coupons with usage limits and expiration dates.
+- **Authentication & Security**: Laravel built-in auth scaffolding, JWT support for API, CSRF protection, and HttpOnly cookies.
+- **RESTful API**: API endpoints for mobile apps or third-party integrations.
+- **Reporting & Analytics**: Basic sales and order reports in the admin panel.
+
+---
+
+## 📦 Included Packages
+
+- **Laravel Framework** (v{{ framework_version }})
+- **Spatie Laravel-Permission** for RBAC
+- **Intervention Image** for product image processing
+- **Laravel Sanctum** for API authentication
+- **Livewire** + **Alpine.js** for interactive UI components
+
+---
+
+## 🔧 Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/E-commerce-Platform-with-Laravel.git
+   cd E-commerce-Platform-with-Laravel
+````
+
+2. \*\*Install dependencies  \*\*
+
+   ```bash
+   composer install
+   npm install && npm run dev
+   ```
+
+3. \*\*Environment setup  \*\*
+
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+   Configure your database credentials and other settings in `.env`  .
+
+4. \*\*Run migrations & seeders  \*\*
+
+   ```bash
+   php artisan migrate --seed
+   ```
+
+5. \*\*Start the development server  \*\*
+
+   ```bash
+   php artisan serve
+   ```
+
+---
+
+## 📝 Usage &#x20;
+
+* Access the homepage at `http://localhost:8000`  .
+* Admin panel at `http://localhost:8000/admin` (use seeded admin credentials). &#x20;
+* API endpoints under `http://localhost:8000/api` with Sanctum authentication. &#x20;
+
+---
+
+## 📂 Project Structure &#x20;
+
+```text
+app/
+├── Http/
+│   ├── Controllers/
+│   │   ├── Admin/
+│   │   └── API/
+│   └── Middleware/
+├── Models/
+├── Policies/
+├── Repositories/
+resources/
+├── views/
+│   ├── admin/
+│   └── customer/
+routes/
+├── web.php
+└── api.php
+```
+
+---
+
+## 📋 Core Projects
+
+* **E-commerce Platform with Laravel**
+  A comprehensive e-commerce solution featuring:
+
+  * Category & subcategory management
+  * Role-based permissions
+  * Dedicated admin dashboard for products, orders, and users
+  * Coupon and discount system
+  * Inventory tracking
+
+* **Invoice and Inventory Management System**
+  A Laravel-based application to manage sales invoices, customer (trader) profiles, and stock across multiple branches with daily/monthly reporting.
+
+* **Laravel Personal Aljawharuh System V2**
+  A customized personal management system built on Laravel, featuring advanced category/subcategory organization, permission control, and a secure admin interface.
+
+* **Pharmacy Management System**
+  A robust Laravel solution for pharmacies to handle prescription records, medicine inventory, supplier management, and automated stock replenishment alerts.
+
+## 🧩 Key Personal & Training Projects & Training Projects
+
+A concise list of the main utility tools included in this toolkit:
+
+* **DBHandler**: Simplifies PDO-based CRUD operations with reusable methods and error handling.
+* **Curl**: PSR-compatible HTTP client wrapper for easy API requests and JSON handling.
+* **GitHub API Manager**: Provides authenticated methods to interact with GitHub repositories via REST API.
+* **MyFunction Utility Class**: Offers manual implementations of PHP built-in functions for educational purposes.
+
+---
+
+## 🤝 Contributing &#x20;
+
+Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines. &#x20;
+
+---
+
+## 📄 License &#x20;
+
+This project is open-sourced under the MIT license. See [LICENSE](LICENSE) for details. &#x20;
+
+```
+```
