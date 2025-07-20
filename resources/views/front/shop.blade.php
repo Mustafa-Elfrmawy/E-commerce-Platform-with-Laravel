@@ -56,7 +56,7 @@
                                                         <div class="navbar-nav">
                                                             @if ($categories->isNotEmpty())
                                                                 <a href="{{ route('front.shop', ['category_id' => $categories->first()->id, 'sub_category_id' => $sub_category->id]) }}"
-                                                                    class="nav-item nav-link">all from this
+                                                                    class="nav-item nav-link">
                                                                     {{ $sub_category->name }}</a>
                                                                 @foreach ($categories as $category)
                                                                     @if ($category->sub_category_id == $sub_category->id)

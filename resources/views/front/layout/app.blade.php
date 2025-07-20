@@ -86,6 +86,158 @@
                 transform: translate(-50%, -50%) rotate(360deg);
             }
         }
+        
+        /* تأثيرات الانتقال للـ navbar */
+        .categories-row {
+            transition: all 0.3s ease;
+            overflow: visible;
+            position: relative;
+            z-index: 1050;
+        }
+        
+        /* إصلاح مشكلة الـ dropdown overlap */
+        .categories-row .dropdown-menu {
+            z-index: 1070 !important;
+            position: absolute !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+            border: 1px solid #495057 !important;
+            margin-top: 2px !important;
+        }
+        
+        .categories-row .dropdown {
+            position: relative;
+            z-index: 1050;
+        }
+        
+        /* إصلاح مشكلة الزر يغطي على القائمة */
+        .categories-row .dropdown-toggle {
+            z-index: 1051 !important;
+            position: relative;
+        }
+        
+        .categories-row .dropdown.show .dropdown-toggle {
+            z-index: 1049 !important;
+        }
+        
+        .categories-row .dropdown.show .dropdown-menu {
+            z-index: 1080 !important;
+        }
+        
+        /* تحسينات إضافية للـ dropdown */
+        .categories-row .dropdown-menu .dropdown-item {
+            z-index: 1081 !important;
+            position: relative;
+        }
+        
+        .categories-row .dropdown-menu .dropdown-item:hover {
+            background-color: #495057 !important;
+            color: #fff !important;
+        }
+        
+        /* ضمان عدم تداخل العناصر */
+        .categories-row .dropdown-menu {
+            min-width: 150px;
+            max-width: 250px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        /* إصلاح مشكلة الصفوف المتعددة في الـ navbar */
+        .categories-row {
+            position: relative;
+        }
+        
+        /* عندما يكون هناك dropdown مفتوح، خفض z-index لباقي العناصر */
+        .categories-row .dropdown.show ~ .dropdown {
+            z-index: 1030 !important;
+        }
+        
+        .categories-row .dropdown.show ~ .dropdown .dropdown-toggle {
+            z-index: 1030 !important;
+        }
+        
+        /* تأكيد أن الـ dropdown المفتوح له أعلى z-index */
+        .categories-row .dropdown.show {
+            z-index: 1090 !important;
+        }
+        
+        /* حل للعناصر اللي جاية بعد الـ dropdown المفتوح */
+        .categories-row .dropdown:not(.show) {
+            z-index: 1040;
+        }
+        
+        /* التأكد من أن الـ header له z-index عالي */
+        header {
+            position: relative;
+            z-index: 1040;
+        }
+        
+        /* تحسين شكل الـ breadcrumb لتجنب التداخل */
+        .breadcrumb {
+            position: relative;
+            z-index: 1030;
+        }
+        
+        /* تحسين الـ main content */
+        main {
+            position: relative;
+            z-index: 1020;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                max-height: 200px;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 1;
+                max-height: 200px;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                max-height: 0;
+                transform: translateY(-10px);
+            }
+        }
+        
+        /* تحسين شكل الأزرار */
+        #categoriesToggle {
+            transition: all 0.2s ease;
+            border-radius: 20px;
+            font-size: 0.875rem;
+        }
+        
+        #categoriesToggle:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
+        }
+        
+        /* تحسين responsive للموبايل */
+        @media (max-width: 768px) {
+            .mobile-logo {
+                font-size: 0.9rem !important;
+            }
+            
+            .mobile-logo .h2 {
+                font-size: 1.2rem !important;
+            }
+            
+            #categoriesToggle {
+                font-size: 0.75rem;
+                padding: 0.25rem 0.5rem;
+            }
+        }
     </style>
 </head>
 
@@ -127,56 +279,85 @@
 
         <header class="bg-dark">
             <div class="">
+                <!-- الصف الأول: الشعار + زر القوائم + عربة التسوق -->
                 <nav class="navbar navbar-expand-xl" id="navbar">
-                    <a href="index.php" class="text-decoration-none mobile-logo">
-                        <span class="h2 text-uppercase text-primary bg-dark">Online</span>
-                        <span class="h2 text-uppercase text-white px-2">SHOP</span>
-                    </a>
-                    <button class="navbar-toggler menu-btn" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                        <i class="navbar-toggler-icon fas fa-bars"></i>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        @if ($sub_categories->isNotEmpty())
-                            <ul class="nav navbar-nav me-auto mb-2 mb-lg-0">
-                                @foreach ($sub_categories as $sub_category)
-                                    <li class="nav-item dropdown">
-                                        <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown"
-                                            aria-expanded="false">
-                                            {{ $sub_category->name }}
-                                        </button>
-                                        @php
-                                            $filteredCategories = $categories->where(
-                                                'sub_category_id',
-                                                $sub_category->id,
-                                            );
-                                        @endphp
-                                        @if ($filteredCategories->isNotEmpty())
-                                            <ul class="dropdown-menu dropdown-menu-dark">
-                                                @foreach ($filteredCategories as $category)
-                                                    <li><a class="dropdown-item nav-link"
-                                                            href="{{ route('front.shop', $category->id) }}">{{ $category->name }}</a>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        @endif
-                                    </li>
-                                @endforeach
-                            </ul>
-                        @endif
+                    <div class="container-fluid d-flex justify-content-between align-items-center">
+                        <!-- الشعار -->
+                        <a href="{{ route('front.home') }}" class="text-decoration-none mobile-logo flex-shrink-0 ms-3">
+                                <span class="h4 text-uppercase text-primary bg-dark px-1">Online</span>
+                                <span class="h4 text-uppercase text-white px-1">SHOP</span>
+                            </a>
+                        
+                        <!-- مجموعة الأزرار في المنتصف -->
+                        <div class="d-flex align-items-center gap-2">
+                            <!-- زر إظهار/إخفاء القوائم -->
+                            @if ($sub_categories->isNotEmpty())
+                                <button class="btn btn-outline-light btn-sm" type="button" 
+                                        onclick="toggleCategories()" id="categoriesToggle">
+                                    <i class="fas fa-list"></i> Menu
+                                </button>
+                            @endif
+                            
+                            <!-- زر القائمة للموبايل -->
+                            <button class="navbar-toggler menu-btn d-xl-none" type="button" 
+                                    onclick="toggleMobileMenu()" id="mobileMenuToggle">
+                                <i class="navbar-toggler-icon fas fa-bars"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- عربة التسوق -->
+                        <a href="{{ route('front.showCart') }}" type="button"
+                            class="btn btn-warning position-relative">
+                            <i class="fas fa-shopping-cart"></i>
+                            @if (Auth::guard('user')->check())
+                                <span id="cart-count"
+                                    class="position-absolute top-0 start-90 translate-middle badge rounded-pill bg-danger">
+                                    <span class="visually-hidden">unread messages</span>
+                                </span>
+                            @endif
+                        </a>
                     </div>
-                    <a href="{{ route('front.showCart') }}" type="button"
-                        class="btn btn-warning position-relative">
-                        <i class="fas fa-shopping-cart"></i>
-                        @if (Auth::guard('user')->check())
-                            <span id="cart-count"
-                                class="position-absolute top-0  start-90 translate-middle badge rounded-pill bg-danger">
-                                <span class="visually-hidden">unread messages</span>
-
-                            </span>
-                        @endif
-                    </a>
+                </nav>
+                
+                <!-- الصف الثاني: قوائم الفئات (مخفية بشكل افتراضي) -->
+                @if ($sub_categories->isNotEmpty())
+                    <div class="categories-row bg-dark border-top border-secondary" id="categoriesRow" style="display: none;">
+                        <div class="container-fluid">
+                            <div class="row py-2">
+                                <div class="col-12">
+                                    <div class="d-flex flex-wrap gap-2 justify-content-center">
+                                        @foreach ($sub_categories as $sub_category)
+                                            <div class="dropdown">
+                                                <button class="btn btn-dark btn-sm dropdown-toggle" 
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                    {{ $sub_category->name }}
+                                                </button>
+                                                @php
+                                                    $filteredCategories = $categories->where(
+                                                        'sub_category_id',
+                                                        $sub_category->id,
+                                                    );
+                                                @endphp
+                                                @if ($filteredCategories->isNotEmpty())
+                                                    <ul class="dropdown-menu dropdown-menu-dark">
+                                                        @foreach ($filteredCategories as $category)
+                                                            <li>
+                                                                <a class="dropdown-item" 
+                                                                   href="{{ route('front.shop', $category->id) }}">
+                                                                    {{ $category->name }}
+                                                                </a>
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                @endif
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
 
                 </nav>
             </div>
@@ -329,6 +510,152 @@
                 error: function(xhr, status, error) {
                     console.error(error);
                     alert('Your Unauthenticated please sign in and try again.');
+                }
+            });
+        }
+        function logout() {
+            if (!confirm('Are you sure you want to logout?')) {
+                return;
+            }
+            $.ajax({
+                url: "{{ route('user.logout') }}",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function(response) {
+                    if (response.status === true) {
+                        window.location.href = "{{ route('user.login') }}";
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function() {
+                    alert('An error occurred. Please try again.');
+                }
+            });
+        }
+        
+        // دالة إظهار/إخفاء قوائم الفئات
+        function toggleCategories() {
+            const categoriesRow = document.getElementById('categoriesRow');
+            const toggleButton = document.getElementById('categoriesToggle');
+            const icon = toggleButton.querySelector('i');
+            
+            if (categoriesRow.style.display === 'none' || categoriesRow.style.display === '') {
+                // إظهار القوائم
+                categoriesRow.style.display = 'block';
+                categoriesRow.style.animation = 'slideDown 0.3s ease-out';
+                icon.className = 'fas fa-times';
+                toggleButton.innerHTML = '<i class="fas fa-times"></i>Close';
+                toggleButton.classList.remove('btn-outline-light');
+                toggleButton.classList.add('btn-light');
+            } else {
+                // إخفاء القوائم
+                categoriesRow.style.animation = 'slideUp 0.3s ease-out';
+                setTimeout(() => {
+                    categoriesRow.style.display = 'none';
+                }, 250);
+                icon.className = 'fas fa-list';
+                toggleButton.innerHTML = '<i class="fas fa-list"></i> Menu';
+                toggleButton.classList.remove('btn-light');
+                toggleButton.classList.add('btn-outline-light');
+            }
+        }
+        
+        // دالة للقائمة المحمولة (للموبايل)
+        function toggleMobileMenu() {
+            const categoriesRow = document.getElementById('categoriesRow');
+            if (categoriesRow) {
+                toggleCategories();
+            }
+        }
+        
+        // حل مشكلة تداخل الصفوف المتعددة
+        let currentActiveDropdown = null;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdowns = document.querySelectorAll('.categories-row .dropdown');
+            
+            dropdowns.forEach(function(dropdown) {
+                const toggle = dropdown.querySelector('.dropdown-toggle');
+                if (toggle) {
+                    // عند محاولة فتح dropdown جديد
+                    toggle.addEventListener('show.bs.dropdown', function(e) {
+                        // إغلاق أي dropdown مفتوح حالياً أولاً
+                        if (currentActiveDropdown && currentActiveDropdown !== dropdown) {
+                            const currentToggle = currentActiveDropdown.querySelector('.dropdown-toggle');
+                            if (currentToggle) {
+                                // إغلاق الـ dropdown السابق
+                                const bsDropdown = bootstrap.Dropdown.getInstance(currentToggle);
+                                if (bsDropdown) {
+                                    bsDropdown.hide();
+                                }
+                            }
+                        }
+                        
+                        // تأخير قصير لضمان إغلاق السابق أولاً
+                        setTimeout(function() {
+                            handleDropdownOpen(dropdown);
+                            currentActiveDropdown = dropdown;
+                        }, 50);
+                    });
+                    
+                    toggle.addEventListener('hide.bs.dropdown', function() {
+                        if (currentActiveDropdown === dropdown) {
+                            currentActiveDropdown = null;
+                        }
+                        // تأخير قصير لضمان الإغلاق الكامل
+                        setTimeout(function() {
+                            if (!currentActiveDropdown) {
+                                handleDropdownClose();
+                            }
+                        }, 100);
+                    });
+                }
+            });
+        });
+        
+        function handleDropdownOpen(activeDropdown) {
+            const allDropdowns = document.querySelectorAll('.categories-row .dropdown');
+            
+            // أولاً: إعادة تعيين جميع العناصر للقيم الافتراضية
+            allDropdowns.forEach(function(dropdown) {
+                dropdown.style.zIndex = '1040';
+                const toggle = dropdown.querySelector('.dropdown-toggle');
+                if (toggle) {
+                    toggle.style.zIndex = '1041';
+                }
+                const menu = dropdown.querySelector('.dropdown-menu');
+                if (menu) {
+                    menu.style.zIndex = '1060';
+                }
+            });
+            
+            // ثانياً: رفع z-index للعنصر النشط فقط
+            activeDropdown.style.zIndex = '1090';
+            const activeToggle = activeDropdown.querySelector('.dropdown-toggle');
+            if (activeToggle) {
+                activeToggle.style.zIndex = '1089';
+            }
+            const activeMenu = activeDropdown.querySelector('.dropdown-menu');
+            if (activeMenu) {
+                activeMenu.style.zIndex = '1100';
+            }
+        }
+        
+        function handleDropdownClose() {
+            const allDropdowns = document.querySelectorAll('.categories-row .dropdown');
+            
+            allDropdowns.forEach(function(dropdown) {
+                dropdown.style.zIndex = '1050';
+                const toggle = dropdown.querySelector('.dropdown-toggle');
+                if (toggle) {
+                    toggle.style.zIndex = '1051';
+                }
+                const menu = dropdown.querySelector('.dropdown-menu');
+                if (menu) {
+                    menu.style.zIndex = '1070';
                 }
             });
         }

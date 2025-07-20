@@ -67,8 +67,8 @@
 
                                     <div class="mb-3">
                                         <label for="phone">Address</label>
-                                        <textarea name="address" id="address" class="form-control @error('address') is-invalid @enderror" cols="30" rows="5"
-                                            placeholder="Enter Your Address">{{ old('address', $user->address ?? '') }}</textarea>
+                                        <textarea name="address" id="address" class="form-control @error('address') is-invalid @enderror" cols="30"
+                                            rows="5" placeholder="Enter Your Address">{{ old('address', $user->address ?? '') }}</textarea>
                                         @error('address')
                                             <p class="invalid-feedback">{{ $message }}</p>
                                         @enderror
@@ -89,27 +89,4 @@
 @endsection
 
 @section('custom-js')
-    <script>
-        function logout() {
-            if (!confirm('Are you sure you want to logout?')) {
-                return;
-            }
-            $.ajax({
-                url: "{{ route('user.logout') }}",
-                type: "POST",
-                success: function(response) {
-                    if (response.status === true) {
-                        window.location.href = "{{ route('user.login') }}";
-                    } else {
-                        alert(response.message);
-                    }
-                },
-
-                error: function(xhr, status, error) {
-                    console.error(error);
-                    alert('An error was occurred while logging out. Please try again.');
-                }
-            });
-        }
-    </script>
 @endsection

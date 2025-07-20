@@ -69,4 +69,4 @@
    @endsection
 
    @section('custom-js')
-   @endsection
+@endsection
