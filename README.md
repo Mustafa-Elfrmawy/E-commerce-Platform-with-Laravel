@@ -1,8 +1,3 @@
-أكيد، إليك نسخة معدّلة من وصف مشروعك Markdown بدون ذكر JWT، وبدون الصور والـ badges، وباستخدام رابط الكلون الجديد:
-
----
-
-````markdown
 ## 🚀 E-commerce Platform with Laravel
 
 A full-featured E-commerce application built on Laravel featuring category and subcategory management, role-based permissions, and a dedicated admin dashboard for site administration.
