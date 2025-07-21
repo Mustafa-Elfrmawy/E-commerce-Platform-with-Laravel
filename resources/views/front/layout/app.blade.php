@@ -497,13 +497,16 @@
                     product_id: product_id,
                 },
                 success: function(response) {
-                    if (response.status === true) {
+                    if (response.status === true && response.message !== 'Product removed from wishlist.') {
                         alert(response.message);
                         // Change heart icon to full color yellow
                         $('a.whishlist[onclick*="wishList(' + product_id + ')"] i').removeClass('far').addClass(
                             'fas').css('color', 'yellow');
-                        // window.location.reload();
-                    } else {
+                    }else if (response.status === true && response.message === 'Product removed from wishlist.') {
+                        $('a.whishlist[onclick*="wishList(' + product_id + ')"] i').addClass('far').removeClass(
+                            'fas').css('color', 'yellow');
+                    }
+                     else {
                         alert(response.message);
                     }
                 },

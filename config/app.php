@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'aliases' => [
+        'Agent' => Jenssegers\Agent\Facades\Agent::class,
+    ],
 
     /*
     |--------------------------------------------------------------------------

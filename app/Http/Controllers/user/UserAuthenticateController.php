@@ -10,8 +10,22 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Redirect;
+use Jenssegers\Agent\Agent;
+/* 
 
+$agent = new Agent();
+
+$deviceType = $agent->device(); // مثل iPhone / SM-G998B / etc
+$platform   = $agent->platform(); // مثل Android / Windows / iOS
+$platformVersion = $agent->version($platform);
+
+$browser    = $agent->browser(); // مثل Chrome / Safari
+$browserVersion = $agent->version($browser);
+
+$isMobile   = $agent->isMobile(); // true or false
+$isDesktop  = $agent->isDesktop();
+$isTablet   = $agent->isTablet();
+ */
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Casts\Json;
 

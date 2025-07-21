@@ -3,14 +3,18 @@
 namespace App\Providers;
 
 use App\Models\Product;
+use App\Models\WishList;
 use App\HelperFront\Helpers;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use App\Http\View\Composers\WishListComposer;
 
 class ViewServiceProvider extends ServiceProvider
 {
     public function boot()
     {
+        View::composer('*', WishListComposer::class);
         if ($this->app->runningInConsole()) {
             return;
         }
@@ -120,10 +124,20 @@ class ViewServiceProvider extends ServiceProvider
             ->where('status', 1)
             ->get();
     }
-
-    protected function shareViewData($data): void
-    {
-        View::share([
+    // protected function getWishList()
+    // {
+    //     if(Auth::guard('user')->check()) {
+    //         exit("true");
+    //             return $wishList = WishList::where('user_id', Auth::guard('user')->id())
+    //                 ->get();
+    //             }
+    //             return $wishList = [];
+    //         }
+            
+            protected function shareViewData($data): void
+            {
+                View::share([
+            // 'wishList'      => $this->getWishList(),
             'categories'      => $data->categories,
             'sub_categories'  => $data->sub_categories,
             'brands'          => $data->brands,
@@ -132,3 +146,4 @@ class ViewServiceProvider extends ServiceProvider
         ]);
     }
 }
+// @dd();

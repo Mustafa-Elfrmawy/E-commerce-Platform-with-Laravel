@@ -60,6 +60,14 @@ class OrderController extends Controller
             ->where('user_id', Auth::guard('user')->user()->id)
             ->first();
 
+            if ($checkWishList) {
+                $checkWishList->delete();
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Product removed from wishlist.'
+                ]);
+            }
+
         if ($validated->fails()) {
             return response()->json([
                 'status' => false,
@@ -68,12 +76,6 @@ class OrderController extends Controller
             ]);
         }
 
-        if ($checkWishList) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Product already exists in wishlist.'
-            ]);
-        }
 
         WishList::create([
             'product_id' => $request->product_id,

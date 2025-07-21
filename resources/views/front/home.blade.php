@@ -46,6 +46,37 @@
             justify-content: space-between;
             padding: 1rem;
         }
+
+        .activeYellow {
+            color: yellow;
+        }
+
+        /* إظهار أيقونة القلب دايماً */
+        .product-image .whishlist,
+        .product-card .whishlist,
+        a.whishlist {
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
+            position: absolute !important;
+            top: 10px !important;
+            right: 10px !important;
+            z-index: 10 !important;
+            background: rgba(255, 255, 255, 0.8) !important;
+            border-radius: 50% !important;
+            width: 35px !important;
+            height: 35px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .product-image:hover .whishlist,
+        .product-card:hover .whishlist {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
     </style>
     @if (Session::has('successOrder'))
         <div class="alert alert-success alert-dismissible fade show mt-3 mx-3" role="alert">
@@ -215,6 +246,7 @@
 
                 @if ($products->isNotEmpty())
                     @foreach ($products as $product)
+                        {{-- @dd($wishList); --}}
                         <div class="col-md-3">
                             <div class="card product-card">
                                 <div class="product-image position-relative">
@@ -231,7 +263,10 @@
                                             src=" {{ my_asset($img ? 'storage/' . $img->image_product : 'Front/images/150x150.png') }}"
                                             alt="">
                                     </a>
-                                    <a class="whishlist" onclick="wishList({{ $product->id }}); return false;" href="#"><i class="far fa-heart"></i></a>
+                                    <a class="whishlist" onclick="wishList({{ $product->id }}); return false;"
+                                        href="#"><i
+                                            class="far fa-heart 
+                                        {{ in_array($product->id, $wishList) ? 'fas activeYellow' : '' }}"></i></a>
                                     <div class="product-action">
                                         <a class="btn btn-dark" href="javascript:void(0);"
                                             onclick="addToCart({{ $product->id }}, '{{ addslashes($product->title) }}')">
@@ -289,12 +324,16 @@
                                             alt="">
                                     </a>
 
-                                    <a class="whishlist" onclick="wishList({{ $product_latest->id }})" href="#"><i class="far fa-heart"></i></a>
+                                    <a class="whishlist" onclick="wishList({{ $product_latest->id }}); return false;" href="#"><i
+                                            class="far fa-heart
+                                            {{ in_array($product_latest->id, $wishList) ? 'fas activeYellow' : '' }}"></i></a>
 
                                     <div class="product-action">
                                         <a class="btn btn-dark" href="javascript:void(0);"
                                             onclick="addToCart({{ $product_latest->id }}, '{{ addslashes($product_latest->title) }}')">
-                                            <i class="fa fa-shopping-cart"></i> Add To Cart
+                                            <i
+                                                class="fa fa-shopping-cart"></i>
+                                            Add To Cart
                                         </a>
                                     </div>
                                 </div>
@@ -320,10 +359,6 @@
 
 @section('custom-js')
     <script>
-
-
-
-
         window.onscroll = function() {
             myFunction()
         };
