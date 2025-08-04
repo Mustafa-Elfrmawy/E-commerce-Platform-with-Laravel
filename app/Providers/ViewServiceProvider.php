@@ -81,7 +81,7 @@ class ViewServiceProvider extends ServiceProvider
      */
     protected function parseFilters(array $segments): array
     {
-        $categoryId   = isset($segments[2]) && is_numeric($segments[2]) ? (int)$segments[2] : null;
+        $categoryId   =  isset($segments[2]) && is_numeric($segments[2]) ? (int)$segments[2] : null;
         $subCategoryId = isset($segments[3]) && is_numeric($segments[3]) ? (int)$segments[3] : null;
         $brandId      = isset($segments[4]) && is_numeric($segments[4]) ? (int)$segments[4] : null;
         $minPrice     = isset($segments[5]) && is_numeric($segments[5]) ? (int)$segments[5] : null;
@@ -137,7 +137,7 @@ class ViewServiceProvider extends ServiceProvider
             protected function shareViewData($data): void
             {
                 View::share([
-            // 'wishList'      => $this->getWishList(),
+                // 'wishList'      => $this->getWishList(),
             'categories'      => $data->categories,
             'sub_categories'  => $data->sub_categories,
             'brands'          => $data->brands,

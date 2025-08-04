@@ -14,7 +14,7 @@
             <div class="container-fluid my-2">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Order: #4F3S8J</h1>
+                        <h1>Order: {{ $order->id }}</h1>
                     </div>
                     <div class="col-sm-6 text-right">
                         <a href="orders.html" class="btn btn-primary">Back</a>

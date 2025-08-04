@@ -38,6 +38,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="accordion accordion-flush" id="accordionExample">
+                                    {{-- @dd($sub_categories); --}}
                                     @if ($sub_categories->isNotEmpty())
                                         @foreach ($sub_categories as $key => $sub_category)
                                             <div class="accordion-item">
@@ -87,14 +88,15 @@
 
                         <div class="card">
                             <div class="card-body">
-
                                 @if ($brands->isNotEmpty())
                                     @foreach ($brands as $brand)
                                         <div class="form-check mb-2">
-                                            <input class="form-check-input brand-label" name="brand[]" type="checkbox"
-                                                value="5/2/{{ $brand->id }}"
-                                                id="brand-
-                      {{ $brand->id }}">
+                                            <input
+                                                class="form-check-input
+                                            brand-label"
+                                                name="brand[]" type="checkbox" value="5/2/{{ $brand->id }}"
+                                                id="brand-{{ $brand->id }}"
+                                                @if (isset(explode('/', $_SERVER['REQUEST_URI'])[5]) && explode('/', $_SERVER['REQUEST_URI'])[5] == $brand->id) {{ 'checked' }} @endif>
                                             <label class="form-check-label" for="brand-{{ $brand->id }}">
                                                 {{ $brand->name }}
                                             </label>
@@ -110,30 +112,37 @@
 
                         <div class="card">
                             <div class="card-body">
+
+
                                 <div class="form-check mb-2">
+                                    {{-- @dd(explode( "/" , $_SERVER['REQUEST_URI'])); --}}
                                     <input class="form-check-input  price-label" name="price" type="checkbox"
-                                        value="1/1/1/0/100" id="flexCheckDefault">
+                                        value="1/1/987654321123456789/0/100" id="flexCheckDefault"
+                                        @if (isset(explode('/', $_SERVER['REQUEST_URI'])[7]) && explode('/', $_SERVER['REQUEST_URI'])[7] == '100') {{ 'checked' }} @endif>
                                     <label class="form-check-label" for="flexCheckDefault">
                                         $0-$100
                                     </label>
                                 </div>
                                 <div class="form-check mb-2">
                                     <input class="form-check-input  price-label" name="price" type="checkbox"
-                                        value="1/1/1/100/200" id="flexCheckChecked">
+                                        value="1/1/987654321123456789/100/200" id="flexCheckDefault"
+                                        @if (isset(explode('/', $_SERVER['REQUEST_URI'])[7]) && explode('/', $_SERVER['REQUEST_URI'])[7] == '200') {{ 'checked' }} @endif>
                                     <label class="form-check-label" for="flexCheckChecked">
                                         $100-$200
                                     </label>
                                 </div>
                                 <div class="form-check mb-2">
                                     <input class="form-check-input  price-label" name="price" type="checkbox"
-                                        value="1/1/1/200/500" id="flexCheckChecked">
+                                        value="1/1/987654321123456789/200/500" id="flexCheckDefault"
+                                        @if (isset(explode('/', $_SERVER['REQUEST_URI'])[7]) && explode('/', $_SERVER['REQUEST_URI'])[7] == '500') {{ 'checked' }} @endif>
                                     <label class="form-check-label" for="flexCheckChecked">
                                         $200-$500
                                     </label>
                                 </div>
                                 <div class="form-check mb-2">
                                     <input class="form-check-input  price-label" name="price" type="checkbox"
-                                        value="1/1/1/500/+" id="flexCheckChecked">
+                                        value="1/1/987654321123456789/500/+" id="flexCheckDefault"
+                                        @if (isset(explode('/', $_SERVER['REQUEST_URI'])[7]) && explode('/', $_SERVER['REQUEST_URI'])[7] == '+') {{ 'checked' }} @endif>
                                     <label class="form-check-label" for="flexCheckChecked">
                                         $500+
                                     </label>
@@ -148,11 +157,24 @@
                                     <div class="ml-2">
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-sm btn-light dropdown-toggle"
-                                                data-bs-toggle="dropdown">Sorting</button>
+                                                data-bs-toggle="dropdown">
+                                                @if($sort == 'latest')
+                                                    Latest
+                                                @elseif($sort == 'price_high')
+                                                    Price High
+                                                @elseif($sort == 'price_low')
+                                                    Price Low
+                                                @else
+                                                    Sorting
+                                                @endif
+                                            </button>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="#">Latest</a>
-                                                <a class="dropdown-item" href="#">Price High</a>
-                                                <a class="dropdown-item" href="#">Price Low</a>
+                                                <a class="dropdown-item {{ $sort == 'latest' ? 'active' : '' }}" 
+                                                   href="{{ request()->fullUrlWithQuery(['sort' => 'latest']) }}">Latest</a>
+                                                <a class="dropdown-item {{ $sort == 'price_high' ? 'active' : '' }}" 
+                                                   href="{{ request()->fullUrlWithQuery(['sort' => 'price_high']) }}">Price High</a>
+                                                <a class="dropdown-item {{ $sort == 'price_low' ? 'active' : '' }}" 
+                                                   href="{{ request()->fullUrlWithQuery(['sort' => 'price_low']) }}">Price Low</a>
                                             </div>
                                         </div>
                                     </div>
@@ -175,15 +197,19 @@
                                         <div class="card product-card">
                                             <div class="product-image position-relative">
                                                 @if ($images && $images->first() != null)
-                                                    <a href="{{ route('front.product' , $product->id) }}" class="product-img"><img class="card-img-top"
+                                                    <a href="{{ route('front.product', $product->id) }}"
+                                                        class="product-img"><img class="card-img-top"
                                                             src="{{ my_asset('storage/' . $images->first()) }}"
                                                             alt=""></a>
                                                 @else
-                                                    <a href="{{ route('front.product' , $product->id) }}" class="product-img"><img class="card-img-top"
+                                                    <a href="{{ route('front.product', $product->id) }}"
+                                                        class="product-img"><img class="card-img-top"
                                                             src="{{ my_asset('Front/images/150x150.png') }}"
                                                             alt="image"></a>
                                                 @endif
-                                                <a class="whishlist" onclick="wishList({{ $product->id }}); return false;" href="#"><i class="far fa-heart"></i></a>
+                                                <a class="whishlist"
+                                                    onclick="wishList({{ $product->id }}); return false;"
+                                                    href="#"><i class="far fa-heart"></i></a>
 
                                                 <div class="product-action">
                                                     <a onclick="addToCart({{ $product->id }}, '{{ addslashes($product->title) }}')"

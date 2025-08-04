@@ -65,7 +65,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="name">Category</label>
+                                        <label for="name">Sub Category</label>
                                         <select name="sub_category_id" id="sub_category_id" class="form-control" required>
                                             <option value="">Select</option>
                                             @if ($sub_categories->isNotEmpty())

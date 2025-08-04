@@ -26,7 +26,7 @@ class FrontController extends Controller
     {
         $product = Product::find($id);
         if ( empty($product) || $product->status != 1) {
-            return redirect()->route('front.home')->with('error', 'Product not found or inactive.');
+            return redirect()->route('front.home')->with('errorProductNotFound', 'Product not found or inactive.');
         }
         $products_related = Product::where('status', 1)
             ->where('showhome', 'yes')
@@ -43,9 +43,32 @@ class FrontController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function shop()
+    public function shop(Request $request)
     {
-        return view('front.shop');
+        $sort = $request->get('sort', 'latest');
+        
+        $query = Product::where('status', 1);
+        
+        // Apply sorting
+        switch($sort) {
+            case 'price_high':
+                $query->orderBy('price', 'DESC');
+                break;
+            case 'price_low':
+                $query->orderBy('price', 'ASC');
+                break;
+            case 'latest':
+            default:
+                $query->latest();
+                break;
+        }
+        
+        $products = $query->paginate(12);
+        $brands = \App\Models\Brand::where('status', 1)->get();
+        $categories = Category::where('status', 1)->get();
+        $sub_categories = SubCategory::where('status', 1)->get();
+        
+        return view('front.shop', compact('products', 'brands', 'categories', 'sub_categories', 'sort'));
     }
 
     /**

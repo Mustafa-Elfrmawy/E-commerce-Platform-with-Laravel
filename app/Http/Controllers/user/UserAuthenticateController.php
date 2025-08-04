@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\user;
 
 use App\Models\Order;
+use Jenssegers\Agent\Agent;
 use Illuminate\Http\Request;
 use function Laravel\Prompts\error;
 use Illuminate\Contracts\View\View;
@@ -10,22 +11,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
-use Jenssegers\Agent\Agent;
-/* 
-
-$agent = new Agent();
-
-$deviceType = $agent->device(); // مثل iPhone / SM-G998B / etc
-$platform   = $agent->platform(); // مثل Android / Windows / iOS
-$platformVersion = $agent->version($platform);
-
-$browser    = $agent->browser(); // مثل Chrome / Safari
-$browserVersion = $agent->version($browser);
-
-$isMobile   = $agent->isMobile(); // true or false
-$isDesktop  = $agent->isDesktop();
-$isTablet   = $agent->isTablet();
- */
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Casts\Json;
 
@@ -108,7 +93,7 @@ class UserAuthenticateController extends Controller
         ]);
     }
 
-    private function checkAdmin(object $validate, array $credentials, Request $request): RedirectResponse
+    private function checkAdmin(object $validate, array $credentials, Request $request)/* : RedirectResponse */
     {
         if ($validate->passes()) {
 
@@ -121,7 +106,21 @@ class UserAuthenticateController extends Controller
             return redirect()->back()->withErrors($validate)->withInput($request->only('email', 'remember'));
         }
     }
+    public function deviceInformation(Request $request)
+    {
+        $agent = new Agent();
 
+        dd([
+            'isMobile'  => $agent->isMobile(),
+            'isTablet'  => $agent->isTablet(),
+            'isDesktop' => $agent->isDesktop(),
+            'device'    => $agent->device(),
+            'platform'  => $agent->platform(),
+            'platform3'  => $agent->version($agent->platform()),
+            'browser'   => $agent->browser(),
+            'browser_version' => $agent->version($agent->browser()),
+        ]);
+    }
 
     public function updateInformation(Request $request): RedirectResponse
     {
@@ -157,7 +156,8 @@ class UserAuthenticateController extends Controller
         $user->save();
         return redirect()->back()->with('success', 'changes successfully ');
     }
-    public function changePasswordCreate() {
+    public function changePasswordCreate()
+    {
 
         return view('front.user.changepassword');
     }

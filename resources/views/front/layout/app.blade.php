@@ -263,15 +263,14 @@
                         @else
                             <a href="{{ route('user.login') }}" class="nav-link text-dark">Sign-in</a>
                         @endif
-                        <form action="">
+                        {{-- <form action="">
                             <div class="input-group">
-                                <input type="text" placeholder="Search For Products" class="form-control"
-                                    aria-label="Search">
+                                <input type="text" placeholder="Search For Products" class="form-control" aria-label="Search">
                                 <span class="input-group-text">
                                     <i class="fa fa-search"></i>
                                 </span>
                             </div>
-                        </form>
+                        </form> --}}
                     </div>
                 </div>
             </div>
@@ -372,12 +371,11 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="footer-card">
-                            <h3>Get In Touch</h3>
-                            <p>
-                                No dolore ipsum accusam no lorem. <br>
-                                123 Street, New York, USA <br>
-                                example@example.com <br>
-                                000 000 0000
+                            <h3>Info</h3>
+                            <p>Name : {{  env( 'YOUR_NAME') }} <br>
+                                Job : {{ env('YOUR_Jop') }} <br>
+                                Email : {{ env('YOUR_EMAIL') }} <br>
+                                Phone : {{ env('YOUR_PHONE') }}
                             </p>
                         </div>
                     </div>
@@ -385,11 +383,11 @@
                         <div class="footer-card">
                             <h3>Important Links</h3>
                             <ul>
-                                <li><a href="about-us.php" title="About">About</a></li>
-                                <li><a href="contact-us.php" title="Contact Us">Contact Us</a></li>
-                                <li><a href="#" title="Privacy">Privacy</a></li>
-                                <li><a href="#" title="Terms">Terms & Conditions</a></li>
-                                <li><a href="#" title="Refund">Refund Policy</a></li>
+                                <li><a href="https://www.linkedin.com/in/mustafa-elfrmawy/" title="About">About</li>
+                                <li><a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ env('YOUR_EMAIL') }}" target="_blank" title="Contact Us">Contact Us</li>
+                                <li><a {{-- href="#" --}} title="Privacy"></a></li>
+                                <li><a {{-- href="#" --}} title="Terms"></a></li>
+                                <li><a {{-- href="#" --}} title="Refund"></a></li>
                             </ul>
                         </div>
                     </div>
@@ -397,9 +395,13 @@
                         <div class="footer-card">
                             <h3>My Account</h3>
                             <ul>
-                                <li><a href="#" title="Login">Login</a></li>
-                                <li><a href="#" title="Register">Register</a></li>
-                                <li><a href="#" title="Orders">My Orders</a></li>
+                                @if (!Auth::guard('user')->check())
+                                <li><a href="{{ route('user.login') }}" title="Login">Login</a></li>
+                                <li><a href="{{ route('user.register') }}" title="Register">Register</a></li>
+                                @endif
+                                @if (Auth::guard('user')->check())
+                                <li><a href="{{ route('user.order') }}" title="Orders">My Orders</a></li>
+                                @endif
                             </ul>
                         </div>
                     </div>
@@ -429,7 +431,6 @@
     <script src="{{ my_asset('Front/js/lazyload.17.6.0.min.js') }}"></script>
     <script src="{{ my_asset('Front/js/slick.min.js') }}"></script>
     <script src="{{ my_asset('Front/js/custom.js') }}"></script>
-
     <script>
         $.ajaxSetup({
             headers: {

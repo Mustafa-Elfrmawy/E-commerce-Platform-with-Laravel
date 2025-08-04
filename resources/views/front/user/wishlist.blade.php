@@ -48,7 +48,7 @@
                                                         src="{{ my_asset($img ? 'storage/' . $img->image_product : 'Front/images/150x150.png') }}"
                                                         alt="Product"></a>
                                                 <div class="pt-2">
-                                                    <h3 class="product-title fs-base mb-2"><a href="shop-single-v1.html">
+                                                    <h3 class="product-title fs-base mb-2"><a href="{{ route('front.product', $wishList->product->id) }}">
                                                             {{ $wishList->product->title }}
                                                         </a></h3>
                                                     <div class="fs-lg text-accent pt-2">
